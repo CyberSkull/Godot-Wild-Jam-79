@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hbskbnphurfi"
-path="res://.godot/imported/GWJ-Full-Logo-tag.svg-4f15665662ddafc4ecd9fbdf71bb61c0.ctex"
+uid="uid://c6mdo8lkhkflc"
+path="res://.godot/imported/72-light-n-dark.png-ebd282f525748c3486569ce6d15ff0b6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://GWJ-Full-Logo-tag.svg"
-dest_files=["res://.godot/imported/GWJ-Full-Logo-tag.svg-4f15665662ddafc4ecd9fbdf71bb61c0.ctex"]
+source_file="res://GWJ/72-light-n-dark.png"
+dest_files=["res://.godot/imported/72-light-n-dark.png-ebd282f525748c3486569ce6d15ff0b6.ctex"]
 
 [params]
 
@@ -32,6 +32,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false
