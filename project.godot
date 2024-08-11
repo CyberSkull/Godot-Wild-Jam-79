@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Godot Wild Jam 72"
+config/tags=PackedStringArray("game_jam", "godot_wild_jam")
 config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0784314, 0.133333, 0.25098, 1)
 boot_splash/image="res://GWJ/GWJ-Full-Logo-tag-4k.png"

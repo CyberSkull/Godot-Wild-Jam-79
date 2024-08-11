@@ -29,8 +29,17 @@ signal died()
 ## Lantern range in pixels.
 @export var lantern_range: float
 
+var state: AnimationNodeStateMachinePlayback
 
 
+##
+func _ready() -> void:
+	state = $AnimationTree[&"parameters/playback"]
+	state.start(&"Start")
+	print_debug("animation state machine: ", state)
+	state.travel(&"moving")
+
+##
 func _physics_process(delta: float) -> void:
 	var direction: Vector2 = Vector2.ZERO
 	var is_attacking: bool = false

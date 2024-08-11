@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=14 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 
@@ -9,8 +9,36 @@ size = Vector2(30, 30)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vxm5q"]
 
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_w8tlh"]
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_bfm8e"]
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_asjts"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iv1no"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xatel"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b5s0i"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0td5j"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_id60p"]
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n7iaj"]
-graph_offset = Vector2(114.765, 12.03)
+states/attacking/node = SubResource("AnimationNodeBlendSpace2D_w8tlh")
+states/attacking/position = Vector2(537.58, 185.717)
+states/idle/node = SubResource("AnimationNodeBlendSpace2D_bfm8e")
+states/idle/position = Vector2(351.055, 92.015)
+states/moving/node = SubResource("AnimationNodeBlendSpace2D_asjts")
+states/moving/position = Vector2(580.055, 68.515)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_iv1no"), "idle", "attacking", SubResource("AnimationNodeStateMachineTransition_xatel"), "idle", "moving", SubResource("AnimationNodeStateMachineTransition_b5s0i"), "moving", "idle", SubResource("AnimationNodeStateMachineTransition_0td5j"), "attacking", "idle", SubResource("AnimationNodeStateMachineTransition_id60p")]
+graph_offset = Vector2(49.1851, 27.0675)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_km6pe")
@@ -33,3 +61,6 @@ height = 25.0
 active = false
 tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
+parameters/attacking/blend_position = Vector2(0, 0)
+parameters/idle/blend_position = Vector2(0, 0)
+parameters/moving/blend_position = Vector2(0, 0)
