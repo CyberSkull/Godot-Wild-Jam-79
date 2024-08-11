@@ -16,6 +16,8 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0784314, 0.133333, 0.25098, 1)
 boot_splash/image="res://GWJ/GWJ-Full-Logo-tag-4k.png"
 config/icon="res://GWJ/GWJ-Full-Logo-tag.svg"
+config/macos_native_icon="res://GWJ/GWJ-Full-Logo-tag.icns"
+config/windows_native_icon="res://GWJ/GWJ-Full-Logo-tag.ico"
 
 [dotnet]
 
