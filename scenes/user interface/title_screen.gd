@@ -15,14 +15,14 @@ func _process(delta: float) -> void:
 
 ## Starts the game. TODO: implement.
 func _on_start_game_button_pressed() -> void:
-	OS.alert("Main game not implemented yet.")
+	OS.alert("Main game not implemented yet. ☹️", "Unimplemented function!")
 	pass # Replace with function body.
 
 
 
 ## Pulls up the options screen. TODO: implement.
 func _on_options_button_pressed() -> void:
-	OS.alert("Options screen not implemented yet.")
+	OS.alert("Options screen not implemented yet. ☹️", "Unimplemented function!")
 	pass # Replace with function body.
 
 
