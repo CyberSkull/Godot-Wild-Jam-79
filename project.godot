@@ -19,6 +19,11 @@ config/icon="res://icon/Dakota Duck.iconset/icon_512x512@2x.png"
 config/macos_native_icon="res://GWJ/GWJ-Full-Logo-tag.icns"
 config/windows_native_icon="res://GWJ/GWJ-Full-Logo-tag.ico"
 
+[display]
+
+window/stretch/scale=8.0
+window/stretch/scale_mode="integer"
+
 [dotnet]
 
 project/assembly_name="Godot-wild-jam-72"
