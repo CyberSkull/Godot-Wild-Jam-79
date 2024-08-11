@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=6 format=3 uid="uid://b8lqvc0s4q0lx"]
 
-[ext_resource type="Script" path="res://scenes/player.gd" id="1_km6pe"]
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ijwsd"]
 size = Vector2(30, 30)
@@ -8,6 +8,9 @@ size = Vector2(30, 30)
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_8hv1i"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vxm5q"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n7iaj"]
+graph_offset = Vector2(114.765, 12.03)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_km6pe")
@@ -23,3 +26,10 @@ texture = SubResource("PlaceholderTexture2D_8hv1i")
 texture = SubResource("PlaceholderTexture2D_vxm5q")
 texture_scale = 50.0
 height = 25.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+active = false
+tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
+anim_player = NodePath("../AnimationPlayer")

@@ -15,7 +15,7 @@ signal died()
 		health = clampi(value, 0, max_health)
 
 ## Raw attack power.
-@export var attack: int
+@export var attack_damage: int
 
 ## Defence power.
 @export var defence: int
@@ -32,9 +32,24 @@ signal died()
 
 
 func _physics_process(delta: float) -> void:
-	var direction: Vector2 = Input.get_vector( &"move_left", &"move_right", &"move_up", &"move_down")
+	var direction: Vector2 = Vector2.ZERO
+	var is_attacking: bool = false
+	var is_casting: bool = false
+	var is_using_item: bool = false
 	
+	direction = Input.get_vector( &"move_left", &"move_right", &"move_up", &"move_down")
+	
+	# if animation, then don't check this
+	is_attacking = Input.is_action_just_pressed(&"attack")
+	is_casting = Input.is_action_just_pressed(&"cast")
+	is_using_item = Input.is_action_just_pressed(&"item")
 	if direction != Vector2.ZERO:
 		global_position += direction * speed * delta
 	
 	move_and_slide()
+	
+
+## Handles attacking animaton and damage
+func attack(delta: float) -> void:
+	pass
+
