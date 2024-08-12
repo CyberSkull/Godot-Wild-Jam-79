@@ -47,6 +47,7 @@ var is_using_item: bool = false
 
 ## Called when all children are ready
 func _ready() -> void:
+	animation_tree.active = true # start animations if turned off in editor
 	state = animation_tree[&"parameters/playback"]
 	state.start(&"Start")
 	print_debug("animation state machine: ", state)
