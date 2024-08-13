@@ -56,7 +56,10 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:	
 	direction = Input.get_vector( &"move_left", &"move_right", &"move_up", &"move_down")
 	
-	if direction.is_zero_approx():
+	if Input.is_action_just_pressed(&"attack"):
+		state.travel(&"Attack")
+		animation_tree["parameters/Attack/BlendSpace2D/blend_position"] = direction
+	elif direction.is_zero_approx():
 		state.travel(&"Idle")
 		animation_tree["parameters/Idle/BlendSpace2D/blend_position"] = last_direction
 	else:
