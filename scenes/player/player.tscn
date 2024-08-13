@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=48 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
@@ -95,11 +95,22 @@ tracks/5/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".:is_attacking")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_dhw74"]
 resource_name = "attack_down"
 length = 0.3
-loop_mode = 1
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -120,7 +131,7 @@ tracks/1/path = NodePath("Marker2D:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.25, 0.3),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [-1.5708, -1.5708, -4.71239, -4.71239]
@@ -132,10 +143,22 @@ tracks/2/path = NodePath("Marker2D/SwordSprite:visible")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
 "update": 1,
-"values": [true]
+"values": [true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:is_attacking")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
 }
 
 [sub_resource type="Animation" id="Animation_le1cm"]
@@ -188,6 +211,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Marker2D/SwordSprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_x1ggf"]
@@ -576,12 +611,27 @@ _data = {
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_26qsg"]
 animation = &"attack_down"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fjogu"]
+animation = &"attack_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tbghu"]
+animation = &"attack_down"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ekl25"]
+animation = &"attack_down"
+
 [sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_cjm73"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_26qsg")
-blend_point_0/pos = Vector2(0, 0.9)
+blend_point_0/pos = Vector2(2.08167e-14, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_fjogu")
+blend_point_1/pos = Vector2(0, -1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_tbghu")
+blend_point_2/pos = Vector2(-1, 0)
+blend_point_3/node = SubResource("AnimationNodeAnimation_ekl25")
+blend_point_3/pos = Vector2(1, 0)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4vaqt"]
-graph_offset = Vector2(-167.04, 94.08)
+graph_offset = Vector2(-192, 70.08)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_cjm73")
 nodes/BlendSpace2D/position = Vector2(-79.76, 130.1)
 node_connections = [&"output", 0, &"BlendSpace2D"]
@@ -662,6 +712,7 @@ switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ku25x"]
+switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5pj45"]
 
@@ -726,7 +777,7 @@ editor_description = "https://www.youtube.com/watch?v=km4SGFzpEc0"
 active = false
 tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
-parameters/Attack/BlendSpace2D/blend_position = Vector2(0.00197828, 0.0222223)
+parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
@@ -744,6 +795,7 @@ frame = 36
 region_rect = Rect2(0, 0, 192, 64)
 
 [node name="SwordArea" type="Area2D" parent="Marker2D"]
+visible = false
 collision_layer = 2
 collision_mask = 4
 
