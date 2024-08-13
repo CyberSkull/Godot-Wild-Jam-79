@@ -10,6 +10,7 @@ const move_south:=Vector2i(0,1)
 const move_west:=Vector2i(-1,0)
 
 const layer_idx:int=0
+const src_idx:int=1
 
 const direction_iter:Array=[Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
 
@@ -141,6 +142,7 @@ class RoomList:
 			new_room.direction_arr.push_back(null)
 		new_room.room_list = self
 		new_room.random = random
+		new_room.node_loc = loc
 		all[loc.x][loc.y] = new_room
 		return all[loc.x][loc.y];
 	
@@ -199,46 +201,49 @@ func room_cutter(room_appearance:RoomAppearance,
 	wall_west:bool=true):
 	var tm : TileMap = $WorldMap
 	
+	#var layer_idx:int = tm.
+	#var src_idx:int = 
+	
 	#set floor tiles
 	for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
 		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), -1, rand_arr_itm_det(room_appearance.floor_basic));
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.floor_basic));
 	
 	#north wall
 	if wall_north:
 		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
 			var pos_x = room_top_left.x#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), -1, rand_arr_itm_det(room_appearance.wall_facing_south));
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_south));
 	#south wall
 	if wall_south:
 		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
 			var pos_x = room_bot_right.x#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), -1, rand_arr_itm_det(room_appearance.wall_facing_north));
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_north));
 	#east wall
 	if wall_east:
 		for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
 			var pos_y = room_top_left.y#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), -1, rand_arr_itm_det(room_appearance.wall_facing_west));
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_west));
 	#west wall
 	if wall_west:
 		for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
 			var pos_y = room_top_left.y#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), -1, rand_arr_itm_det(room_appearance.wall_facing_east));
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_east));
 	
 	#corners
 	#not sure if the coords are right for these, need to test!
 	if wall_north && wall_east:
-		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_bot_right.y), -1, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_west));
+		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_bot_right.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_west));
 	if wall_north && wall_west:
-		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_top_left.y), -1, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_east));
+		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_top_left.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_east));
 	if wall_south && wall_east:
-		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_bot_right.y), -1, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_west));
+		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_bot_right.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_west));
 	if wall_south && wall_west:
-		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_top_left.y), -1, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_east));
+		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_top_left.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_east));
 
 func loop_make_room_walls(room : RoomStruct):
 	room.cell_top_left = room_space_to_tile_map_space(room.node_loc);
-	room.cell_bot_right = room.area
+	room.cell_bot_right = room.cell_top_left + room.area
 	
 	room.room_appearance = rand_arr_itm_det(generator_resource.room_appearances)
 	
@@ -415,6 +420,14 @@ func generate(seed : int):
 	random = RandomNumberGenerator.new()
 	random.seed = seed;
 	
+	#var val1 = random.randi_range(-10,0)
+	#var val2 = random.randi_range(-10,0)
+	#print(val1, val2)
+	#print("get_cell_atlas_coords ", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
+	#print("get_cell_source_id ", tm.get_cell_source_id(0, Vector2i(val1, val2)))
+	#print("get_cell_atlas_coords", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
+	#print("get_cell_atlas_coords", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
+	
 	var numRooms :int= random.randi_range(generator_resource.base_number_of_rooms_min, generator_resource.base_number_of_rooms_max)
 	
 	room_list = RoomList.new()
@@ -479,6 +492,8 @@ func generate(seed : int):
 				
 	var root_room:RoomStruct = room_list.get_root()
 	recurse_make_room_passages(root_room, root_room.node_loc)
+	
+	$Player.position = room_space_to_tile_map_space(root_node_loc)*128
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
