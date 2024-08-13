@@ -34,13 +34,16 @@ var state: AnimationNodeStateMachinePlayback
 
 ## [class AnimationTree] reference.
 @onready var animation_tree: AnimationTree = $AnimationTree
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
 
 
 ## Direction the player is moving in.
 var direction: Vector2 = Vector2.ZERO
 ## Direction the player last moved in.
 var last_direction: Vector2 = Vector2.DOWN
-var is_attacking: bool = false
+## Flag to determing if the attack animation is playing.
+@export var is_attacking: bool = false
 var is_casting: bool = false
 var is_using_item: bool = false
 
@@ -53,16 +56,25 @@ func _ready() -> void:
 
 
 ## Handles the animation cycle.
-func _physics_process(delta: float) -> void:	
-	direction = Input.get_vector( &"move_left", &"move_right", &"move_up", &"move_down")
+func _physics_process(delta: float) -> void:
+	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	
+	# Handle the attack.
 	if Input.is_action_just_pressed(&"attack"):
 		state.travel(&"Attack")
 		animation_tree["parameters/Attack/BlendSpace2D/blend_position"] = direction
+	
+	# Skip actions if player is attacking.
+	elif is_attacking:
+		return
+	
+	# Do idle animation if player is not moving.
 	elif direction.is_zero_approx():
 		state.travel(&"Idle")
 		animation_tree["parameters/Idle/BlendSpace2D/blend_position"] = last_direction
-	else:
+		
+	# Move player and use moving animation.
+	elif not direction.is_zero_approx():
 		global_position += direction * speed * delta
 		last_direction = direction
 		state.travel(&"Walk")
