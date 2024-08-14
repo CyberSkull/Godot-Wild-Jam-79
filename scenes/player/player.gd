@@ -72,13 +72,20 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	
-	# Handle the attack.
-	if Input.is_action_just_pressed(&"attack"):
+	# Skip actions if player is attacking
+	if is_attacking:
+		return
+	
+	# Attack when standing still.
+	elif Input.is_action_just_pressed(&"attack") and direction.is_zero_approx():
+		playback_state.travel(&"Attack")
+		animation_tree["parameters/Attack/BlendSpace2D/blend_position"] = last_direction
+	
+	# Attack when moving.
+	elif Input.is_action_just_pressed(&"attack") and not direction.is_zero_approx():
 		playback_state.travel(&"Attack")
 		animation_tree["parameters/Attack/BlendSpace2D/blend_position"] = direction
-	# Skip actions if player is attacking.
-	elif is_attacking:
-		return
+	
 	# Do idle animation if player is not moving.
 	elif direction.is_zero_approx():
 		playback_state.travel(&"Idle")
