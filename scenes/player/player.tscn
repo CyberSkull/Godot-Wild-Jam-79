@@ -1290,7 +1290,6 @@ frame = 36
 region_rect = Rect2(0, 0, 192, 64)
 
 [node name="SwordArea" type="Area2D" parent="SwordPivot"]
-visible = false
 collision_layer = 2
 collision_mask = 4
 
