@@ -1,6 +1,5 @@
-[gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=4 format=3 uid="uid://cuessunmjga6x"]
+[gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=3 format=3 uid="uid://cuessunmjga6x"]
 
-[ext_resource type="Resource" uid="uid://0unx68al5tkr" path="res://Dredastttarm/test_room_appearance.tres" id="1_37srw"]
 [ext_resource type="Script" path="res://Dredastttarm/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://Dredastttarm/BaseTileSet.tres" id="3_60sdi"]
 
@@ -19,5 +18,4 @@ base_number_of_rooms_min = 10
 base_number_of_rooms_max = 20
 number_items_per_room_min = 2
 number_items_per_room_max = 5
-room_appearances = Array[Resource("res://Dredastttarm/Scripts/RoomAppearance.gd")]([ExtResource("1_37srw")])
 tile_set = ExtResource("3_60sdi")
