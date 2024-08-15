@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dv03tlr12jaeg"]
+[gd_scene load_steps=28 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="Script" path="res://scenes/enemies/green_slime.gd" id="1_kmye7"]
 [ext_resource type="Texture2D" uid="uid://csw6ydae3bno4" path="res://graphics/slime/green slime spritesheet calciumtrice_0.png" id="2_53g7p"]
@@ -331,7 +331,24 @@ nodes/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_kjfti")
 nodes/BlendSpace1D/position = Vector2(124.5, 88)
 node_connections = [&"output", 0, &"BlendSpace1D"]
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2g3vt"]
+animation = &"walk_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vbdd4"]
+animation = &"walk_right"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_d3fic"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_2g3vt")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_vbdd4")
+blend_point_1/pos = 1.0
+blend_mode = 1
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_d4fkr"]
+graph_offset = Vector2(-124.8, 24.96)
+nodes/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_d3fic")
+nodes/BlendSpace1D/position = Vector2(57.7, 124.96)
+node_connections = [&"output", 0, &"BlendSpace1D"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_13xtg"]
 advance_mode = 2
@@ -374,3 +391,4 @@ libraries = {
 tree_root = SubResource("AnimationNodeStateMachine_myxmk")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Idle/BlendSpace1D/blend_position = 2.08165e-12
+parameters/Moving/BlendSpace1D/blend_position = 2.08165e-12
