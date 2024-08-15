@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 @export var generator_resource : LevelGenerationSettings
 
@@ -10,13 +10,26 @@ const move_south:=Vector2i(0,1)
 const move_west:=Vector2i(-1,0)
 
 const layer_idx:int=0
-const src_idx:int=1
+const src_idx:int=0#sometimes this changes for like no reason.
 
 const direction_iter:Array=[Vector2i(0,-1), Vector2i(1,0), Vector2i(0,1), Vector2i(-1,0)]
 
 var room_spacing:Vector2i
 var room_list:RoomList
 var random:RandomNumberGenerator
+
+var world_extent : Vector2i
+var real_world_extent_top_left:Vector2i
+var real_world_extent_bot_right:Vector2i
+
+var debug_mode:bool=0
+var debug_bricks
+var debug_lines
+var debug_loc
+
+@export var logical_wall := Vector2i(0,0)
+@export var logical_floor := Vector2i(1,0)
+
 class RoomStruct:
 	#roomspace
 	var node_loc: Vector2i
@@ -47,63 +60,36 @@ class RoomStruct:
 	
 	var room_list:RoomList
 	
-	#the set of tiles that should be used for this room
-	var room_appearance : RoomAppearance
-	
 	var generator_resource : LevelGenerationSettings
 	var random : RandomNumberGenerator
 	
-	func add_to_random_unfilled():
-		var nempty :int = -1
-		if north() == null: nempty += 1
-		if east() == null: nempty += 1
-		if south() == null: nempty += 1
-		if west() == null: nempty += 1
-		
-		var rand = random.randi_range(0, nempty)
-		
-		#get to our random node and make a new node
-		#terrible copy paste because afaik there is no passing references to class variables
-		if north() == null:
-			if rand == 0:
-				room_list.add_node(north_loc()).direction_arr[2] = self
-				return;
-			else:
-				rand -= 1
-		if east() == null:
-			if rand == 0:
-				room_list.add_node(east_loc()).direction_arr[3] = self
-				return;
-			else:
-				rand -= 1
-		if south() == null:
-			if rand == 0:
-				room_list.add_node(south_loc()).direction_arr[0] = self
-				return;
-		#west does not need to do any of the decrementation, since by elimination it is the correct one.
-		room_list.add_node(west_loc()).direction_arr[1] = self
-		return;
+	func recurse_make_new_room()->RoomStruct:
+		var idx :int= random.randi_range(0,3)
+		var selected_room:RoomStruct= direction_arr[idx];
+		var new_node_loc:Vector2i = node_loc + direction_iter[idx]
+		var possibly_existing_room = room_list.all[new_node_loc.x][new_node_loc.y]
+		#if we find a room there already... JUST MAKE THAT ONE RESPONSIBLE NOW! HAHA.
+		if possibly_existing_room != null:
+			return possibly_existing_room.recurse_make_new_room()
+		if (selected_room == null):
+			selected_room = room_list.add_node(new_node_loc)
+			selected_room.direction_arr[(idx+2)%4] = self
+			direction_arr[idx] = selected_room
+			return selected_room;
+		return selected_room.recurse_make_new_room()
 	
 	func get_random_filled_node()->RoomStruct:
-		var rand_arr : Array
+		var rand_arr : Array = Array()
 		if north() != null: rand_arr.push_back(north()) 
 		if east() != null: rand_arr.push_back(east()) 
 		if south() != null: rand_arr.push_back(south()) 
 		if west() != null: rand_arr.push_back(west()) 
 		if rand_arr.size() == 0: return null;
-		return rand_arr[random.randi_range(0, rand_arr.size())]
+		return rand_arr[random.randi_range(0, rand_arr.size()-1)]
 	
 	func is_full()->bool:
 		return north() != null && east() != null && south() != null && west() != null;
 	
-	#outputs new number of rooms
-	func expand_maybe():
-		var random_node : RoomStruct = get_random_filled_node();
-		if (random_node != null):
-			if (is_full() || random.randf_range(0,1) < generator_resource.branch_pass_on_chance):
-				random_node.expand_maybe();
-				return;
-		add_to_random_unfilled()
 	
 	func get_wall_start_position(facing_index:int)->Vector2i:
 		var edgepoints : Array=[Vector2i(cell_top_left), Vector2i(cell_bot_right.x, cell_top_left.y), Vector2i(cell_bot_right), Vector2i(cell_top_left.x, cell_bot_right.y)]
@@ -118,6 +104,7 @@ class RoomList:
 	var root_node_loc : Vector2
 	var random : RandomNumberGenerator
 	var completed_passages:Array[Vector4i]#could turn this into a dictionary for faster look up time. don't care enough to figure out the gdscript impl rn
+	
 	
 	func has_completed_passage(loc_a : Vector2i, loc_b : Vector2i)->bool:
 		var search_a:Vector4i= Vector4i(loc_a.x,loc_a.y, loc_b.x,loc_b.y)
@@ -137,22 +124,26 @@ class RoomList:
 		completed_passages.push_back(search_b)
 	
 	func add_node(loc : Vector2i)->RoomStruct:
+		if all[loc.x][loc.y] != null:
+			print("what the fuck")
+			return;
 		var new_room = RoomStruct.new();
 		for v in range(4):
 			new_room.direction_arr.push_back(null)
 		new_room.room_list = self
 		new_room.random = random
 		new_room.node_loc = loc
+		print("made room: ", loc)
 		all[loc.x][loc.y] = new_room
 		return all[loc.x][loc.y];
 	
 	func make_root_node(base_loc : Vector2i):
-		for x_idx in range(0, base_loc.x*2-1):
+		for x_idx in range(0, base_loc.x*2+1):
 			all.push_back(Array())
-			for y_idx in range(0, base_loc.y*2-1):
+			for y_idx in range(0, base_loc.y*2+1):
 				all[x_idx].push_back(null)
 		root_node_loc = base_loc
-		add_node(root_node_loc)
+		add_node(root_node_loc).is_enterance = true
 	
 	#adds additional node links between neighbour rooms
 	func fixup_node_links():
@@ -175,11 +166,11 @@ func _ready():
 	generate(randi())
 	pass # Replace with function body.
 
-func gen_room_box(random : RandomNumberGenerator, min : int, max : int)->Rect2i:
+func gen_room_box(min : int, max : int)->Rect2i:
 	return Rect2i(Vector2i(0,0), Vector2i(random.randi_range(min, max), random.randi_range(min, max)));
 
 func room_space_to_tile_map_space(loc : Vector2i)->Vector2i:
-	return loc * room_spacing
+	return (loc * room_spacing) + Vector2i(generator_resource.base_room_margin, generator_resource.base_room_margin)
 
 #random item from array, deterministic.
 func rand_arr_itm_det(val : Array):
@@ -189,80 +180,102 @@ func rand_arr_itm_det(val : Array):
 func is_horizontal_dir(direction:int)->int:
 	return direction % 2
 
+func logical_world_fill(start:Vector2i, end:Vector2i):
+	var tm : TileMap = $LogicalTiles
+	for pos_x in range(start.x, end.x):
+		for pos_y in range(start.y, end.y):
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, logical_wall);
+
 #creates a room from top left to bottom right in size.
 #walls optional.
 #corner walls will be created only when adjacent walls are true.
-func room_cutter(room_appearance:RoomAppearance,
+func room_cutter(logical_tile:Vector2i,
 	room_top_left:Vector2i,
-	room_bot_right:Vector2i,
-	wall_north:bool=true,
-	wall_east:bool=true,
-	wall_south:bool=true,
-	wall_west:bool=true):
-	var tm : TileMap = $WorldMap
+	room_bot_right:Vector2i):
+	var tm : TileMap = $LogicalTiles
 	
-	#var layer_idx:int = tm.
-	#var src_idx:int = 
+	#print("making room: ",room_top_left, room_bot_right)
 	
-	#set floor tiles
-	for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
-		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.floor_basic));
-	
-	#north wall
-	if wall_north:
-		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
-			var pos_x = room_top_left.x#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_south));
-	#south wall
-	if wall_south:
-		for pos_y in range(room_top_left.y+1, room_bot_right.y-1):
-			var pos_x = room_bot_right.x#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_north));
-	#east wall
-	if wall_east:
-		for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
-			var pos_y = room_top_left.y#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_west));
-	#west wall
-	if wall_west:
-		for pos_x in range(room_top_left.x+1, room_bot_right.x-1):
-			var pos_y = room_top_left.y#dumb gd script doesn't let me make arbitrary scopes with no preceeding statement, so I have to put this variable here. It's just an alias anyway
-			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, rand_arr_itm_det(room_appearance.wall_facing_east));
-	
-	#corners
-	#not sure if the coords are right for these, need to test!
-	if wall_north && wall_east:
-		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_bot_right.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_west));
-	if wall_north && wall_west:
-		tm.set_cell(layer_idx, Vector2i(room_top_left.x, room_top_left.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_south_east));
-	if wall_south && wall_east:
-		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_bot_right.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_west));
-	if wall_south && wall_west:
-		tm.set_cell(layer_idx, Vector2i(room_bot_right.x, room_top_left.y), src_idx, rand_arr_itm_det(room_appearance.wall_inner_corner_facing_north_east));
+	for pos_x in range(room_top_left.x, room_bot_right.x+1):
+		for pos_y in range(room_top_left.y, room_bot_right.y+1):
+			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, logical_tile);
 
 func loop_make_room_walls(room : RoomStruct):
+	
+	if room == null:
+		return
+	
+	#obviously there is something wrong here!
+	#the room sizes should be correct, and there should be a margin allowed for walls to be created.
+	#the math isn't working out properly, so this probably should be rewritten.
+	#thank you future cole. I am sure this will look really dope when it's done!
+	
+	print("sized room: ", room.node_loc)
+	
+	var margin = Vector2i(generator_resource.base_room_margin, generator_resource.base_room_margin)
+	
+	room.area = Vector2i(random.randi_range(generator_resource.base_room_size_min, generator_resource.base_room_size_max)-1, random.randi_range(generator_resource.base_room_size_min, generator_resource.base_room_size_max)-1)
+	#make wiggle room area, then move it randomly within that.
+	room.wiggled = room_spacing - room.area - margin - Vector2i(1,1)
+	room.wiggled = Vector2i(random.randi_range(0, room.wiggled.x), random.randi_range(0, room.wiggled.y))
+	
 	room.cell_top_left = room_space_to_tile_map_space(room.node_loc);
 	room.cell_bot_right = room.cell_top_left + room.area
 	
-	room.room_appearance = rand_arr_itm_det(generator_resource.room_appearances)
 	
-	var tm :TileMap = $WorldMap
+	
+	
+	var tm :TileMap = $LogicalTiles
 	#add wiggle
 	room.cell_top_left += room.wiggled
 	room.cell_bot_right += room.wiggled
 	
+	var debugsz = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
+	if debug_mode:
+		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_top_left))+debugsz)
+		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_bot_right))+debugsz)
 	
-	room_cutter(room.room_appearance, room.cell_top_left, room.cell_bot_right)
-	print("made walls at ", room.cell_top_left, " and ", room.cell_bot_right)
+	if !room.is_enterance && !room.is_exit:
+		#obviously if I were programming this for a not-game-jam, I would make this code be more generic and use virtual functions to make room "types"
+		if generator_resource.chance_of_weird_room_no1 > random.randf_range(0,1):
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,1), room.cell_bot_right-Vector2i(1,1))
+			return
+		if generator_resource.chance_of_weird_room_no2 > random.randf_range(0,1):
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,2), room.cell_bot_right-Vector2i(1,2))
+			return
+		if generator_resource.chance_of_weird_room_no3 > random.randf_range(0,1):
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(2,1), room.cell_bot_right-Vector2i(2,1))
+			return
+	#normal room
+	room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+
+func _draw():
+	if debug_mode:
+		for idx in range(0, debug_lines.size(), 2):
+			draw_line(debug_lines[idx], debug_lines[idx+1], Color(1,1,1), 5)
+			
+		for idx in range(debug_bricks.size()):
+			draw_circle(debug_bricks[idx],12.0, Color(0.8,0.2,0.8))
+			var vreal = debug_bricks[idx]/32
+			draw_string(ThemeDB.fallback_font, debug_bricks[idx], str(vreal))
 
 #generic passage cutter function, allows cutting passages between two points 
-func passage_cutter(appearance:RoomAppearance, start:Vector2i, finish:Vector2i, passage_width:int, is_start_direction_horizontal:bool, is_end_direction_horizontal:bool):
-	var tm :TileMap = $WorldMap
+func passage_cutter(start:Vector2i, finish:Vector2i, passage_width:int, is_start_direction_horizontal:bool, is_end_direction_horizontal:bool):
+	var tm :TileMap = $LogicalTiles
 	#var distance:Vector2i=start-finish 
 	
-	var points : Array[Vector2i]
+	var points : Array = Array()
 	points.push_back(start)
+	
+	print("try make passage ", start, " to ", finish)
+	
+	var debugsz = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
+	if debug_mode:
+		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(start))+debugsz)
+		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(finish))+debugsz)
 	
 	#if start and and are not the same orientation, that means we can create an L shaped passage
 	if is_start_direction_horizontal != is_end_direction_horizontal:
@@ -284,22 +297,18 @@ func passage_cutter(appearance:RoomAppearance, start:Vector2i, finish:Vector2i, 
 			points.push_back(Vector2i(halfpoint_x, finish.y))
 			points.push_back(finish)
 	
+
 	#index from and to, making a single passage between the two
-	for point_idx in range(0, points.size()-2):
+	for point_idx in range(0, points.size()-1):
 		var from : Vector2i = points[point_idx]
 		var to : Vector2i = points[point_idx+1]
-		#get direction to determine cut side.
-		var distance:Vector2i=to-from
+		var from2 = Vector2i(min(to.x,from.x),min(to.y,from.y))
+		var to2 = Vector2i(max(to.x,from.x),max(to.y,from.y))
+		if debug_mode:
+			debug_lines.push_back(Vector2(tile_space_to_pixel_space(from2))+debugsz)
+			debug_lines.push_back(Vector2(tile_space_to_pixel_space(to2))+debugsz)
 		
-		#if last point, we also need to clear the ending wall to cut into the end point room
-		var make_end_wall = point_idx+1 == points.size()-1
-		
-		var wall_north : bool = distance.y < 0 || (make_end_wall && distance.y != 0)
-		var wall_east : bool = distance.x < 0 || (make_end_wall && distance.x != 0)
-		var wall_south : bool = distance.y > 0 || (make_end_wall && distance.y != 0)
-		var wall_west : bool = distance.x > 0 || (make_end_wall && distance.x != 0)
-		
-		room_cutter(appearance, from, to, wall_north, wall_east, wall_south, wall_west)
+		room_cutter(logical_floor, from2, to2)
 	
 
 func _gen_room_passage_sort_helper(room : RoomStruct, direction:int)->Vector2i:
@@ -312,20 +321,20 @@ func _gen_room_passage_sort_helper(room : RoomStruct, direction:int)->Vector2i:
 	
 	if !is_horizontal_dir(direction):
 		vert = true
-		int_a = vec_a.y
-		int_b = vec_b.y
-	else:
-		vert = false
 		int_a = vec_a.x
 		int_b = vec_b.x
+	else:
+		vert = false
+		int_a = vec_a.y
+		int_b = vec_b.y
 	
 	var start_idx = random.randi_range(min(int_a, int_b),max(int_a, int_b))
 	var output:Vector2i
 	
 	if vert:
-		output = Vector2i(vec_a.x, start_idx)
-	else:
 		output = Vector2i(start_idx, vec_a.y)
+	else:
+		output = Vector2i(vec_a.x, start_idx)
 	return output
 
 func generate_room_passge(room_a : RoomStruct, room_b : RoomStruct)->bool:
@@ -334,24 +343,27 @@ func generate_room_passge(room_a : RoomStruct, room_b : RoomStruct)->bool:
 		return false;
 	room_list.add_completed_passage(room_a.node_loc, room_b.node_loc)
 	
+	print("passage:", room_a.node_loc, " to ", room_b.node_loc)
+	
 	#find closest wall between rooms, then delete walls and add passageway walls
 	var a_to_b_direction:int=-1
 	var b_to_a_direction:int=-1
 	
-	for dir_idx in range(0, room_a.direction_arr.size()-1):
+	for dir_idx in range(0, room_a.direction_arr.size()):
 		if room_a.direction_arr[dir_idx] == room_b:
 			a_to_b_direction = dir_idx
 			break
 	
-	for dir_idx in range(0, room_b.direction_arr.size()-1):
+	for dir_idx in range(0, room_b.direction_arr.size()):
 		if room_b.direction_arr[dir_idx] == room_a:
 			b_to_a_direction = dir_idx
 			break
 	
+	
 	var start:Vector2i=_gen_room_passage_sort_helper(room_a, a_to_b_direction)
 	var finish:Vector2i=_gen_room_passage_sort_helper(room_b, b_to_a_direction)
 	#todo: make passage width a different value. this is prob gonna cause issues rn
-	passage_cutter(room_a.room_appearance, start, finish, 3, is_horizontal_dir(a_to_b_direction), is_horizontal_dir(b_to_a_direction))
+	passage_cutter(start, finish, 3, is_horizontal_dir(a_to_b_direction), is_horizontal_dir(b_to_a_direction))
 	return true;
 
 
@@ -410,23 +422,39 @@ func get_two_nearest_directions(from:Vector2i, to:Vector2i)->Vector2i:
 func swizzle(to_swizzle:Vector2i)->Vector2i:
 	return Vector2i(to_swizzle.y, to_swizzle.x)
 
+func tile_space_to_pixel_space(loc:Vector2i)->Vector2i:
+	var tm :TileMap = $LogicalTiles
+	return tm.tile_set.tile_size * loc
+
+func handle_room_additional_connection(room:RoomStruct):
+	for idx in range(room.direction_arr.size()):
+		if generator_resource.chance_add_passageway_between_neighbour_rooms_per_room > random.randf_range(0,1):
+			var other_room :RoomStruct= room.direction_arr[idx]
+			if (other_room != null):
+				continue
+			var to_check :Vector2i= room.node_loc + direction_iter[idx]
+			var unconnected_room :RoomStruct= room_list.all[to_check.x][to_check.y]
+			if  unconnected_room == null:
+				continue
+			unconnected_room.direction_arr[(idx+2)%4] = room
+			room.direction_arr[idx] = unconnected_room
+
 func generate(seed : int):
 	if (generator_resource == null):
 		return;
-	var tm :TileMap = $WorldMap
-	tm.tile_set = generator_resource.tile_set
+	var tm :TileMap = $LogicalTiles
+	var vm :TileMap = $VisibleTiles
+	var fm :TileMap = $FeatureTiles
+	#tm.tile_set = generator_resource.tile_set
 	
-	room_spacing = Vector2i(generator_resource.base_room_size_max, generator_resource.base_room_size_max)
+	#debug crap
+	if debug_mode:
+		debug_lines = Array()
+		debug_bricks = Array()
+	
+	room_spacing = Vector2i(generator_resource.base_room_size_max, generator_resource.base_room_size_max) + Vector2i(generator_resource.base_room_margin, generator_resource.base_room_margin)
 	random = RandomNumberGenerator.new()
 	random.seed = seed;
-	
-	#var val1 = random.randi_range(-10,0)
-	#var val2 = random.randi_range(-10,0)
-	#print(val1, val2)
-	#print("get_cell_atlas_coords ", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
-	#print("get_cell_source_id ", tm.get_cell_source_id(0, Vector2i(val1, val2)))
-	#print("get_cell_atlas_coords", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
-	#print("get_cell_atlas_coords", tm.get_cell_atlas_coords(0, Vector2i(val1, val2)))
 	
 	var numRooms :int= random.randi_range(generator_resource.base_number_of_rooms_min, generator_resource.base_number_of_rooms_max)
 	
@@ -436,64 +464,72 @@ func generate(seed : int):
 	# root node will always be at max number of rooms * max number of rooms in order to ensure all rooms can fit in any linear direction.
 	var root_node_loc := Vector2i(generator_resource.base_number_of_rooms_max, generator_resource.base_number_of_rooms_max);
 	
+	#+1 just in case.
+	world_extent = room_space_to_tile_map_space((root_node_loc*2)+Vector2i(1,1))
+	
+	real_world_extent_bot_right = world_extent
+	real_world_extent_top_left = world_extent
+	#fill world with wall
+	logical_world_fill(Vector2i(0,0),  world_extent)
+	
 	room_list.make_root_node(root_node_loc)
 	var cur_num_rooms = 1
+	var all_rooms = Array()
+	
+	#todo: add exit room (can just use last room generated as exit.
+	#It has the potential to be right beside the enterance, but whatever.
+	all_rooms.push_back(room_list.get_root())
 	while cur_num_rooms < numRooms:
-		room_list.get_root().add_to_random_unfilled()
+		all_rooms.push_back(room_list.get_root().recurse_make_new_room())
 		cur_num_rooms += 1;
 	
 	#todo: make exit and enterance nodes a certain dist from each other.
 	
 	#make basic room layouts/positions, set up walls and floors
-	for inner:Array[RoomStruct] in room_list.all:
-		for room:RoomStruct in inner:
-			if room == null:
-				continue
-			room.area = Vector2i(random.randi_range(generator_resource.base_room_size_min, generator_resource.base_room_size_max), random.randi_range(generator_resource.base_room_size_min, generator_resource.base_room_size_max))
-			#make wiggle room area, then move it randomly within that.
-			room.wiggled = room_spacing - room.area
-			room.wiggled = Vector2i(random.randi_range(0, room.wiggled.x), random.randi_range(0, room.wiggled.y))
-			loop_make_room_walls(room)
+	for room:RoomStruct in all_rooms:
+		loop_make_room_walls(room)
 	
 	#add additional passages between rooms
-	if generator_resource.chance_add_passageway_between_neighbour_rooms_per_room > random.randf_range(0,1):
-		for inner:Array[RoomStruct] in room_list.all:
-			for room:RoomStruct in inner:
-				if room == null:
-					continue
-				var dir_arr : Array[Vector2i];
-				dir_arr.push_back(room.north_loc())	
-				dir_arr.push_back(room.east_loc())
-				dir_arr.push_back(room.south_loc())
-				dir_arr.push_back(room.west_loc())
-				if generator_resource.also_add_passageway_between_diagonal_neighbour_rooms:
-					dir_arr.push_back(room.node_loc + move_north + move_east)
-					dir_arr.push_back(room.node_loc + move_east + move_south)
-					dir_arr.push_back(room.node_loc + move_south + move_west)
-					dir_arr.push_back(room.node_loc + move_west + move_north)
-				for loc_idx in range(0, dir_arr.size()-1):
-					var loc:Vector2i=dir_arr[loc_idx]
-					var found_room : RoomStruct = room_list.all[loc.x][loc.y]
-					if found_room != null:
-						#the direction detection here is kinda crap, but it will have to do for now..
-						var dirs_from:Vector2i= get_two_nearest_directions(room.node_loc, found_room.node_loc)
-						var dirs_to:Vector2i= get_two_nearest_directions(found_room.node_loc, room.node_loc)
-						if loc_idx > 3:#diagonal case, need to try 4 different combinations of directions to see if one works.
-							var link_dir_arr: Array = [dirs_from.x, dirs_to.x, dirs_from.y, dirs_to.y, dirs_from.x, dirs_to.y, dirs_from.y, dirs_to.x]
-							for idx in range(0, 3):
-								var idxp0 = 2*idx
-								var idxp1 = idxp0+1
-								if room_list.maybe_add_link_between(room, link_dir_arr[idxp0], found_room, link_dir_arr[idxp1]):
-									break
-						else:
-							#basic direct adjacent link
-							room_list.maybe_add_link_between(room, dirs_from.x, found_room, dirs_to.x)
-							
-				
+	
+	for room:RoomStruct in all_rooms:
+		handle_room_additional_connection(room)
+		
+	
 	var root_room:RoomStruct = room_list.get_root()
 	recurse_make_room_passages(root_room, root_room.node_loc)
 	
-	$Player.position = room_space_to_tile_map_space(root_node_loc)*128
+	$Player.position = tile_space_to_pixel_space((root_room.cell_top_left + root_room.cell_bot_right)/2)
+	
+	#gather real world limits to only use create_visible within that range.
+	#doesn't work right now, idk why, don't really care.
+	for room:RoomStruct in all_rooms:
+		real_world_extent_top_left = Vector2i(mini(room.cell_top_left.x, real_world_extent_top_left.x), mini(room.cell_top_left.y, real_world_extent_top_left.x))
+		real_world_extent_bot_right = Vector2i(maxi(room.cell_bot_right.x, real_world_extent_bot_right.x), maxi(room.cell_bot_right.y, real_world_extent_bot_right.x))
+	
+	#print(real_world_extent_top_left, real_world_extent_bot_right)
+	create_visible(Vector2i(0,0), world_extent)
+
+func setup_cell_visual(logical_cell:Vector2i):
+	var tm :TileMap = $LogicalTiles
+	var vm :TileMap = $VisibleTiles
+	
+	var compare = logical_wall
+	
+	var a:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x  ,logical_cell.y  ))==compare #top left
+	var b:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x+1,logical_cell.y  ))==compare #top right
+	var c:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x  ,logical_cell.y+1))==compare #bot left
+	var d:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x+1,logical_cell.y+1))==compare #bot right
+	
+	var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1) 
+	
+	vm.set_cell(layer_idx, logical_cell, 0, combine);
+	
+
+func create_visible(real_extent_top_left:Vector2i, real_extent_bot_right:Vector2i):
+	#todo: loop all grid cells and then
+	for x in range(real_extent_top_left.x, real_extent_bot_right.x):
+		for y in range(real_extent_top_left.y, real_extent_bot_right.y):
+			setup_cell_visual(Vector2i(x,y))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
