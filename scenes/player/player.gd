@@ -1,4 +1,5 @@
 @icon("res://graphics/Dakota Duck/Dakota Duck icon.png")
+## Class for the [Player] character.
 class_name Player
 extends CharacterBody2D
 
