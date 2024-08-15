@@ -1,3 +1,4 @@
+@icon("res://graphics/slime/Green Slime icon.png")
 class_name green_slime
 extends Enemy
 
