@@ -1,3 +1,4 @@
+@icon("res://graphics/dungeon/Dungeon icon.png")
 extends Node2D
 
 @export var generator_resource : LevelGenerationSettings
