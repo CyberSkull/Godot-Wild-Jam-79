@@ -1,7 +1,7 @@
 [gd_scene load_steps=28 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="Script" path="res://scenes/enemies/green_slime.gd" id="1_kmye7"]
-[ext_resource type="Texture2D" uid="uid://csw6ydae3bno4" path="res://graphics/slime/green slime spritesheet calciumtrice_0.png" id="2_53g7p"]
+[ext_resource type="Texture2D" path="res://graphics/slime/green slime spritesheet calciumtrice_0.png" id="2_53g7p"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hltrn"]
 radius = 2.0
@@ -365,13 +365,15 @@ states/Moving/position = Vector2(534.305, 42.485)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_13xtg"), "Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_sr83d"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_xxyrt")]
 graph_offset = Vector2(46.305, -51.515)
 
-[node name="GreenSlime" type="CharacterBody2D"]
+[node name="GreenSlime" type="CharacterBody2D" groups=["green slimes", "slimes"]]
 position = Vector2(16, 16)
 collision_layer = 4
 collision_mask = 213
 script = ExtResource("1_kmye7")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 10
+y_sort_enabled = true
 texture = ExtResource("2_53g7p")
 flip_h = true
 hframes = 10
