@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
 [ext_resource type="Texture2D" uid="uid://d0pxoh3ya7mas" path="res://graphics/Dakota Duck/Dakota Duck sheet_n.png" id="3_bsnhc"]
+[ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="4_oheqb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bn7fm"]
 radius = 2.0
@@ -15,8 +16,6 @@ normal_texture = ExtResource("3_bsnhc")
 [sub_resource type="CanvasTexture" id="CanvasTexture_bmmqn"]
 diffuse_texture = ExtResource("2_cgsfr")
 normal_texture = ExtResource("3_bsnhc")
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vxm5q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sosmw"]
 size = Vector2(6, 9)
@@ -73,7 +72,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -97,7 +96,7 @@ tracks/5/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [12]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -174,7 +173,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [12]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -234,7 +233,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -287,7 +286,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [12]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -359,7 +358,7 @@ tracks/8/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 
 [sub_resource type="Animation" id="Animation_nrpb8"]
@@ -400,7 +399,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [1]
+"values": [12]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -460,7 +459,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -513,7 +512,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [8]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -573,7 +572,7 @@ tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
@@ -637,7 +636,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -701,7 +700,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -765,7 +764,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -830,7 +829,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -895,7 +894,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -960,7 +959,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [0]
+"values": [11]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1025,7 +1024,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1090,7 +1089,7 @@ tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [-1]
+"values": [9]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1241,7 +1240,7 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 graph_offset = Vector2(49.1851, 27.0675)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
-position = Vector2(10, 8)
+position = Vector2(8, 8)
 collision_mask = 69
 script = ExtResource("1_km6pe")
 
@@ -1252,24 +1251,26 @@ rotation = -1.57079
 shape = SubResource("CapsuleShape2D_bn7fm")
 
 [node name="DuckSprite" type="Sprite2D" parent="."]
+z_index = 10
+y_sort_enabled = true
 texture = SubResource("CanvasTexture_lrjq2")
 hframes = 12
 vframes = 4
 
 [node name="LanternSprite" type="Sprite2D" parent="."]
+z_index = 11
+y_sort_enabled = true
 position = Vector2(4, 3)
 texture = SubResource("CanvasTexture_bmmqn")
 region_enabled = true
 region_rect = Rect2(21, 54, 6, 6)
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
-texture = SubResource("PlaceholderTexture2D_vxm5q")
+texture = ExtResource("4_oheqb")
 texture_scale = 50.0
 height = 25.0
 
 [node name="HurtBox" type="Area2D" parent="."]
-visible = false
 collision_mask = 205
 
 [node name="HurtCollider" type="CollisionShape2D" parent="HurtBox"]
@@ -1278,6 +1279,8 @@ shape = SubResource("RectangleShape2D_sosmw")
 debug_color = Color(0.88613, 0.208916, 0.641106, 0.42)
 
 [node name="SwordPivot" type="Marker2D" parent="."]
+z_index = 12
+y_sort_enabled = true
 position = Vector2(-4, 3)
 
 [node name="SwordSprite" type="Sprite2D" parent="SwordPivot"]
@@ -1310,3 +1313,5 @@ parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12
 parameters/Idle/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
+
+[node name="Camera2D" type="Camera2D" parent="."]
