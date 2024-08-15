@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bx3d0lgmpfh8b"]
+
+[ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_no42n"]
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 4
+script = ExtResource("1_no42n")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
