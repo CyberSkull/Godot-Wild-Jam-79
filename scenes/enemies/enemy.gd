@@ -1,6 +1,9 @@
+## Base class for the enemy. Handles navigation, health, death.
 class_name Enemy
 extends CharacterBody2D
 
+## Emitted when enemy slain, gives name and points.
+signal slain(enemy_name: StringName, points: int)
 
 ## [Enemy] maximum health.
 @export var max_health: int
