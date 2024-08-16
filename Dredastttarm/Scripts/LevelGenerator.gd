@@ -1,5 +1,6 @@
 @icon("res://graphics/dungeon/Dungeon icon.png")
 extends Node2D
+class_name LevelGenerator
 
 @export var generator_resource : LevelGenerationSettings
 
@@ -23,10 +24,18 @@ var world_extent : Vector2i
 var real_world_extent_top_left:Vector2i
 var real_world_extent_bot_right:Vector2i
 
+var current_level:int=0
+
+var total_enemy_spawn_chance:int
+var enemy_spawn_chances_for_current_level:Dictionary
+
 var debug_mode:bool=0
 var debug_bricks
 var debug_lines
 var debug_loc
+
+var player_instance:Player
+
 
 @export var logical_wall := Vector2i(0,0)
 @export var logical_floor := Vector2i(1,0)
@@ -164,7 +173,6 @@ class RoomList:
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	generate(randi())
 	pass # Replace with function body.
 
 func gen_room_box(min : int, max : int)->Rect2i:
@@ -271,7 +279,7 @@ func passage_cutter(start:Vector2i, finish:Vector2i, passage_width:int, is_start
 	var points : Array = Array()
 	points.push_back(start)
 	
-	print("try make passage ", start, " to ", finish)
+	#print("try make passage ", start, " to ", finish)
 	
 	var debugsz = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
 	if debug_mode:
@@ -344,7 +352,7 @@ func generate_room_passge(room_a : RoomStruct, room_b : RoomStruct)->bool:
 		return false;
 	room_list.add_completed_passage(room_a.node_loc, room_b.node_loc)
 	
-	print("passage:", room_a.node_loc, " to ", room_b.node_loc)
+	#print("passage:", room_a.node_loc, " to ", room_b.node_loc)
 	
 	#find closest wall between rooms, then delete walls and add passageway walls
 	var a_to_b_direction:int=-1
@@ -440,13 +448,84 @@ func handle_room_additional_connection(room:RoomStruct):
 			unconnected_room.direction_arr[(idx+2)%4] = room
 			room.direction_arr[idx] = unconnected_room
 
-func generate(seed : int):
+#takes in the room and the list of already used tiles in the room, and outputs a new tile for the enemy to be spawned in.
+func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
+	var tm :TileMap = $LogicalTiles
+	var locations:Array[Vector2i] = []
+	#cannot remember if should be +1 or not.
+	for x in range(room.cell_top_left.x, room.cell_bot_right.x+1):
+		for y in range(room.cell_top_left.y, room.cell_bot_right.y+1):
+			var test_loc = Vector2i(x,y)
+			if ignore_list.find(test_loc) != -1:
+				continue
+			
+			if (tm.get_cell_atlas_coords(0, test_loc)==logical_floor):
+				locations.push_back(test_loc)
+	
+	if locations.size() > 0:
+		return [true, rand_arr_itm_det(locations)]
+	return [false]
+
+func handle_room_enemy_spawns(room:RoomStruct):
+	var tm :TileMap = $LogicalTiles
+	
+	if generator_resource.chance_empty_room > random.randf_range(0,1):
+		return
+	var num_enemies = random.randi_range(generator_resource.number_enemies_min, generator_resource.number_enemies_max)
+	print("num enemies: ",num_enemies)
+	var ignore_list :Array[Vector2i]= []
+	
+	for i in range(num_enemies+1):
+		var enemy_type :EnemySetting= get_random_enemy_type()
+		var space = find_floor_spaces(room, ignore_list)
+		if space[0]:
+			var new_enemy:Node2D = enemy_type.enemy_type.instantiate()
+			print("made enemy: ",enemy_type.enemy_name)
+			add_child(new_enemy)
+			var location :Vector2i = tile_space_to_pixel_space(space[1])
+			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,0.0)#not sure why we need this offset?
+	
+	pass
+
+func get_random_enemy_type()->EnemySetting:
+	var value = random.randi_range(0, total_enemy_spawn_chance-1)
+	var sorted_keys = enemy_spawn_chances_for_current_level.keys()
+	sorted_keys.sort()#just in case the keys are unordered as they often will be in maps/dictionaries.
+	for chance in sorted_keys:
+		if (value < chance):
+			return enemy_spawn_chances_for_current_level[chance]
+	
+	print("error, random enemy type was bad!")
+	return null;
+
+func compute_spawn_chances():
+	enemy_spawn_chances_for_current_level = Dictionary()
+	total_enemy_spawn_chance = 0;
+	for enemy_setting in generator_resource.enemy_types:
+		var enemy_chance = enemy_setting.spawn_chance_base + (enemy_setting.spawn_chance_per_level*current_level)
+		#ensure non-negative chance
+		if enemy_chance > 0:
+			total_enemy_spawn_chance+=enemy_chance
+			if enemy_spawn_chances_for_current_level.find_key(total_enemy_spawn_chance):
+				print("how the fucking shit? That makes no sense! Sanity broken!!!!")
+			enemy_spawn_chances_for_current_level[total_enemy_spawn_chance] = enemy_setting
+
+func end_level():
+	var level = get_parent() as Level
+	level.create_level(current_level+1)
+
+
+#bind the function for exiting 
+func generate(in_random: RandomNumberGenerator, level : int):
 	if (generator_resource == null):
 		return;
+	
 	var tm :TileMap = $LogicalTiles
 	var vm :TileMap = $VisibleTiles
 	var fm :TileMap = $FeatureTiles
 	#tm.tile_set = generator_resource.tile_set
+	
+	random = in_random
 	
 	#debug crap
 	if debug_mode:
@@ -454,8 +533,10 @@ func generate(seed : int):
 		debug_bricks = Array()
 	
 	room_spacing = Vector2i(generator_resource.base_room_size_max, generator_resource.base_room_size_max) + Vector2i(generator_resource.base_room_margin, generator_resource.base_room_margin)
-	random = RandomNumberGenerator.new()
-	random.seed = seed;
+
+	
+	#set level difficulty.
+	current_level = level;
 	
 	var numRooms :int= random.randi_range(generator_resource.base_number_of_rooms_min, generator_resource.base_number_of_rooms_max)
 	
@@ -491,15 +572,33 @@ func generate(seed : int):
 		loop_make_room_walls(room)
 	
 	#add additional passages between rooms
-	
 	for room:RoomStruct in all_rooms:
 		handle_room_additional_connection(room)
-		
+	
+	#precompute enemy spawn chances
+	compute_spawn_chances()
+	#spawn enemies
+	for room:RoomStruct in all_rooms:
+		handle_room_enemy_spawns(room)
+	print("finished spawning enemies")
 	
 	var root_room:RoomStruct = room_list.get_root()
 	recurse_make_room_passages(root_room, root_room.node_loc)
 	
-	$Player.position = tile_space_to_pixel_space((root_room.cell_top_left + root_room.cell_bot_right)/2)
+	player_instance.position = tile_space_to_pixel_space((root_room.cell_top_left + root_room.cell_bot_right)/2)
+	var exit_room :RoomStruct = all_rooms[all_rooms.size()-1]
+	
+	exit_room.is_exit = true
+
+	var exit_loc = find_floor_spaces(exit_room, [])
+	if exit_loc[0] == false:
+		print("CRITICAL ERROR: NO EXIT!")
+		return
+	
+	var exit_obj = generator_resource.exit_object.instantiate()
+	
+	$VisibleTiles.add_child(exit_obj)
+	exit_obj.position = Vector2(tile_space_to_pixel_space(exit_loc[1]))# + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
 	
 	#gather real world limits to only use create_visible within that range.
 	#doesn't work right now, idk why, don't really care.

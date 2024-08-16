@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://clfetl802uwvh"]
+
+[ext_resource type="PackedScene" uid="uid://dx1hdsd4qikgt" path="res://Dredastttarm/Test_Enemies/test_blue_slime.tscn" id="1_jtumu"]
+[ext_resource type="Script" path="res://Dredastttarm/Scripts/EnemySetting.gd" id="2_pq6ta"]
+
+[resource]
+script = ExtResource("2_pq6ta")
+enemy_name = "Blue Slime"
+enemy_type = ExtResource("1_jtumu")
+spawn_chance_per_level = -10
+spawn_chance_base = 40
+developer_notes = "Disappears after 4 levels"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://cxjifu1bottbf"]
+
+[ext_resource type="PackedScene" uid="uid://bp7xqhify7xkj" path="res://Dredastttarm/Test_Enemies/test_red_slime.tscn" id="1_hegko"]
+[ext_resource type="Script" path="res://Dredastttarm/Scripts/EnemySetting.gd" id="2_030cl"]
+
+[resource]
+script = ExtResource("2_030cl")
+enemy_name = "Red Slime"
+enemy_type = ExtResource("1_hegko")
+spawn_chance_per_level = 10
+spawn_chance_base = 5
+developer_notes = "Should be the primary enemy by mid to late game
+"

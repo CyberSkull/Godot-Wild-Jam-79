@@ -20,6 +20,14 @@ class_name LevelGenerationSettings
 @export var number_items_per_room_min:int= 2
 @export var number_items_per_room_max:int= 5
 
+@export_group("enemies")
+
+@export var enemy_types:Array[EnemySetting]
+
+@export var number_enemies_min:int= 5
+@export var number_enemies_max:int= 15
+@export var chance_empty_room:float= 0.2#chance of no enemies spawning in a room at all
+
 @export_group("Tile Set")
 @export var tile_set : TileSet;
-
+@export var exit_object : PackedScene

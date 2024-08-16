@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://d2g0kqj7asb1k"]
+
+[ext_resource type="PackedScene" uid="uid://bmqt5e1opiu37" path="res://Dredastttarm/Test_Enemies/test_yellow_slime.tscn" id="1_lbwu5"]
+[ext_resource type="Script" path="res://Dredastttarm/Scripts/EnemySetting.gd" id="2_quroj"]
+
+[resource]
+script = ExtResource("2_quroj")
+enemy_name = "Yellow Slime"
+enemy_type = ExtResource("1_lbwu5")
+spawn_chance_per_level = 15
+spawn_chance_base = -60
+developer_notes = "shows up first after 5 levels"

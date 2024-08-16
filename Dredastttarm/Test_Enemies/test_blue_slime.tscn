@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx1hdsd4qikgt"]
+
+[ext_resource type="Texture2D" uid="uid://dcqfvo2pxhi08" path="res://graphics/slime/blue slime spritesheet calciumtrice_0.png" id="1_vxw4j"]
+
+[node name="Blue" type="Sprite2D"]
+texture = ExtResource("1_vxw4j")
+hframes = 10
+vframes = 5

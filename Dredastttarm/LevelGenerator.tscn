@@ -1,14 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8gn7utdydf5w"]
+[gd_scene load_steps=5 format=3 uid="uid://rjx6cymyrjs0"]
 
 [ext_resource type="Script" path="res://Dredastttarm/Scripts/LevelGenerator.gd" id="1_phfny"]
-[ext_resource type="Resource" path="res://Dredastttarm/test_generator_settings.tres" id="2_00uhw"]
-[ext_resource type="TileSet" uid="uid://rajpogxmq4ud" path="res://Dredastttarm/BaseTileSet.tres" id="3_fm16w"]
-[ext_resource type="PackedScene" uid="uid://b8lqvc0s4q0lx" path="res://scenes/player/player.tscn" id="3_vkuwt"]
-[ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://Dredastttarm/LogicalTiles.tres" id="4_omxuj"]
+[ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://Dredastttarm/test_generator_settings.tres" id="2_ks8tn"]
+[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://Dredastttarm/BaseTileSet.tres" id="3_fm16w"]
+[ext_resource type="TileSet" uid="uid://btan87e24pq7j" path="res://Dredastttarm/LogicalTiles.tres" id="4_omxuj"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_phfny")
-generator_resource = ExtResource("2_00uhw")
+generator_resource = ExtResource("2_ks8tn")
 
 [node name="LogicalTiles" type="TileMap" parent="."]
 visible = false
@@ -28,6 +27,3 @@ format = 2
 
 [node name="FeatureTiles" type="TileMap" parent="."]
 format = 2
-
-[node name="Player" parent="." instance=ExtResource("3_vkuwt")]
-position = Vector2(128, 128)
