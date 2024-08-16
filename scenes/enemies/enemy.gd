@@ -17,15 +17,39 @@ signal slain(enemy_name: StringName, points: int)
 @export var speed: float
 
 ## [Node] the [Enemy] is targeting.
-@export var target: Node
+@export var target: Node2D = null
 
+## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
+@onready var navigator: NavigationAgent2D = %Navigator
 
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	call_deferred(&"_setup_navigation_seeker")
+
+
 
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	pass
+	# Update to the target current position.
+	if target:
+		navigator.target_position = target.global_position
+	# Currently do nothing if destination is reached.
+	if navigator.is_navigation_finished():
+		print_debug("Navigation done.")
+		return
+	
+	# Get vector to next path point and set to character velocity * speed.
+	var next_path_position: Vector2 = navigator.get_next_path_position()
+	velocity = global_position.direction_to(next_path_position) * speed
+
+	move_and_slide()
+
+
+## Waits one physics frame, then updates the [NavigationAgent2D.target_position] to [member target]'s [Node2D.global_position].
+func _setup_navigation_seeker() -> void:
+	# Wait 1 frame
+	await get_tree().physics_frame
+	if target:
+		navigator.target_position = target.global_position

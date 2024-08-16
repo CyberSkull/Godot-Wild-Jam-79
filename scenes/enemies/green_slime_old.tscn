@@ -1,10 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://d4dkf7xo1e8o0"]
+[gd_scene load_steps=28 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="Script" path="res://scenes/enemies/green_slime.gd" id="1_kmye7"]
-[ext_resource type="PackedScene" uid="uid://bx3d0lgmpfh8b" path="res://scenes/enemies/enemy.tscn" id="1_ourln"]
 [ext_resource type="Texture2D" uid="uid://csw6ydae3bno4" path="res://graphics/slime/green slime spritesheet calciumtrice_0.png" id="2_53g7p"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ojfbk"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hltrn"]
 radius = 2.0
 height = 12.0
 
@@ -358,7 +357,7 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xxyrt"]
 
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_f8qr1"]
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_myxmk"]
 states/Idle/node = SubResource("AnimationNodeBlendTree_wy7un")
 states/Idle/position = Vector2(389, 100)
 states/Moving/node = SubResource("AnimationNodeBlendTree_d4fkr")
@@ -366,13 +365,16 @@ states/Moving/position = Vector2(534.305, 42.485)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_13xtg"), "Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_sr83d"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_xxyrt")]
 graph_offset = Vector2(46.305, -51.515)
 
-[node name="GreenSlime" groups=["green slimes", "slimes"] instance=ExtResource("1_ourln")]
+[node name="GreenSlime" type="CharacterBody2D" groups=["green slimes", "slimes"]]
+position = Vector2(16, 16)
+collision_layer = 4
+collision_mask = 213
 script = ExtResource("1_kmye7")
 max_health = 5
 health = 5
 speed = 20.0
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="1"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 10
 y_sort_enabled = true
 texture = ExtResource("2_53g7p")
@@ -380,18 +382,18 @@ flip_h = true
 hframes = 10
 vframes = 5
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 14)
 rotation = -1.57079
-shape = SubResource("CapsuleShape2D_ojfbk")
+shape = SubResource("CapsuleShape2D_hltrn")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_mjpmf")
 }
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="4"]
-tree_root = SubResource("AnimationNodeStateMachine_f8qr1")
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_myxmk")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Idle/BlendSpace1D/blend_position = 2.08165e-12
 parameters/Moving/BlendSpace1D/blend_position = 2.08165e-12

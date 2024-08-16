@@ -3,8 +3,11 @@
 [ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_no42n"]
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
+z_index = 10
 collision_layer = 4
 script = ExtResource("1_no42n")
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+[node name="Navigator" type="NavigationAgent2D" parent="."]
+unique_name_in_owner = true
 path_postprocessing = 1
+debug_enabled = true
