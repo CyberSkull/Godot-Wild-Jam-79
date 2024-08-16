@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Dredastttarm/Scripts/LevelGenerator.gd" id="1_phfny"]
 [ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://Dredastttarm/test_generator_settings.tres" id="2_ks8tn"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://Dredastttarm/BaseTileSet.tres" id="3_fm16w"]
-[ext_resource type="TileSet" uid="uid://btan87e24pq7j" path="res://Dredastttarm/LogicalTiles.tres" id="4_omxuj"]
+[ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://Dredastttarm/LogicalTiles.tres" id="4_omxuj"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_phfny")

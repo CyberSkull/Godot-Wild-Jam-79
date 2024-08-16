@@ -1,6 +1,9 @@
-[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://clpwruqovs8tt"]
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://clpwruqovs8tt"]
 
 [ext_resource type="Texture2D" uid="uid://7wj0omhgbeho" path="res://Dredastttarm/testgrid.png" id="1_ocvhf"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qh3cf"]
+polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_g8kwk"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
@@ -13,6 +16,7 @@ agent_radius = 0.0
 texture = ExtResource("1_ocvhf")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_qh3cf")
 0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
 0:0/0/physics_layer_0/angular_velocity = 0.0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
@@ -65,6 +69,7 @@ texture_region_size = Vector2i(32, 32)
 
 [resource]
 tile_size = Vector2i(32, 32)
+occlusion_layer_0/light_mask = 1
 physics_layer_0/collision_layer = 64
 physics_layer_0/collision_mask = 63
 navigation_layer_0/layers = 1
