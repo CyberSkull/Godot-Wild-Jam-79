@@ -18,7 +18,7 @@ diffuse_texture = ExtResource("2_cgsfr")
 normal_texture = ExtResource("3_bsnhc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sosmw"]
-size = Vector2(6, 9)
+size = Vector2(8, 11)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_n5wsu"]
 diffuse_texture = ExtResource("2_cgsfr")
@@ -1237,7 +1237,7 @@ states/Idle/position = Vector2(338.31, 99.9459)
 states/Walk/node = SubResource("AnimationNodeBlendTree_s2t2l")
 states/Walk/position = Vector2(337.935, 227.068)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bqoto"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_xu8p2"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_bpl5n"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_3wiv5"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_yr50h"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ku25x"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_5pj45")]
-graph_offset = Vector2(49.1851, 27.0675)
+graph_offset = Vector2(63.1851, 59.0675)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
 position = Vector2(8, 8)
@@ -1245,7 +1245,6 @@ collision_mask = 325
 script = ExtResource("1_km6pe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, 4)
 rotation = -1.57079
 shape = SubResource("CapsuleShape2D_bn7fm")
@@ -1272,7 +1271,7 @@ texture_scale = 50.0
 height = 25.0
 
 [node name="HurtBox" type="Area2D" parent="."]
-collision_mask = 205
+collision_mask = 140
 
 [node name="HurtCollider" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(0, 0.5)
@@ -1316,3 +1315,5 @@ parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

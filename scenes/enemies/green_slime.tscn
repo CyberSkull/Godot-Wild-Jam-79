@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d4dkf7xo1e8o0"]
+[gd_scene load_steps=38 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="Script" path="res://scenes/enemies/green_slime.gd" id="1_kmye7"]
 [ext_resource type="PackedScene" uid="uid://bx3d0lgmpfh8b" path="res://scenes/enemies/enemy.tscn" id="1_ourln"]
@@ -314,6 +314,25 @@ _data = {
 "walk_right": SubResource("Animation_5bc0s")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c7g3s"]
+animation = &"spit_attack_left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_wcnau"]
+animation = &"spit_attack_right"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_gkhmp"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_c7g3s")
+blend_point_0/pos = -1.0
+blend_point_1/node = SubResource("AnimationNodeAnimation_wcnau")
+blend_point_1/pos = 1.0
+blend_mode = 1
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_05lxc"]
+graph_offset = Vector2(-74, 75)
+nodes/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_gkhmp")
+nodes/BlendSpace1D/position = Vector2(50, 140)
+node_connections = [&"output", 0, &"BlendSpace1D"]
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ukwyx"]
 animation = &"idle_left"
 
@@ -346,7 +365,7 @@ blend_point_1/pos = 1.0
 blend_mode = 1
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_d4fkr"]
-graph_offset = Vector2(-124.8, 24.96)
+graph_offset = Vector2(-52.7273, -6.86364)
 nodes/BlendSpace1D/node = SubResource("AnimationNodeBlendSpace1D_d3fic")
 nodes/BlendSpace1D/position = Vector2(57.7, 124.96)
 node_connections = [&"output", 0, &"BlendSpace1D"]
@@ -358,19 +377,36 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xxyrt"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2xamd"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bgy37"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2s2ng"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_34uhm"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_f8qr1"]
+states/Attack/node = SubResource("AnimationNodeBlendTree_05lxc")
+states/Attack/position = Vector2(560.805, 169.985)
 states/Idle/node = SubResource("AnimationNodeBlendTree_wy7un")
 states/Idle/position = Vector2(389, 100)
 states/Moving/node = SubResource("AnimationNodeBlendTree_d4fkr")
-states/Moving/position = Vector2(534.305, 42.485)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_13xtg"), "Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_sr83d"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_xxyrt")]
-graph_offset = Vector2(46.305, -51.515)
+states/Moving/position = Vector2(558.805, 12.485)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_13xtg"), "Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_sr83d"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_xxyrt"), "Attack", "Moving", SubResource("AnimationNodeStateMachineTransition_2xamd"), "Moving", "Attack", SubResource("AnimationNodeStateMachineTransition_bgy37"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_2s2ng"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_34uhm")]
+graph_offset = Vector2(40.305, -31.515)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uphgv"]
+radius = 5.0
+height = 14.0
 
 [node name="GreenSlime" groups=["green slimes", "slimes"] instance=ExtResource("1_ourln")]
 script = ExtResource("1_kmye7")
 max_health = 5
 health = 5
-speed = 20.0
+attack = 1
+speed = 40.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="1"]
 z_index = 10
@@ -393,5 +429,15 @@ libraries = {
 [node name="AnimationTree" type="AnimationTree" parent="." index="4"]
 tree_root = SubResource("AnimationNodeStateMachine_f8qr1")
 anim_player = NodePath("../AnimationPlayer")
+parameters/Attack/BlendSpace1D/blend_position = 2.08165e-12
 parameters/Idle/BlendSpace1D/blend_position = 2.08165e-12
 parameters/Moving/BlendSpace1D/blend_position = 2.08165e-12
+
+[node name="AttackBox" type="Area2D" parent="." index="5"]
+collision_layer = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackBox" index="0"]
+position = Vector2(4.54747e-13, 11)
+rotation = -1.57079
+shape = SubResource("CapsuleShape2D_uphgv")
+debug_color = Color(0.920574, 0.136371, 0.606946, 0.42)

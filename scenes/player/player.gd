@@ -12,12 +12,17 @@ signal died()
 
 
 ## Maximum [Player] health.
-@export var max_health: int = 100
+@export var max_health: int = 100:
+	set(value):
+		max_health = value
+		health_changed.emit(health, max_health)
 
 ## Current [Player] health.
 @export var health: int = 100:
 	set(value):
 		health = clampi(value, 0, max_health)
+		print_debug("health: ", health)
+		health_changed.emit(health, max_health)
 
 ## Raw attack power.
 @export var attack_damage: int
@@ -27,6 +32,9 @@ signal died()
 
 ## Movement speed in pixels per second.
 @export var speed: float = 64
+
+## Velocity the [Player] gets knocked back in pixels/second.
+@export var knockback: float = 256
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
@@ -72,6 +80,7 @@ func _ready() -> void:
 ## Handles the animation cycle.
 func _physics_process(delta: float) -> void:
 	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
+	velocity = direction * speed
 	
 	# Skip actions if player is attacking
 	if is_attacking:
@@ -94,7 +103,6 @@ func _physics_process(delta: float) -> void:
 		
 	# Move player and use moving animation.
 	elif not direction.is_zero_approx():
-		global_position += direction * speed * delta
 		last_direction = direction
 		playback_state.travel(&"Walk")
 		animation_tree["parameters/Walk/BlendSpace2D/blend_position"] = direction
@@ -104,5 +112,26 @@ func _physics_process(delta: float) -> void:
 	#is_attacking = Input.is_action_just_pressed(&"attack")
 	#is_casting = Input.is_action_just_pressed(&"cast")
 	#is_using_item = Input.is_action_just_pressed(&"item")
+
+	print_debug("velocity: ", velocity)
+	move_and_slide()
+	#move_and_collide(velocity)
+	print_debug("velocity: ", velocity)
+
+
+func damage(enemy: Enemy) -> void:
+	print_debug("enemy: ", enemy)
+	print_debug("enemy attack: ", enemy.attack)
 	
-	move_and_collide(velocity)
+	
+	
+
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	print_debug("area: ", area, ", area name: ", area.name)
+	print_debug("area parent: ", area.get_parent())
+	print_debug("is area parent enemy? ", area.get_parent() is Enemy)
+	if area.get_parent() is Enemy:
+		var enemy: Enemy = area.get_parent()
+		#damage(area.get_parent())
+		velocity = (enemy.velocity - velocity).normalized() * knockback
+		health -= enemy.attack
