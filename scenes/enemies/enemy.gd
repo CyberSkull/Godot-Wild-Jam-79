@@ -13,6 +13,9 @@ signal slain(enemy_name: StringName, points: int)
 	set(value):
 		health = clampi(value, 0, max_health)
 
+## Attack damage.
+@export var attack: int
+
 ## Movement speed in pixel/second.
 @export var speed: float
 
@@ -37,7 +40,6 @@ func _physics_process(delta: float) -> void:
 		navigator.target_position = target.global_position
 	# Currently do nothing if destination is reached.
 	if navigator.is_navigation_finished():
-		print_debug("Navigation done.")
 		return
 	
 	# Get vector to next path point and set to character velocity * speed.

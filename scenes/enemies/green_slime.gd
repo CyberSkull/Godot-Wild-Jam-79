@@ -18,11 +18,16 @@ func _ready() -> void:
 	# Start animation state machine.
 	playback_state.start(&"Start")
 	
-	print_debug("navigator: ", navigator)
-	pass
+
 
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	super(delta)
-	pass
+	if velocity.is_equal_approx(Vector2.ZERO):
+		playback_state.travel(&"Idle")
+	else:
+		# Moving animation and pass horizontal movement to blend.
+		playback_state.travel(&"Moving")
+		animation_tree["parameters/Moving/BlendSpace1D/blend_position"] = velocity.x
+	
