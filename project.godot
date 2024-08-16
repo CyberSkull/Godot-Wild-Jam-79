@@ -100,6 +100,7 @@ item={
 2d_physics/layer_6="friendly_projectile"
 2d_physics/layer_7="world"
 2d_physics/layer_8="trap"
+2d_physics/layer_9="stairs"
 
 [rendering]
 
