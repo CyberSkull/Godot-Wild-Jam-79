@@ -274,15 +274,24 @@ func loop_make_room_walls(room : RoomStruct):
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(room.area.x/2, 1), room.cell_bot_right+Vector2i(-room.area.x/2, -1))
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1, room.area.y/2), room.cell_bot_right+Vector2i(-1, -room.area.y/2))
 			return
-		if !bool(room.area.x%2) && !bool(room.area.y%2):
-			if generator_resource.chance_of_weird_room_no6 > random.randf_range(0,1):
-				#room with grid pillars
-				room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
-				
+		if generator_resource.chance_of_weird_room_no6 > random.randf_range(0,1):
+			#room with grid pillars
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			var odd_x:bool= !bool(room.area.x%2)
+			var odd_y:bool= !bool(room.area.y%2)
+			if odd_x  && odd_y:
 				for x in range(room.cell_top_left.x+1, room.cell_bot_right.x, 2):
 					for y in range(room.cell_top_left.y+1, room.cell_bot_right.y, 2):
 						room_cutter(logical_wall, Vector2i(x,y), Vector2i(x,y))
-					
+				return
+			if odd_x:
+				for x in range(room.cell_top_left.x+1, room.cell_bot_right.x, 2):
+					room_cutter(logical_wall, Vector2i(x,room.cell_top_left.y+1), Vector2i(x,room.cell_bot_right.y-1))
+				return
+			if odd_y:
+				for y in range(room.cell_top_left.y+1, room.cell_bot_right.y, 2):
+					room_cutter(logical_wall, Vector2i(room.cell_top_left.x+1, y), Vector2i(room.cell_bot_right.x-1, y))
+				return
 			return
 	#normal room
 	room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)

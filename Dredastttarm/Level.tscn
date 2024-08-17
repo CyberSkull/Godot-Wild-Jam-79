@@ -1,12 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://elmyj5t8pim8"]
+[gd_scene load_steps=5 format=3 uid="uid://elmyj5t8pim8"]
 
 [ext_resource type="Script" path="res://Dredastttarm/Level.gd" id="1_4sepv"]
 [ext_resource type="PackedScene" uid="uid://b8lqvc0s4q0lx" path="res://scenes/player/player.tscn" id="2_5tso3"]
 [ext_resource type="PackedScene" uid="uid://rjx6cymyrjs0" path="res://Dredastttarm/LevelGenerator.tscn" id="2_j543r"]
+[ext_resource type="PackedScene" uid="uid://carljqywqdma2" path="res://scenes/user interface/in game/InGameUI.tscn" id="4_u0on4"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_4sepv")
 generator_scene = ExtResource("2_j543r")
+
+[node name="InGameUi" parent="." instance=ExtResource("4_u0on4")]
 
 [node name="Player" parent="." instance=ExtResource("2_5tso3")]
 position = Vector2(128, 128)
