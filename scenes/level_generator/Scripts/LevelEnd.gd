@@ -1,7 +1,11 @@
 extends Area2D
 
+var random : RandomNumberGenerator
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	
+	if random.randi_range(0,1):
+		$LevelEnd.texture = load("res://scenes/level_generator/level_end/Ladder2.png")
 	monitoring = true
 
 func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:

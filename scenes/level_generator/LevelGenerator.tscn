@@ -1,18 +1,18 @@
 [gd_scene load_steps=5 format=3 uid="uid://rjx6cymyrjs0"]
 
-[ext_resource type="Script" path="res://Dredastttarm/Scripts/LevelGenerator.gd" id="1_phfny"]
-[ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://Dredastttarm/test_generator_settings.tres" id="2_ks8tn"]
-[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://Dredastttarm/BaseTileSet.tres" id="3_fm16w"]
-[ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://Dredastttarm/LogicalTiles.tres" id="4_omxuj"]
+[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerator.gd" id="1_fsh6h"]
+[ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://scenes/level_generator/test_generator_settings.tres" id="2_nucgu"]
+[ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://scenes/level_generator/LogicalTiles.tres" id="3_1xcwd"]
+[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://scenes/level_generator/BaseTileSet.tres" id="4_lakr2"]
 
 [node name="Node2D" type="Node2D"]
-script = ExtResource("1_phfny")
-generator_resource = ExtResource("2_ks8tn")
+script = ExtResource("1_fsh6h")
+generator_resource = ExtResource("2_nucgu")
 
 [node name="LogicalTiles" type="TileMap" parent="."]
 visible = false
 show_behind_parent = true
-tile_set = ExtResource("4_omxuj")
+tile_set = ExtResource("3_1xcwd")
 format = 2
 layer_0/tile_data = PackedInt32Array(131081, 196608, 4, 131080, 196608, 4, 65544, 196608, 4, 65543, 196608, 4, 6, 196608, 4, 5, 196608, 4, -65531, 196608, 4, -65532, 196608, 4, -65533, 196608, 4, -131070, 196608, 4, -131071, 196608, 4, -196608, 196608, 4, -131073, 196608, 4, -196610, 196608, 4, -196611, 196608, 4, -196612, 196608, 4, -196613, 196608, 4, -262150, 196608, 4, -262151, 196608, 4, -262152, 196608, 4, -262153, 196608, 4, -262154, 196608, 4, -262155, 196608, 4, -262156, 196608, 4, -262157, 196608, 4, -196622, 196608, 4, -196623, 196608, 4, -131087, 196608, 4, -65551, 196608, 4, -15, 196608, 4, 65521, 196608, 4, 131057, 196608, 4, 196594, 196608, 4, 262131, 196608, 4, 262132, 196608, 4, 327668, 196608, 4, 327669, 196608, 4, 327670, 196608, 4, 393207, 196608, 4, 393208, 196608, 4, 458744, 196608, 4, 458745, 196608, 4, 458746, 196608, 4, 458747, 196608, 4, 524283, 196608, 4, 524284, 196608, 4, 524285, 196608, 4, 524286, 196608, 4, 524287, 196608, 4, 458752, 196608, 4)
 
@@ -22,7 +22,7 @@ editor_description = "DISPLAY ONLY!
 Collision and such is handled by the LogicalTiles."
 show_behind_parent = true
 position = Vector2(16, 16)
-tile_set = ExtResource("3_fm16w")
+tile_set = ExtResource("4_lakr2")
 format = 2
 
 [node name="FeatureTiles" type="TileMap" parent="."]

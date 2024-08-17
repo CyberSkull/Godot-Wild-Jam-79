@@ -1,17 +1,17 @@
 [gd_scene load_steps=4 format=3 uid="uid://desdh37127vce"]
 
-[ext_resource type="Texture2D" uid="uid://bcftkuwllc6ta" path="res://Dredastttarm/Test_Objects/Ladder.png" id="1_rgrh3"]
-[ext_resource type="Script" path="res://Dredastttarm/Scripts/LevelEnd.gd" id="2_r6usq"]
+[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelEnd.gd" id="1_nmie2"]
+[ext_resource type="Texture2D" uid="uid://bcftkuwllc6ta" path="res://scenes/level_generator/level_end/Ladder.png" id="2_ftswm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m630m"]
 
 [node name="Area2D" type="Area2D"]
-script = ExtResource("2_r6usq")
+script = ExtResource("1_nmie2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_m630m")
 
 [node name="LevelEnd" type="Sprite2D" parent="."]
-texture = ExtResource("1_rgrh3")
+texture = ExtResource("2_ftswm")
 
 [connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]

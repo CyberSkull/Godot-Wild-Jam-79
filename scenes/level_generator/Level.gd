@@ -6,6 +6,7 @@ var generator:LevelGenerator
 
 var random:RandomNumberGenerator
 
+var current_score:int;
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,7 +19,6 @@ func _ready() -> void:
 
 func create_level(level_number : int):
 	#todo: show loading screen and then hide it later.
-	$InGameUi.show_loading_screen(false)
 	if generator != null:
 		generator.queue_free()
 		generator = null;
@@ -26,5 +26,6 @@ func create_level(level_number : int):
 	add_child(generator)
 	generator.player_instance = $Player
 	generator.generate(random, level_number)#later could make 
+	$InGameUi.show_loading_screen(false)
 
 

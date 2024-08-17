@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=5 format=3 uid="uid://cuessunmjga6x"]
+
+[ext_resource type="Resource" uid="uid://cad0yxtixdrah" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_green_slime.tres" id="1_koa8j"]
+[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
+[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://scenes/level_generator/BaseTileSet.tres" id="3_60sdi"]
+[ext_resource type="PackedScene" uid="uid://desdh37127vce" path="res://scenes/level_generator/level_end/LevelEnd.tscn" id="5_mfvfb"]
+
+[resource]
+script = ExtResource("1_w0ubp")
+branch_pass_on_chance = 0.5
+passageway_width = 3
+chance_add_passageway_between_neighbour_rooms_per_room = 0.35
+base_room_size_min = 4
+base_room_size_max = 6
+base_room_margin = 3
+chance_of_normal_room = 50
+chance_of_weird_room_no1 = 10
+chance_of_weird_room_no2 = 10
+chance_of_weird_room_no3 = 10
+chance_of_weird_room_no4 = 10
+chance_of_weird_room_no5 = 10
+chance_of_weird_room_no6 = 10
+base_number_of_rooms_min = 8
+base_number_of_rooms_max = 12
+number_items_per_room_min = 2
+number_items_per_room_max = 5
+enemy_types = Array[Resource("res://scenes/level_generator/Scripts/EnemySetting.gd")]([ExtResource("1_koa8j")])
+number_enemies_min = 3
+number_enemies_max = 6
+chance_empty_room = 0.025
+tile_set = ExtResource("3_60sdi")
+exit_object = ExtResource("5_mfvfb")

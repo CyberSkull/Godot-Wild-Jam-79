@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlsa8gssfh0hq"
-path="res://.godot/imported/squares_d.png-7bef15234095c80a2b27cd21a64cf1d8.ctex"
+uid="uid://b20dr607n3rxi"
+path="res://.godot/imported/Ladder2.png-e22fee6432b7422c3feaa97b85913db9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Dredastttarm/squares_d.png"
-dest_files=["res://.godot/imported/squares_d.png-7bef15234095c80a2b27cd21a64cf1d8.ctex"]
+source_file="res://scenes/level_generator/level_end/Ladder2.png"
+dest_files=["res://.godot/imported/Ladder2.png-e22fee6432b7422c3feaa97b85913db9.ctex"]
 
 [params]
 

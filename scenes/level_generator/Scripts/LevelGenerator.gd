@@ -29,6 +29,8 @@ var current_level:int=0
 var total_enemy_spawn_chance:int
 var enemy_spawn_chances_for_current_level:Dictionary
 
+var enemy_spawn_list:Dictionary
+
 var debug_mode:bool=0
 var debug_bricks
 var debug_lines
@@ -36,6 +38,8 @@ var debug_loc
 
 var player_instance:Player
 
+var tilemap_helper:Dictionary
+var tilemap_helper_sz:int=8
 
 @export var logical_wall := Vector2i(0,0)
 @export var logical_floor := Vector2i(1,0)
@@ -208,6 +212,17 @@ func room_cutter(logical_tile:Vector2i,
 	for pos_x in range(room_top_left.x, room_bot_right.x+1):
 		for pos_y in range(room_top_left.y, room_bot_right.y+1):
 			tm.set_cell(layer_idx, Vector2i(pos_x, pos_y), src_idx, logical_tile);
+			#3x3 grid to ensure everything all around is valid.
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)-1, (pos_y/tilemap_helper_sz)-1)] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)-1, (pos_y/tilemap_helper_sz))  ] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)-1, (pos_y/tilemap_helper_sz)+1)] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz), (pos_y/tilemap_helper_sz)-1)] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz), (pos_y/tilemap_helper_sz))  ] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz), (pos_y/tilemap_helper_sz)+1)] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)+1, (pos_y/tilemap_helper_sz)-1)] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)+1, (pos_y/tilemap_helper_sz))  ] = true
+			tilemap_helper[Vector2i((pos_x/tilemap_helper_sz)+1, (pos_y/tilemap_helper_sz)+1)] = true
+			
 
 func loop_make_room_walls(room : RoomStruct):
 	
@@ -244,42 +259,78 @@ func loop_make_room_walls(room : RoomStruct):
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_top_left))+debugsz)
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_bot_right))+debugsz)
 	
-	if !room.is_enterance:
-		#obviously if I were programming this for a not-game-jam, I would make this code be more generic and use virtual functions to make room "types"
-		if generator_resource.chance_of_weird_room_no1 > random.randf_range(0,1):
+	var found = -1
+	#obviously if I were programming this for a not-game-jam,
+	#I would make this code be more generic and use virtual functions to make room "types"
+	if room.is_enterance:#entrance cannot be weird room
+		found = 0
+	else:
+		var dict = Dictionary()
+		var tchance = generator_resource.chance_of_normal_room 
+		dict[tchance] = 0
+		tchance += generator_resource.chance_of_weird_room_no1 
+		dict[tchance] = 1
+		tchance += generator_resource.chance_of_weird_room_no2
+		dict[tchance] = 2
+		tchance += generator_resource.chance_of_weird_room_no3
+		dict[tchance] = 3
+		tchance += generator_resource.chance_of_weird_room_no4
+		dict[tchance] = 4
+		tchance += generator_resource.chance_of_weird_room_no5
+		dict[tchance] = 5
+		tchance += generator_resource.chance_of_weird_room_no6
+		dict[tchance] = 6
+		#yuck
+		var value = random.randi_range(0, tchance-1)
+		var sorted_keys = dict.keys()
+		sorted_keys.sort()#just in case the keys are unordered as they often will be in maps/dictionaries.
+		
+		for chance in sorted_keys:
+			if (value < chance):
+				found = dict[chance]
+				break
+		
+		if found == -1:
+			print("FAIL BAD ROOM INDEX")
+	match found:
+		0:
+			#normal room
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			return
+		1:
 			#circle room with 1 width halls
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,1), room.cell_bot_right-Vector2i(1,1))
 			return
-		if generator_resource.chance_of_weird_room_no2 > random.randf_range(0,1):
+		2:
 			#circle room with 1 width halls and 2 width halls (dependant on orientation)
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,2), room.cell_bot_right-Vector2i(1,2))
 			return
-		if generator_resource.chance_of_weird_room_no3 > random.randf_range(0,1):
+		3:
 			#circle room with 1 width halls and 2 width halls (dependant on orientation)
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(2,1), room.cell_bot_right-Vector2i(2,1))
 			return
-		if generator_resource.chance_of_weird_room_no4 > random.randf_range(0,1):
+		4:
 			#circle room with a center cross hallway in the middle
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,1), room.cell_bot_right-Vector2i(1,1))
 			room_cutter(logical_floor, room.cell_top_left+Vector2i(room.area.x/2, 0), room.cell_bot_right+Vector2i(-room.area.x/2, 0))
 			room_cutter(logical_floor, room.cell_top_left+Vector2i(0, room.area.y/2), room.cell_bot_right+Vector2i(0, -room.area.y/2))
 			return
-		if generator_resource.chance_of_weird_room_no5 > random.randf_range(0,1):
+		5:
 			#cross wall in center of room, dividing the room into 4 rooms usually (on smaller rooms it looks similar to earlier room types)
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(room.area.x/2, 1), room.cell_bot_right+Vector2i(-room.area.x/2, -1))
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1, room.area.y/2), room.cell_bot_right+Vector2i(-1, -room.area.y/2))
 			return
-		if generator_resource.chance_of_weird_room_no6 > random.randf_range(0,1):
+		6:
 			#room with grid pillars
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			var odd_x:bool= !bool(room.area.x%2)
 			var odd_y:bool= !bool(room.area.y%2)
-			if odd_x  && odd_y:
+			if odd_x && odd_y:
 				for x in range(room.cell_top_left.x+1, room.cell_bot_right.x, 2):
 					for y in range(room.cell_top_left.y+1, room.cell_bot_right.y, 2):
 						room_cutter(logical_wall, Vector2i(x,y), Vector2i(x,y))
@@ -292,9 +343,11 @@ func loop_make_room_walls(room : RoomStruct):
 				for y in range(room.cell_top_left.y+1, room.cell_bot_right.y, 2):
 					room_cutter(logical_wall, Vector2i(room.cell_top_left.x+1, y), Vector2i(room.cell_bot_right.x-1, y))
 				return
+			room_cutter(logical_wall, Vector2i(room.cell_top_left.x+room.area.x/2, room.cell_top_left.y+room.area.y/2), 
+			Vector2i(room.cell_bot_right.x-room.area.x/2, room.cell_bot_right.y-room.area.y/2))
 			return
-	#normal room
-	room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+	return
+
 
 func _draw():
 	if debug_mode:
@@ -503,22 +556,25 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 
 func handle_room_enemy_spawns(room:RoomStruct):
 	var tm :TileMap = $LogicalTiles
-	
+	if room.is_enterance:
+		return
 	if generator_resource.chance_empty_room > random.randf_range(0,1):
 		return
 	var num_enemies = random.randi_range(generator_resource.number_enemies_min, generator_resource.number_enemies_max)
 	print("num enemies: ",num_enemies)
 	var ignore_list :Array[Vector2i]= []
 	
-	for i in range(num_enemies+1):
+	for i in range(num_enemies):
 		var enemy_type :EnemySetting= get_random_enemy_type()
 		var space = find_floor_spaces(room, ignore_list)
 		if space[0]:
-			var new_enemy:Node2D = enemy_type.enemy_type.instantiate()
+			var new_enemy:Enemy= enemy_type.enemy_type.instantiate()
+			new_enemy.target = player_instance
 			print("made enemy: ",enemy_type.enemy_name)
 			add_child(new_enemy)
 			var location :Vector2i = tile_space_to_pixel_space(space[1])
-			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,0.0)#not sure why we need this offset?
+			#enemy_spawn_list[location] = enemy_type.enemy_type
+			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
 	
 	pass
 
@@ -631,7 +687,7 @@ func generate(in_random: RandomNumberGenerator, level : int):
 		return
 	
 	var exit_obj = generator_resource.exit_object.instantiate()
-	
+	exit_obj.random = random
 	$VisibleTiles.add_child(exit_obj)
 	exit_obj.position = Vector2(tile_space_to_pixel_space(exit_loc[1]))# + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
 	
@@ -640,9 +696,10 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	for room:RoomStruct in all_rooms:
 		real_world_extent_top_left = Vector2i(mini(room.cell_top_left.x, real_world_extent_top_left.x), mini(room.cell_top_left.y, real_world_extent_top_left.x))
 		real_world_extent_bot_right = Vector2i(maxi(room.cell_bot_right.x, real_world_extent_bot_right.x), maxi(room.cell_bot_right.y, real_world_extent_bot_right.x))
-	
+	print("creating visible level...")
 	#print(real_world_extent_top_left, real_world_extent_bot_right)
 	create_visible(Vector2i(0,0), world_extent)
+	print("done!")
 
 func setup_cell_visual(logical_cell:Vector2i):
 	var tm :TileMap = $LogicalTiles
@@ -650,22 +707,43 @@ func setup_cell_visual(logical_cell:Vector2i):
 	
 	var compare = logical_wall
 	
-	var a:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x  ,logical_cell.y  ))==compare #top left
-	var b:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x+1,logical_cell.y  ))==compare #top right
-	var c:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x  ,logical_cell.y+1))==compare #bot left
-	var d:bool=tm.get_cell_atlas_coords(0, Vector2i(logical_cell.x+1,logical_cell.y+1))==compare #bot right
+	var av = Vector2i(logical_cell.x  ,logical_cell.y  )
+	var bv = Vector2i(logical_cell.x+1,logical_cell.y  )
+	var cv = Vector2i(logical_cell.x  ,logical_cell.y+1)
+	var dv = Vector2i(logical_cell.x+1,logical_cell.y+1)
 	
-	var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1) 
-	
-	vm.set_cell(layer_idx, logical_cell, 0, combine);
+	#attempted optimization for level gen, doesn't work very much faster though ngl. Only like 1 second faster on a normally 5 second generation..
+	if tilemap_helper.has(av/tilemap_helper_sz) || tilemap_helper.has(bv/tilemap_helper_sz) || tilemap_helper.has(cv/tilemap_helper_sz) || tilemap_helper.has(dv/tilemap_helper_sz):
+		var a:bool=tm.get_cell_atlas_coords(0, av)==compare #top left
+		var b:bool=tm.get_cell_atlas_coords(0, bv)==compare #top right
+		var c:bool=tm.get_cell_atlas_coords(0, cv)==compare #bot left
+		var d:bool=tm.get_cell_atlas_coords(0, dv)==compare #bot right
+		
+		var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1) 
+		
+		vm.set_cell(layer_idx, logical_cell, 0, combine);
 	
 
 func create_visible(real_extent_top_left:Vector2i, real_extent_bot_right:Vector2i):
 	#todo: loop all grid cells and then
 	for x in range(real_extent_top_left.x, real_extent_bot_right.x):
+		print(x-real_extent_top_left.x, " of ", real_extent_bot_right.x-real_extent_top_left.x)
 		for y in range(real_extent_top_left.y, real_extent_bot_right.y):
 			setup_cell_visual(Vector2i(x,y))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _physics_process(delta: float) -> void:
+	return
+	#REALLY BAD DOES NOT WORK WELL.
+	if enemy_spawn_list.size() > 0:
+		var tm :TileMap = $LogicalTiles
+		var enemyloc = enemy_spawn_list.keys()[0]
+		
+		var new_enemy:Enemy= enemy_spawn_list[enemyloc].instantiate()
+		new_enemy.target = player_instance
+		var location :Vector2i = tile_space_to_pixel_space(enemyloc)
+		add_child(new_enemy)
+		new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
+		print("added enemy")
+		enemy_spawn_list.erase(enemyloc)
 	pass

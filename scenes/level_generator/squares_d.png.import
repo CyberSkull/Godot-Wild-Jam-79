@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkdlmvn5fjo80"
-path="res://.godot/imported/squares_dungeon_V2.png-229a0b285930b6e8a04f4ca20f28ce9b.ctex"
+uid="uid://dlsa8gssfh0hq"
+path="res://.godot/imported/squares_d.png-65aa04f71fd4c04f6944b0848978233f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Dredastttarm/squares_dungeon_V2.png"
-dest_files=["res://.godot/imported/squares_dungeon_V2.png-229a0b285930b6e8a04f4ca20f28ce9b.ctex"]
+source_file="res://scenes/level_generator/squares_d.png"
+dest_files=["res://.godot/imported/squares_d.png-65aa04f71fd4c04f6944b0848978233f.ctex"]
 
 [params]
 
