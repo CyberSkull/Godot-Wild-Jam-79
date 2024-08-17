@@ -2,7 +2,7 @@
 
 [ext_resource type="Resource" uid="uid://cad0yxtixdrah" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_green_slime.tres" id="1_koa8j"]
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
-[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://scenes/level_generator/BaseTileSet.tres" id="3_60sdi"]
+[ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="3_60sdi"]
 [ext_resource type="PackedScene" uid="uid://desdh37127vce" path="res://scenes/level_generator/level_end/LevelEnd.tscn" id="5_mfvfb"]
 
 [resource]

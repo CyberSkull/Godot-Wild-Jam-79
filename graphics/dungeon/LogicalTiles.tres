@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=4 format=3 uid="uid://clpwruqovs8tt"]
 
-[ext_resource type="Texture2D" uid="uid://7wj0omhgbeho" path="res://scenes/level_generator/testgrid.png" id="1_ocvhf"]
+[ext_resource type="Texture2D" uid="uid://7wj0omhgbeho" path="res://graphics/dungeon/testgrid.png" id="1_ocvhf"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6kf7y"]
 polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)

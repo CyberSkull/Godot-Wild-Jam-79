@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d222skvabe8t4"
-path="res://.godot/imported/Tileset_new.png-f9772398a7818805a4e2185b0b0ba8a7.ctex"
+uid="uid://bcftkuwllc6ta"
+path="res://.godot/imported/Ladder.png-b706ddd9ddfce3531414f30c1ea87fbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/level_generator/Tileset_new.png"
-dest_files=["res://.godot/imported/Tileset_new.png-f9772398a7818805a4e2185b0b0ba8a7.ctex"]
+source_file="res://graphics/ladder/Ladder.png"
+dest_files=["res://.godot/imported/Ladder.png-b706ddd9ddfce3531414f30c1ea87fbf.ctex"]
 
 [params]
 
