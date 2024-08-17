@@ -1,0 +1,9 @@
+A simple, tiny torch animation tile-set with a transparent background.
+
+Size:  16x16 pixels
+
+ 
+Feel free to link your games in the comments, if you are using this asset!
+
+Copyright/Attribution Notice: 
+CC0 - Don't restrict other's use of this product :) Credit is appreciated!

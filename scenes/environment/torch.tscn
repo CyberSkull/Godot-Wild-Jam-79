@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://b7nyf72dip0wc"]
+
+[ext_resource type="Texture2D" uid="uid://y4qrgp1vdr4t" path="res://graphics/torch/torch_anim.png" id="1_ejnct"]
+[ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="2_4vxi1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bb0em"]
+atlas = ExtResource("1_ejnct")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2gma5"]
+atlas = ExtResource("1_ejnct")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tml1q"]
+atlas = ExtResource("1_ejnct")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yjc36"]
+atlas = ExtResource("1_ejnct")
+region = Rect2(48, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_14iv7"]
+atlas = ExtResource("1_ejnct")
+region = Rect2(64, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_88lj6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bb0em")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2gma5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tml1q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yjc36")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_14iv7")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[node name="Torch" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_88lj6")
+autoplay = "default"
+frame_progress = 0.719851
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.906214, 0.592347, 0.281373, 1)
+shadow_enabled = true
+texture = ExtResource("2_4vxi1")
