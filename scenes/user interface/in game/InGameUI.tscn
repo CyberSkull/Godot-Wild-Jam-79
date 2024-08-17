@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://carljqywqdma2"]
 
 [ext_resource type="Script" path="res://scenes/user interface/in game/InGameUI.gd" id="1_8xasy"]
-[ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://scenes/level_generator/squares_d.png" id="2_t8ibq"]
+[ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://graphics/dungeon/squares_d.png" id="2_0klp6"]
 
 [node name="InGameUI" type="CanvasLayer"]
 script = ExtResource("1_8xasy")
@@ -12,7 +12,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_t8ibq")
+texture = ExtResource("2_0klp6")
 expand_mode = 1
 stretch_mode = 1
 

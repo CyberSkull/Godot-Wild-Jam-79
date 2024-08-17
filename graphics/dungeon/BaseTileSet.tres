@@ -1,7 +1,7 @@
 [gd_resource type="TileSet" load_steps=33 format=3 uid="uid://dn8fqp4vj5kko"]
 
-[ext_resource type="Texture2D" uid="uid://d222skvabe8t4" path="res://scenes/level_generator/Tileset_new.png" id="1_susab"]
-[ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://scenes/level_generator/squares_d.png" id="2_8jrv3"]
+[ext_resource type="Texture2D" uid="uid://d222skvabe8t4" path="res://graphics/dungeon/Tileset_new.png" id="1_susab"]
+[ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://graphics/dungeon/squares_d.png" id="2_8jrv3"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ie1n2"]
 vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://7wj0omhgbeho"
-path="res://.godot/imported/testgrid.png-c3d97c768804f3e071cdaa2f621b4f24.ctex"
+uid="uid://b20dr607n3rxi"
+path="res://.godot/imported/Ladder2.png-e356aee75d19e3b79639a40fae097c9d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/level_generator/testgrid.png"
-dest_files=["res://.godot/imported/testgrid.png-c3d97c768804f3e071cdaa2f621b4f24.ctex"]
+source_file="res://graphics/ladder/Ladder2.png"
+dest_files=["res://.godot/imported/Ladder2.png-e356aee75d19e3b79639a40fae097c9d.ctex"]
 
 [params]
 

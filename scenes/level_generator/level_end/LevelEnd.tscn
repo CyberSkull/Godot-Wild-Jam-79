@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://desdh37127vce"]
 
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelEnd.gd" id="1_nmie2"]
-[ext_resource type="Texture2D" uid="uid://bcftkuwllc6ta" path="res://scenes/level_generator/level_end/Ladder.png" id="2_ftswm"]
+[ext_resource type="Texture2D" uid="uid://bcftkuwllc6ta" path="res://graphics/ladder/Ladder.png" id="2_ftswm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m630m"]
 
