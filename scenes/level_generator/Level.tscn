@@ -9,8 +9,7 @@
 script = ExtResource("1_0f1qi")
 generator_scene = ExtResource("2_otm1h")
 
-[node name="InGameUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_017y1")]
-player = NodePath("../Player")
+[node name="InGameUI" parent="." instance=ExtResource("3_017y1")]
 
 [node name="Player" parent="." instance=ExtResource("4_ep48n")]
 position = Vector2(128, 128)
