@@ -142,9 +142,9 @@ func _physics_process(delta: float) -> void:
 ## Called when an [Enemy] body hits the [Player]. Sets the [member knockback_velocity] to the opposite vector of the [Enemy]'s [member CharacterBody2D.velocity].
 ## WARNING: Only enemy collisons are handled, enemy projectiles/attacks are not.
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	print_debug("area: ", area, ", area name: ", area.name)
-	print_debug("area parent: ", area.get_parent())
-	print_debug("is area parent enemy? ", area.get_parent() is Enemy)
+	#print_debug("area: ", area, ", area name: ", area.name)
+	#print_debug("area parent: ", area.get_parent())
+	#print_debug("is area parent enemy? ", area.get_parent() is Enemy)
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
@@ -154,7 +154,9 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 
 ## Handles hitting an [Enemy] with the sword.
 func _on_sword_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	if body is Enemy:
+		var enemy: Enemy = body as Enemy
+		# TODO: play sword hit sound here.
 
 
 ## Emits [signal health_changed] and [signal max_health_changed]. Used to help UI to initialize.
