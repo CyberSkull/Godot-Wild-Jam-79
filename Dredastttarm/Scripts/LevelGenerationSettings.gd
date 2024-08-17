@@ -10,9 +10,12 @@ class_name LevelGenerationSettings
 @export var base_room_size_min:int = 25
 @export var base_room_size_max:int= 50
 @export var base_room_margin:int= 1#minimum distance between rooms
-@export var chance_of_weird_room_no1:float=0.1
-@export var chance_of_weird_room_no2:float=0.05
-@export var chance_of_weird_room_no3:float=0.05
+@export var chance_of_weird_room_no1:float=0.033
+@export var chance_of_weird_room_no2:float=0.033
+@export var chance_of_weird_room_no3:float=0.033
+@export var chance_of_weird_room_no4:float=0.033
+@export var chance_of_weird_room_no5:float=0.033
+@export var chance_of_weird_room_no6:float=0.033
 
 @export_group("Items per room")
 @export var base_number_of_rooms_min:int= 2

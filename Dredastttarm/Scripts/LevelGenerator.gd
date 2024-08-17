@@ -244,19 +244,45 @@ func loop_make_room_walls(room : RoomStruct):
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_top_left))+debugsz)
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_bot_right))+debugsz)
 	
-	if !room.is_enterance && !room.is_exit:
+	if !room.is_enterance:
 		#obviously if I were programming this for a not-game-jam, I would make this code be more generic and use virtual functions to make room "types"
 		if generator_resource.chance_of_weird_room_no1 > random.randf_range(0,1):
+			#circle room with 1 width halls
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,1), room.cell_bot_right-Vector2i(1,1))
 			return
 		if generator_resource.chance_of_weird_room_no2 > random.randf_range(0,1):
+			#circle room with 1 width halls and 2 width halls (dependant on orientation)
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,2), room.cell_bot_right-Vector2i(1,2))
 			return
 		if generator_resource.chance_of_weird_room_no3 > random.randf_range(0,1):
+			#circle room with 1 width halls and 2 width halls (dependant on orientation)
 			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
 			room_cutter(logical_wall, room.cell_top_left+Vector2i(2,1), room.cell_bot_right-Vector2i(2,1))
+			return
+		if generator_resource.chance_of_weird_room_no4 > random.randf_range(0,1):
+			#circle room with a center cross hallway in the middle
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(1,1), room.cell_bot_right-Vector2i(1,1))
+			room_cutter(logical_floor, room.cell_top_left+Vector2i(room.area.x/2, 0), room.cell_bot_right+Vector2i(-room.area.x/2, 0))
+			room_cutter(logical_floor, room.cell_top_left+Vector2i(0, room.area.y/2), room.cell_bot_right+Vector2i(0, -room.area.y/2))
+			return
+		if generator_resource.chance_of_weird_room_no5 > random.randf_range(0,1):
+			#cross wall in center of room, dividing the room into 4 rooms usually (on smaller rooms it looks similar to earlier room types)
+			room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(room.area.x/2, 1), room.cell_bot_right+Vector2i(-room.area.x/2, -1))
+			room_cutter(logical_wall, room.cell_top_left+Vector2i(1, room.area.y/2), room.cell_bot_right+Vector2i(-1, -room.area.y/2))
+			return
+		if !bool(room.area.x%2) && !bool(room.area.y%2):
+			if generator_resource.chance_of_weird_room_no6 > random.randf_range(0,1):
+				#room with grid pillars
+				room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)
+				
+				for x in range(room.cell_top_left.x+1, room.cell_bot_right.x, 2):
+					for y in range(room.cell_top_left.y+1, room.cell_bot_right.y, 2):
+						room_cutter(logical_wall, Vector2i(x,y), Vector2i(x,y))
+					
 			return
 	#normal room
 	room_cutter(logical_floor, room.cell_top_left, room.cell_bot_right)

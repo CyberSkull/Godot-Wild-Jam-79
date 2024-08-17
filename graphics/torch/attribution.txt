@@ -1,3 +1,5 @@
+https://opengameart.org/content/simple-torch-animation-16x16
+
 A simple, tiny torch animation tile-set with a transparent background.
 
 Size:  16x16 pixels
