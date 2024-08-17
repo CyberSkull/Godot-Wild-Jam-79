@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=58 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
@@ -129,6 +129,18 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath(".:material:shader_parameter/flash_value")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
 }
 
 [sub_resource type="Animation" id="Animation_dhw74"]
@@ -581,21 +593,6 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-
-[sub_resource type="Animation" id="Animation_jqsau"]
-resource_name = "hurt_down"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("DuckSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
-"update": 1,
-"values": []
 }
 
 [sub_resource type="Animation" id="Animation_le1cm"]
@@ -1122,7 +1119,6 @@ _data = {
 "attack_left": SubResource("Animation_r78x8"),
 "attack_right": SubResource("Animation_nrpb8"),
 "attack_up": SubResource("Animation_lgqnf"),
-"hurt_down": SubResource("Animation_jqsau"),
 "idle_down": SubResource("Animation_le1cm"),
 "idle_left": SubResource("Animation_x1ggf"),
 "idle_right": SubResource("Animation_1okrm"),
@@ -1286,8 +1282,8 @@ rotation = -1.57079
 shape = SubResource("CapsuleShape2D_bn7fm")
 
 [node name="DuckSprite" type="Sprite2D" parent="."]
+clip_children = 2
 z_index = 10
-y_sort_enabled = true
 texture = SubResource("CanvasTexture_lrjq2")
 hframes = 12
 vframes = 4
@@ -1341,6 +1337,7 @@ libraries = {
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 editor_description = "https://www.youtube.com/watch?v=km4SGFzpEc0"
+active = false
 tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
