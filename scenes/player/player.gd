@@ -87,6 +87,9 @@ func _ready() -> void:
 	
 	# Start animation state machine.
 	playback_state.start(&"Start")
+	
+	# Initialize UI.
+	emit_health()
 
 
 
@@ -149,5 +152,12 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
 
 
+## Handles hitting an [Enemy] with the sword.
 func _on_sword_area_body_entered(body: Node2D) -> void:
 	pass # Replace with function body.
+
+
+## Emits [signal health_changed] and [signal max_health_changed]. Used to help UI to initialize.
+func emit_health() -> void:
+	health_changed.emit(health)
+	max_health_changed.emit(max_health)

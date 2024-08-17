@@ -1,16 +1,19 @@
 extends CanvasLayer
 
-@export var player: Player = null:
-	set(value):
-		if player:
-			await player.ready
-		player = value
-		%HealthBar.max_value = player.max_health
-		%HealthBar.set_value_no_signal(player.health)
+#@export var player: Player = null#:
+	#set(value):
+		#if player:
+			#await player.ready
+		#player = value
+		#%HealthBar.max_value = player.max_health
+		#%HealthBar.set_value_no_signal(player.health)
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	#if player:
+		#player.emit_health()
 	pass
+
 
 ## Shows the loading screen if [argument show] is [code]true[/code].
 func show_loading_screen(show: bool) -> void:
