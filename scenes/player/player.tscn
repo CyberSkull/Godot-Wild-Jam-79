@@ -1,8 +1,7 @@
-[gd_scene load_steps=51 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=59 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
-[ext_resource type="Texture2D" uid="uid://d0pxoh3ya7mas" path="res://graphics/Dakota Duck/Dakota Duck sheet_n.png" id="3_bsnhc"]
 [ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="4_oheqb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bn7fm"]
@@ -11,18 +10,15 @@ height = 8.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_lrjq2"]
 diffuse_texture = ExtResource("2_cgsfr")
-normal_texture = ExtResource("3_bsnhc")
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_bmmqn"]
 diffuse_texture = ExtResource("2_cgsfr")
-normal_texture = ExtResource("3_bsnhc")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sosmw"]
 size = Vector2(8, 11)
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_n5wsu"]
 diffuse_texture = ExtResource("2_cgsfr")
-normal_texture = ExtResource("3_bsnhc")
 
 [sub_resource type="Animation" id="Animation_yfc5b"]
 length = 0.001
@@ -587,6 +583,21 @@ tracks/8/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_jqsau"]
+resource_name = "hurt_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DuckSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+
 [sub_resource type="Animation" id="Animation_le1cm"]
 resource_name = "idle_down"
 loop_mode = 1
@@ -1111,6 +1122,7 @@ _data = {
 "attack_left": SubResource("Animation_r78x8"),
 "attack_right": SubResource("Animation_nrpb8"),
 "attack_up": SubResource("Animation_lgqnf"),
+"hurt_down": SubResource("Animation_jqsau"),
 "idle_down": SubResource("Animation_le1cm"),
 "idle_left": SubResource("Animation_x1ggf"),
 "idle_right": SubResource("Animation_1okrm"),
@@ -1147,6 +1159,14 @@ blend_point_3/pos = Vector2(1, 0)
 graph_offset = Vector2(-152.64, 105.6)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_cjm73")
 nodes/BlendSpace2D/position = Vector2(-79.76, 130.1)
+node_connections = [&"output", 0, &"BlendSpace2D"]
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_iigef"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pkwjl"]
+graph_offset = Vector2(-246, -94)
+nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_iigef")
+nodes/BlendSpace2D/position = Vector2(-35.5, 116.5)
 node_connections = [&"output", 0, &"BlendSpace2D"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t03sm"]
@@ -1229,15 +1249,31 @@ switch_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5pj45"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4w4ma"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_15ae5"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n3lkn"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5ajh7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1kpd1"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kntk7"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n7iaj"]
 states/Attack/node = SubResource("AnimationNodeBlendTree_4vaqt")
-states/Attack/position = Vector2(581.185, 99.973)
+states/Attack/position = Vector2(476.185, -45.527)
+states/Hurt/node = SubResource("AnimationNodeBlendTree_pkwjl")
+states/Hurt/position = Vector2(640.185, 99.9729)
 states/Idle/node = SubResource("AnimationNodeBlendTree_j1ulr")
 states/Idle/position = Vector2(338.31, 99.9459)
 states/Walk/node = SubResource("AnimationNodeBlendTree_s2t2l")
-states/Walk/position = Vector2(337.935, 227.068)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bqoto"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_xu8p2"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_bpl5n"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_3wiv5"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_yr50h"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ku25x"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_5pj45")]
-graph_offset = Vector2(63.1851, 59.0675)
+states/Walk/position = Vector2(475.81, 245.568)
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bqoto"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_xu8p2"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_bpl5n"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_3wiv5"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_yr50h"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ku25x"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_5pj45"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_4w4ma"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_15ae5"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_n3lkn"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_5ajh7"), "Hurt", "Attack", SubResource("AnimationNodeStateMachineTransition_1kpd1"), "Attack", "Hurt", SubResource("AnimationNodeStateMachineTransition_kntk7")]
+graph_offset = Vector2(81.1851, -54.4506)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
 position = Vector2(8, 8)
@@ -1263,6 +1299,11 @@ position = Vector2(4, 3)
 texture = SubResource("CanvasTexture_bmmqn")
 region_enabled = true
 region_rect = Rect2(21, 54, 6, 6)
+
+[node name="LanternLight" type="PointLight2D" parent="."]
+color = Color(0.992392, 0.918547, 0.873663, 1)
+shadow_enabled = true
+texture = ExtResource("4_oheqb")
 
 [node name="HurtBox" type="Area2D" parent="."]
 collision_mask = 140
@@ -1300,10 +1341,10 @@ libraries = {
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 editor_description = "https://www.youtube.com/watch?v=km4SGFzpEc0"
-active = false
 tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
+parameters/Hurt/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Idle/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
@@ -1311,10 +1352,5 @@ parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
 [node name="Camera2D" type="Camera2D" parent="."]
 editor_draw_limits = true
 editor_draw_drag_margin = true
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-color = Color(0.724218, 0.399115, 0.154317, 1)
-shadow_enabled = true
-texture = ExtResource("4_oheqb")
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
