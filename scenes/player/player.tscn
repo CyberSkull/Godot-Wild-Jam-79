@@ -1264,13 +1264,6 @@ texture = SubResource("CanvasTexture_bmmqn")
 region_enabled = true
 region_rect = Rect2(21, 54, 6, 6)
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
-color = Color(0.912876, 0.813562, 0.561556, 1)
-blend_mode = 2
-shadow_enabled = true
-shadow_color = Color(0.178212, 0.178212, 0.178212, 1)
-texture = ExtResource("4_oheqb")
-
 [node name="HurtBox" type="Area2D" parent="."]
 collision_mask = 140
 
@@ -1316,5 +1309,12 @@ parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
+editor_draw_limits = true
+editor_draw_drag_margin = true
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.724218, 0.399115, 0.154317, 1)
+shadow_enabled = true
+texture = ExtResource("4_oheqb")
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

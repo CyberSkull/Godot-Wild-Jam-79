@@ -116,10 +116,10 @@ func _physics_process(delta: float) -> void:
 	#is_casting = Input.is_action_just_pressed(&"cast")
 	#is_using_item = Input.is_action_just_pressed(&"item")
 
-	print_debug("velocity: ", velocity)
+	#print_debug("velocity: ", velocity)
 	move_and_slide()
 	#move_and_collide(velocity)
-	print_debug("velocity: ", velocity)
+	#print_debug("velocity: ", velocity)
 
 
 func damage(enemy: Enemy) -> void:

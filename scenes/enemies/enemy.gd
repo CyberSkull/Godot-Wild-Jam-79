@@ -28,6 +28,7 @@ signal slain(enemy_name: StringName, points: int)
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print_debug("navigator: ", navigator)
 	call_deferred(&"_setup_navigation_seeker")
 
 

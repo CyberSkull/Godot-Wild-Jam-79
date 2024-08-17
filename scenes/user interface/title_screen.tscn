@@ -27,7 +27,7 @@ theme_override_font_sizes/italics_font_size = 64
 theme_override_font_sizes/bold_italics_font_size = 64
 theme_override_font_sizes/mono_font_size = 64
 bbcode_enabled = true
-text = "[center][rainbow][wave][b]Dakota Duck[/b] in [i]Title to be Determined[/i][/wave][/rainbow][/center]"
+text = "[center][rainbow][wave][b]Dakota Duck[/b] in [i]The Dark Slime Dungeon[/i][/wave][/rainbow][/center]"
 shortcut_keys_enabled = false
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
