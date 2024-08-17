@@ -47,9 +47,17 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 ## Duration of the knockback gamepad vibration in seconds.
 @export var knockback_vibration_duration: float = 0.2
 ## Knockback low motor gamepad vibration.
-@export_range(0, 1) var knockback_low_vibration: float = 0.1
-## Knockback low motor gamepad vibration.
-@export_range(0, 1) var knockback_high_vibration: float = 0.2
+@export_range(0, 1) var knockback_low_vibration: float = 0.2
+## Knockback high motor gamepad vibration.
+@export_range(0, 1) var knockback_high_vibration: float = 0.4
+
+## Duration of the weapon strike gamepad vibration in seconds.
+@export var strike_enemy_low_vibration: float = 0.1
+## Weapon strike low motor gamepad vibration.
+@export_range(0, 1) var strike_enemy_strong_vibration: float = 0.1
+## Weapon strike high motor gamepad vibration.
+@export_range(0, 1) var strike_enemy_vibration_duration: float = 0.1
+
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
@@ -157,6 +165,7 @@ func _on_sword_area_body_entered(body: Node2D) -> void:
 	if body is Enemy:
 		var enemy: Enemy = body as Enemy
 		# TODO: play sword hit sound here.
+		Input.start_joy_vibration(0, strike_enemy_low_vibration, strike_enemy_strong_vibration, strike_enemy_vibration_duration)
 
 
 ## Emits [signal health_changed] and [signal max_health_changed]. Used to help UI to initialize.
