@@ -34,10 +34,15 @@ signal died()
 @export var speed: float = 64
 
 ## Velocity the [Player] gets knocked back in pixels/second.
-@export var kockback_speed: float = 256
+@export var knockback_speed: float = 256
+
+## Drop off rate for the knockback using [method Vector2.lerp].
+@export_range(0, 1) var knockback_dropoff = 0.1
 
 ## Current veloctiy of the knockback effect.
-var kockback_velocity: float = 0
+var knockback_velocity: Vector2 = Vector2.ZERO
+
+var kockback_impulse: float = 0
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
@@ -83,7 +88,10 @@ func _ready() -> void:
 ## Handles the animation cycle.
 func _physics_process(delta: float) -> void:
 	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
-	velocity = direction * speed
+	
+	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_dropoff)
+	velocity = (direction * speed) + knockback_velocity
+	#print_debug("knockback velocity: ", knockback_velocity)
 	
 	# Skip actions if player is attacking
 	if is_attacking:
@@ -135,6 +143,6 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	print_debug("is area parent enemy? ", area.get_parent() is Enemy)
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
-		#damage(area.get_parent())
-		velocity = (enemy.velocity - velocity).normalized() * kockback_speed
+		var knockback_direction = -direction
+		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
 		health -= enemy.attack
