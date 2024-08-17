@@ -5,48 +5,52 @@ extends CharacterBody2D
 
 ## Emitted when the [Player] gains or looses [member health] or [member max_health].
 signal health_changed(current: int, max: int)
-## Emitted when a buff changes.
+## Emitted when a buff changes. WARNING: Not currently used.
 signal buff_changed()
 ## Emitted when the [Player] dies. Triggers game over.
 signal died()
 
 
-## Maximum [Player] health.
+## Maximum [Player] health. Emits [signal health_changed] when changed.
 @export var max_health: int = 100:
 	set(value):
 		max_health = value
 		health_changed.emit(health, max_health)
 
-## Current [Player] health.
+
+## Current [Player] health. Clamped to [member max_health]. Emits [signal health_changed] when changed. Emits [signal died] when <= 0.
 @export var health: int = 100:
 	set(value):
 		health = clampi(value, 0, max_health)
 		print_debug("health: ", health)
 		health_changed.emit(health, max_health)
+		if health <= 0:
+			died.emit()
+
 
 ## Raw attack power.
 @export var attack_damage: int
-
-## Defence power.
+## Defence power. WARNING: not used.
 @export var defence: int
 
 ## Movement speed in pixels per second.
 @export var speed: float = 64
-
 ## Velocity the [Player] gets knocked back in pixels/second.
 @export var knockback_speed: float = 256
 
 ## Drop off rate for the knockback using [method Vector2.lerp].
 @export_range(0, 1) var knockback_dropoff = 0.1
-
 ## Current veloctiy of the knockback effect.
 var knockback_velocity: Vector2 = Vector2.ZERO
-
-var kockback_impulse: float = 0
+## Duration of the knockback gamepad vibration in seconds.
+@export var knockback_vibration_duration: float = 0.2
+## Knockback low motor gamepad vibration.
+@export_range(0, 1) var knockback_low_vibration: float = 0.1
+## Knockback low motor gamepad vibration.
+@export_range(0, 1) var knockback_high_vibration: float = 0.2
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
-
 ## Lantern range in pixels.
 @export var lantern_range: float
 
@@ -60,7 +64,6 @@ var kockback_impulse: float = 0
 
 ## Direction the player is moving in.
 var direction: Vector2 = Vector2.ZERO
-
 ## Direction the player last moved in.
 var last_direction: Vector2 = Vector2.DOWN
 
@@ -76,7 +79,7 @@ var is_using_item: bool = false
 
 ## Called when all children are ready.
 func _ready() -> void:
-	# start animations if turned off in editor
+	# Start animations if turned off in editor
 	animation_tree.active = true
 	
 	# Start animation state machine.
@@ -85,7 +88,7 @@ func _ready() -> void:
 
 
 
-## Handles the animation cycle.
+## Handles movement and manages the animation state machine.
 func _physics_process(delta: float) -> void:
 	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	
@@ -130,19 +133,12 @@ func _physics_process(delta: float) -> void:
 	#print_debug("velocity: ", velocity)
 
 
-func damage(enemy: Enemy) -> void:
-	print_debug("enemy: ", enemy)
-	print_debug("enemy attack: ", enemy.attack)
-	
-	
-	
-
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	print_debug("area: ", area, ", area name: ", area.name)
 	print_debug("area parent: ", area.get_parent())
 	print_debug("is area parent enemy? ", area.get_parent() is Enemy)
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
-		var knockback_direction = -direction
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
 		health -= enemy.attack
+		Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
