@@ -34,7 +34,10 @@ signal died()
 @export var speed: float = 64
 
 ## Velocity the [Player] gets knocked back in pixels/second.
-@export var knockback: float = 256
+@export var kockback_speed: float = 256
+
+## Current veloctiy of the knockback effect.
+var kockback_velocity: float = 0
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
@@ -133,5 +136,5 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
 		#damage(area.get_parent())
-		velocity = (enemy.velocity - velocity).normalized() * knockback
+		velocity = (enemy.velocity - velocity).normalized() * kockback_speed
 		health -= enemy.attack
