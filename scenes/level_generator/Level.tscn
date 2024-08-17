@@ -9,7 +9,11 @@
 script = ExtResource("1_0f1qi")
 generator_scene = ExtResource("2_otm1h")
 
-[node name="InGameUi" parent="." instance=ExtResource("3_017y1")]
+[node name="InGameUI" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_017y1")]
+player = NodePath("../Player")
 
 [node name="Player" parent="." instance=ExtResource("4_ep48n")]
 position = Vector2(128, 128)
+
+[connection signal="health_changed" from="Player" to="InGameUI" method="_on_player_health_changed"]
+[connection signal="max_health_changed" from="Player" to="InGameUI" method="_on_player_max_health_changed"]

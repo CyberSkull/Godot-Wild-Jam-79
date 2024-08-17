@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/user interface/in game/InGameUI.gd" id="1_8xasy"]
 [ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://scenes/level_generator/squares_d.png" id="2_t8ibq"]
 
-[node name="InGameUi" type="CanvasLayer"]
+[node name="InGameUI" type="CanvasLayer"]
 script = ExtResource("1_8xasy")
 
 [node name="LoadingScreen" type="TextureRect" parent="."]
@@ -16,14 +16,15 @@ texture = ExtResource("2_t8ibq")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="InGameUi" type="Control" parent="."]
+[node name="PlayerUserInterface" type="Control" parent="."]
 visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="ProgressBar" type="ProgressBar" parent="InGameUi"]
+[node name="HealthBar" type="ProgressBar" parent="PlayerUserInterface"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_right = 50.0
 offset_bottom = 10.0

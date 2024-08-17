@@ -4,7 +4,9 @@ class_name Player
 extends CharacterBody2D
 
 ## Emitted when the [Player] gains or looses [member health] or [member max_health].
-signal health_changed(current: int, max: int)
+signal health_changed(health: int)
+## Emitted when the [Player] gains or looses [member health] or [member max_health].
+signal max_health_changed(max_health: int)
 ## Emitted when a buff changes. WARNING: Not currently used.
 signal buff_changed()
 ## Emitted when the [Player] dies. Triggers game over.
@@ -15,7 +17,7 @@ signal died()
 @export var max_health: int = 100:
 	set(value):
 		max_health = value
-		health_changed.emit(health, max_health)
+		max_health_changed.emit(health)
 
 
 ## Current [Player] health. Clamped to [member max_health]. Emits [signal health_changed] when changed. Emits [signal died] when <= 0.
@@ -23,7 +25,7 @@ signal died()
 	set(value):
 		health = clampi(value, 0, max_health)
 		print_debug("health: ", health)
-		health_changed.emit(health, max_health)
+		health_changed.emit(health)
 		if health <= 0:
 			died.emit()
 
@@ -77,7 +79,8 @@ var last_direction: Vector2 = Vector2.DOWN
 var is_using_item: bool = false
 
 
-## Called when all children are ready.
+
+## Called when all children are ready. Makes sure the [AnimationTree] is active and starts [member playback_state].
 func _ready() -> void:
 	# Start animations if turned off in editor
 	animation_tree.active = true
@@ -133,6 +136,8 @@ func _physics_process(delta: float) -> void:
 	#print_debug("velocity: ", velocity)
 
 
+## Called when an [Enemy] body hits the [Player]. Sets the [member knockback_velocity] to the opposite vector of the [Enemy]'s [member CharacterBody2D.velocity].
+## WARNING: Only enemy collisons are handled, enemy projectiles/attacks are not.
 func _on_hurt_box_area_entered(area: Area2D) -> void:
 	print_debug("area: ", area, ", area name: ", area.name)
 	print_debug("area parent: ", area.get_parent())
@@ -142,3 +147,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
 		health -= enemy.attack
 		Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
+
+
+func _on_sword_area_body_entered(body: Node2D) -> void:
+	pass # Replace with function body.

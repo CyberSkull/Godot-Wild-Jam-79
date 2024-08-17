@@ -1353,3 +1353,4 @@ editor_draw_limits = true
 editor_draw_drag_margin = true
 
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]
+[connection signal="body_entered" from="SwordPivot/SwordArea" to="." method="_on_sword_area_body_entered"]

@@ -13,7 +13,7 @@ func _ready() -> void:
 	#todo: add option to specify the seed in the begining of the game, or settings perhaps.
 	random = RandomNumberGenerator.new()
 	#make initial level.
-	$InGameUi.player = $Player
+	#$InGameUi.player = $Player
 	create_level(0)
 	pass # Replace with function body.
 
