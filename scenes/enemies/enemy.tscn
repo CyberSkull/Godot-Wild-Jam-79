@@ -15,3 +15,9 @@ target_desired_distance = 0.5
 avoidance_enabled = true
 radius = 15.0
 debug_enabled = true
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 34
+
+[connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

@@ -9,10 +9,12 @@ extends Enemy
 ## Playback state of the [AnimationTree].
 @onready var playback_state: AnimationNodeStateMachinePlayback = animation_tree[&"parameters/playback"]
 
+var last_direction = Vector2.LEFT
+
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-	# start animations if turned off in editor
+	# Start animations if turned off in editor
 	animation_tree.active = true
 	
 	# Start animation state machine.
@@ -24,8 +26,13 @@ func _ready() -> void:
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	super(delta)
-	if velocity.is_equal_approx(Vector2.ZERO):
+	if health <= 0:
+		print_debug("Setting travel to Death.")
+		playback_state.travel(&"Death")
+		animation_tree["parameters/Death/BlendSpace1D/blend_position"] = velocity.x
+	elif velocity.is_equal_approx(Vector2.ZERO):
 		playback_state.travel(&"Idle")
+		animation_tree["parameters/Idle/BlendSpace1D/blend_position"] = velocity.x
 	else:
 		# Moving animation and pass horizontal movement to blend.
 		playback_state.travel(&"Moving")

@@ -31,9 +31,9 @@ signal died()
 
 
 ## Raw attack power.
-@export var attack_damage: int
+@export var attack_damage: int = 1
 ## Defence power. WARNING: not used.
-@export var defence: int
+@export var defence: int = 1
 
 ## Movement speed in pixels per second.
 @export var speed: float = 64
@@ -47,9 +47,17 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 ## Duration of the knockback gamepad vibration in seconds.
 @export var knockback_vibration_duration: float = 0.2
 ## Knockback low motor gamepad vibration.
-@export_range(0, 1) var knockback_low_vibration: float = 0.1
-## Knockback low motor gamepad vibration.
-@export_range(0, 1) var knockback_high_vibration: float = 0.2
+@export_range(0, 1) var knockback_low_vibration: float = 0.2
+## Knockback high motor gamepad vibration.
+@export_range(0, 1) var knockback_high_vibration: float = 0.4
+
+## Duration of the weapon strike gamepad vibration in seconds.
+@export var strike_enemy_low_vibration: float = 0.1
+## Weapon strike low motor gamepad vibration.
+@export_range(0, 1) var strike_enemy_strong_vibration: float = 0.1
+## Weapon strike high motor gamepad vibration.
+@export_range(0, 1) var strike_enemy_vibration_duration: float = 0.1
+
 
 ## Lantern brightness.
 @export var lantern_luminosity: float
@@ -142,9 +150,9 @@ func _physics_process(delta: float) -> void:
 ## Called when an [Enemy] body hits the [Player]. Sets the [member knockback_velocity] to the opposite vector of the [Enemy]'s [member CharacterBody2D.velocity].
 ## WARNING: Only enemy collisons are handled, enemy projectiles/attacks are not.
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	print_debug("area: ", area, ", area name: ", area.name)
-	print_debug("area parent: ", area.get_parent())
-	print_debug("is area parent enemy? ", area.get_parent() is Enemy)
+	#print_debug("area: ", area, ", area name: ", area.name)
+	#print_debug("area parent: ", area.get_parent())
+	#print_debug("is area parent enemy? ", area.get_parent() is Enemy)
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
@@ -154,7 +162,10 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 
 ## Handles hitting an [Enemy] with the sword.
 func _on_sword_area_body_entered(body: Node2D) -> void:
-	pass # Replace with function body.
+	if body is Enemy:
+		var enemy: Enemy = body as Enemy
+		# TODO: play sword hit sound here.
+		Input.start_joy_vibration(0, strike_enemy_low_vibration, strike_enemy_strong_vibration, strike_enemy_vibration_duration)
 
 
 ## Emits [signal health_changed] and [signal max_health_changed]. Used to help UI to initialize.
