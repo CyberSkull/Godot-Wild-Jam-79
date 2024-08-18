@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://cad0yxtixdrah"]
 
-[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/slime.tscn" id="1_dmvus"]
+[ext_resource type="PackedScene" uid="uid://ddisgjrqir8u8" path="res://scenes/enemies/green_slime2.tscn" id="1_4fiat"]
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="2_1wmp7"]
 
 [resource]
 script = ExtResource("2_1wmp7")
 enemy_name = "Green Slime"
-enemy_type = ExtResource("1_dmvus")
+enemy_type = ExtResource("1_4fiat")
 spawn_chance_per_level = -40
 spawn_chance_base = 100
 developer_notes = "disappears after 3 games"
