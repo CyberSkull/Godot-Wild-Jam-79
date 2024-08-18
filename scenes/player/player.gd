@@ -103,8 +103,8 @@ func _ready() -> void:
 	# Initialize UI.
 	emit_health()
 
-
-
+var attack_duration:float = 0.3
+var time_since_attack:float = 0
 
 ## Handles movement and manages the animation state machine.
 func _physics_process(delta: float) -> void:
@@ -115,7 +115,12 @@ func _physics_process(delta: float) -> void:
 	
 	# Skip actions if player is attacking
 	if is_attacking:
-		return
+		time_since_attack+= delta
+		if time_since_attack < attack_duration:
+			return
+		is_attacking = false
+		time_since_attack = 0
+	
 	# Attack when standing still.
 	elif Input.is_action_just_pressed(&"attack") and direction.is_zero_approx():
 		playback_state.travel(&"Attack")
