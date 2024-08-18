@@ -61,7 +61,7 @@ var search_target: Vector2
 ## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
 @onready var navigator: NavigationAgent2D = %Navigator
 
-var first_phystick:bool=true
+var first_physic:bool=true
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -138,14 +138,14 @@ func _physics_process(delta: float) -> void:
 	#which leaves no time to set stuff up before moving the enemy to position
 	#due to this, I have this silly functionality here, which is definitely not the best way to do it.
 	#just is a hack for now (obvi would rather have a timer set for next tick to do this functionality..)
-	if first_phystick == true:
+	if first_physic == true:
 		#pre zero the velocity to ensure no weirdness happens.
 		velocity = Vector2(0,0)
 		target_last_known_pos = self.position
 		#artificially low amount of time before searching here, just to get the enemies into different positions
 		time_to_next_search = randf_range(1, time_between_searches_min)
 		search_target = self.position
-		first_phystick = false
+		first_physic = false
 		time_since_last_target = search_acceleration_after_seen_time+1
 	
 	# Update to the target current position.
