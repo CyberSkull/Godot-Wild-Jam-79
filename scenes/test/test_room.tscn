@@ -23,18 +23,6 @@ position = Vector2(-56, 74)
 position = Vector2(341, -135)
 target = NodePath("../Player")
 
-[node name="GreenSlime2" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_umefm")]
-position = Vector2(344, 275)
-target = NodePath("../Player")
-
-[node name="GreenSlime3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_umefm")]
-position = Vector2(-359, 277)
-target = NodePath("../Player")
-
-[node name="GreenSlime4" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_umefm")]
-position = Vector2(345, 50)
-target = NodePath("../Player")
-
 [node name="Torch" parent="." instance=ExtResource("4_lx2bi")]
 position = Vector2(-137, -158)
 

@@ -109,7 +109,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	direction = Input.get_vector(&"move_left", &"move_right", &"move_up", &"move_down")
 	
-	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_dropoff)
 	velocity = (direction * speed) + knockback_velocity
 	#print_debug("knockback velocity: ", knockback_velocity)
 	
@@ -137,17 +136,9 @@ func _physics_process(delta: float) -> void:
 		last_direction = direction
 		playback_state.travel(&"Walk")
 		animation_tree["parameters/Walk/BlendSpace2D/blend_position"] = direction
-	
-	
-	# if animation, then don't check this
-	#is_attacking = Input.is_action_just_pressed(&"attack")
-	#is_casting = Input.is_action_just_pressed(&"cast")
-	#is_using_item = Input.is_action_just_pressed(&"item")
 
-	#print_debug("velocity: ", velocity)
 	move_and_slide()
-	#move_and_collide(velocity)
-	#print_debug("velocity: ", velocity)
+	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_dropoff)
 
 
 ## Called when an [Enemy] body hits the [Player]. Sets the [member knockback_velocity] to the opposite vector of the [Enemy]'s [member CharacterBody2D.velocity].
