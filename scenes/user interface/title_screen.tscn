@@ -54,11 +54,13 @@ layout_mode = 2
 text = "Random
 "
 
-[node name="TextEdit" type="TextEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Seed" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Options…"
 

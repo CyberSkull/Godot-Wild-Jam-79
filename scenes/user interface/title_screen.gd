@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 func new_random_seed()->void:
-	$MarginContainer/VBoxContainer/HBoxContainer/TextEdit.text = str(randi())
+	%Seed.text = str(randi())
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	new_random_seed()
@@ -17,7 +17,7 @@ var simultaneous_scene = preload("res://scenes/game/game.tscn").instantiate()
 
 ## Starts the game. TODO: implement.
 func _on_start_game_button_pressed() -> void:
-	var seed = int($MarginContainer/VBoxContainer/HBoxContainer/TextEdit.text)
+	var seed = int(%Seed.text)
 
 	# This is like autoloading the scene, only
 	# it happens after already loading the main scene.
