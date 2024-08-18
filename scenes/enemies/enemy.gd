@@ -6,15 +6,13 @@ extends CharacterBody2D
 signal slain(enemy_name: StringName, points: int)
 
 ## [Enemy] maximum health.
-@export var max_health: int
+@export var max_health: int = 1
 
 ## Current [Enemy] health. Clamped to [member max_health].
-@export var health: int:
+@export var health: int = 1:
 	set(value):
 		health = clampi(value, 0, max_health)
 		print_debug(name, " health: ", health, "/", max_health)
-		if health <= 0:
-			slain.emit()
 
 ## Attack damage.
 @export var attack: int
@@ -181,3 +179,5 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		print_debug(player.name, " is striking ", self.name)
 		knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
 		health -= player.attack_damage
+		if health <= 0:
+			slain.emit()

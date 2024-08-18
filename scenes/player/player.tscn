@@ -1,7 +1,8 @@
-[gd_scene load_steps=58 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=60 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
+[ext_resource type="Material" uid="uid://b4d1wercdvlgt" path="res://scenes/player/player_blink.tres" id="2_yto81"]
 [ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="4_oheqb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bn7fm"]
@@ -137,6 +138,30 @@ tracks/9/path = NodePath(".:material:shader_parameter/flash_value")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("DuckSprite:material:shader_parameter/blink_color")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("DuckSprite:material:shader_parameter/blink_intensity")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -1112,6 +1137,34 @@ tracks/4/keys = {
 "values": [false]
 }
 
+[sub_resource type="Animation" id="Animation_pkv3d"]
+resource_name = "hurt"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DuckSprite:material:shader_parameter/blink_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("DuckSprite:material:shader_parameter/blink_intensity")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uwqgj"]
 _data = {
 "RESET": SubResource("Animation_yfc5b"),
@@ -1119,6 +1172,7 @@ _data = {
 "attack_left": SubResource("Animation_r78x8"),
 "attack_right": SubResource("Animation_nrpb8"),
 "attack_up": SubResource("Animation_lgqnf"),
+"hurt": SubResource("Animation_pkv3d"),
 "idle_down": SubResource("Animation_le1cm"),
 "idle_left": SubResource("Animation_x1ggf"),
 "idle_right": SubResource("Animation_1okrm"),
@@ -1158,13 +1212,14 @@ nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_cjm73")
 nodes/BlendSpace2D/position = Vector2(-79.76, 130.1)
 node_connections = [&"output", 0, &"BlendSpace2D"]
 
-[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_iigef"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sxcdd"]
+animation = &"hurt"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_pkwjl"]
 graph_offset = Vector2(-209.52, 70.16)
-nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_iigef")
-nodes/BlendSpace2D/position = Vector2(-35.5, 116.5)
-node_connections = [&"output", 0, &"BlendSpace2D"]
+nodes/Animation/node = SubResource("AnimationNodeAnimation_sxcdd")
+nodes/Animation/position = Vector2(-1.02, 169.16)
+node_connections = [&"output", 0, &"Animation"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t03sm"]
 animation = &"idle_left"
@@ -1286,6 +1341,7 @@ shape = SubResource("CapsuleShape2D_bn7fm")
 [node name="DuckSprite" type="Sprite2D" parent="."]
 clip_children = 2
 z_index = 10
+material = ExtResource("2_yto81")
 texture = SubResource("CanvasTexture_lrjq2")
 hframes = 12
 vframes = 4
@@ -1293,6 +1349,7 @@ vframes = 4
 [node name="LanternSprite" type="Sprite2D" parent="."]
 z_index = 11
 y_sort_enabled = true
+material = ExtResource("2_yto81")
 position = Vector2(4, 3)
 texture = SubResource("CanvasTexture_bmmqn")
 region_enabled = true
@@ -1305,6 +1362,7 @@ texture = ExtResource("4_oheqb")
 
 [node name="HurtBox" type="Area2D" parent="."]
 collision_mask = 140
+input_pickable = false
 
 [node name="HurtCollider" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(0, 0.5)
@@ -1318,6 +1376,7 @@ position = Vector2(-4, 3)
 
 [node name="SwordSprite" type="Sprite2D" parent="SwordPivot"]
 z_index = -1
+material = ExtResource("2_yto81")
 position = Vector2(0, -8)
 texture = SubResource("CanvasTexture_n5wsu")
 hframes = 12
@@ -1328,6 +1387,7 @@ region_rect = Rect2(0, 0, 192, 64)
 [node name="SwordArea" type="Area2D" parent="SwordPivot"]
 collision_layer = 2
 collision_mask = 4
+input_pickable = false
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SwordPivot/SwordArea"]
 polygon = PackedVector2Array(-1, -16, -3, -14, -3, -4, -4, -4, -4, -3, -2, -1, -2, 0, 1, 0, 1, -1, 3, -3, 3, -4, 2, -4, 2, -14, 0, -16)
@@ -1343,7 +1403,6 @@ active = false
 tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
-parameters/Hurt/BlendSpace2D/blend_position = Vector2(0, 0)
 parameters/Idle/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)

@@ -5,6 +5,11 @@ class_name Level
 @export var generator_scene: PackedScene
 var generator: LevelGenerator
 
+@export var player: Player = null
+
+## TODO move this functionalty out of [Level] and into [Game].
+@export var PlayerUI: CanvasLayer = null
+
 var random: RandomNumberGenerator
 
 var current_score: int
@@ -26,8 +31,8 @@ func create_level(level_number: int):
 		generator = null;
 	generator = generator_scene.instantiate()
 	add_child(generator)
-	generator.player_instance = $Player
+	generator.player_instance = player
 	generator.generate(random, level_number) # later could make 
-	$InGameUI.show_loading_screen(false)
+	PlayerUI.show_loading_screen(false)
 
 
