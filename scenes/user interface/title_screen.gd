@@ -13,7 +13,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-var simultaneous_scene:Level = preload("res://scenes/level_generator/Level.tscn").instantiate()
+var simultaneous_scene = preload("res://scenes/game/game.tscn").instantiate()
 
 ## Starts the game. TODO: implement.
 func _on_start_game_button_pressed() -> void:
@@ -22,11 +22,8 @@ func _on_start_game_button_pressed() -> void:
 	# This is like autoloading the scene, only
 	# it happens after already loading the main scene.
 	get_tree().root.add_child(simultaneous_scene)
-	simultaneous_scene.random.seed = seed
-	simultaneous_scene.create_level(0)
+	simultaneous_scene.start_game(seed)
 	queue_free()
-	#OS.alert("Main game not implemented yet. ☹️", "Unimplemented function!")
-	pass # Replace with function body.
 
 
 
