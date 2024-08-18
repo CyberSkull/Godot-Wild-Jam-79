@@ -10,6 +10,8 @@ Dakota Duck is descending into The Dark Slime Dungeon! Part of the Godot Wild Ga
 * Dakota Duck character design and sprite sheet by Moss.
 * Map tiles, exit ladders and all items art done by internetzspacezshipz (excluding torch)
 
+## Acknowlegements
+Acknowlengements in source code.
 
 ## Known bugs:
 * Dakota's sword may not properly disable itself and enemies may collide with it and take damage.
