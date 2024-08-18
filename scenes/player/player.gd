@@ -31,9 +31,9 @@ signal died()
 
 
 ## Raw attack power.
-@export var attack_damage: int
+@export var attack_damage: int = 1
 ## Defence power. WARNING: not used.
-@export var defence: int
+@export var defence: int = 1
 
 ## Movement speed in pixels per second.
 @export var speed: float = 64

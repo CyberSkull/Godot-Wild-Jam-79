@@ -12,12 +12,23 @@ signal slain(enemy_name: StringName, points: int)
 @export var health: int:
 	set(value):
 		health = clampi(value, 0, max_health)
+		print_debug(name, " health: ", health, "/", max_health)
+		if health <= 0:
+			slain.emit()
 
 ## Attack damage.
 @export var attack: int
 
 ## Movement speed in pixel/second.
 @export var speed: float
+
+## Knockback velocity in pixels per second.
+@export var knockback_speed: float = 128
+
+var knockback_velocity: Vector2 = Vector2.ZERO
+
+# Attenuation rate of the [member knockback_velocty].
+@export_range(0, 1) var knockback_attenuation: float = 0.1
 
 ## [Node] the [Enemy] is targeting.
 @export var target: Node2D = null
@@ -47,7 +58,7 @@ var time_to_next_search: float = 0
 #If this falls within the search_acceleration_after_seen_time, it will be an intensive search.
 var time_since_last_target: float = 0
 
-var search_target:Vector2
+var search_target: Vector2
 
 ## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
 @onready var navigator: NavigationAgent2D = %Navigator
@@ -58,10 +69,10 @@ var first_phystick:bool=true
 func _ready() -> void:
 	pass
 
-func set_no_aggro():
-	lose_agro_time_current = lose_agro_time+1
+func set_no_aggro() -> void:
+	lose_agro_time_current = lose_agro_time + 1
 	
-func is_aggroed()->bool:
+func is_aggroed() -> bool:
 	return lose_agro_time_current < lose_agro_time;
 	
 
@@ -71,7 +82,7 @@ func determine_aggro_state(delta :float):
 		return
 	
 	var space_state = get_world_2d().direct_space_state
-	var query = PhysicsRayQueryParameters2D.create(self.position, target.position)
+	var query = PhysicsRayQueryParameters2D.create(position, target.position)
 	
 	#need to get RID for these. whatever for now.
 	#query.exclude.push_back(target)
@@ -93,17 +104,17 @@ func determine_aggro_state(delta :float):
 		target_last_known_pos = target.global_position
 		lose_agro_time_current += delta;
 
-func increment_time_since_seen(delta:float):
+func increment_time_since_seen(delta: float) -> void:
 	if time_since_last_target < search_acceleration_after_seen_time:#don't do it if we're over anyway
 		time_since_last_target += delta
 
-func reset_search_time()->void:
+func reset_search_time() -> void:
 	time_to_next_search = -1
 	time_since_last_target = 0
 
-func search_logic(delta:float)->Vector2:
+func search_logic(delta: float) -> Vector2:
 	if time_to_next_search < 0:
-		var random_dir :float= randf_range(0,TAU)
+		var random_dir: float = randf_range(0, TAU)
 		
 		var search_distance = randf_range(search_distance_min, search_distance_max)
 		#if seen enemy recently, search more often!
@@ -152,10 +163,21 @@ func _physics_process(delta: float) -> void:
 	# Currently do nothing if destination is reached.
 	if navigator.is_navigation_finished():
 		#must be set to stop movement, and to allow the idle anim to play
-		velocity = Vector2(0,0)
+		velocity = Vector2.ZERO
 		return
 	# Get vector to next path point and set to character velocity * speed.
 	var next_path_position: Vector2 = navigator.get_next_path_position()
-	velocity = global_position.direction_to(next_path_position) * speed * delta * 100
-
+	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
+	knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 	move_and_slide()
+
+
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	print_debug("attacking area: ", area)
+	print_debug("area parent.parent is: ", area.get_parent().get_parent())
+	print_debug("area parent.parent is player? ", area.get_parent().get_parent() is Player)
+	if area.get_parent().get_parent() is Player:
+		var player: Player = area.get_parent().get_parent() as Player
+		print_debug(player.name, " is striking ", self.name)
+		knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
+		health -= player.attack_damage
