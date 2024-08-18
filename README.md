@@ -16,7 +16,6 @@ Acknowlengements in source code.
 ## Known bugs:
 * Dakota's sword may not properly disable itself and enemies may collide with it and take damage.
 * Dakota's damage animation usually doesn't play.
-* Dakota can become stuck in the sword swing state.
 * Return to title screen does not occur due to a reference issue.
 
 ## Godot Wild Jam 72
