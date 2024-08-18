@@ -7,6 +7,6 @@
 script = ExtResource("2_pq6ta")
 enemy_name = "Blue Slime"
 enemy_type = ExtResource("1_jtumu")
-spawn_chance_per_level = -10
-spawn_chance_base = 40
+spawn_chance_per_level = 30
+spawn_chance_base = -75
 developer_notes = "Disappears after 4 levels"
