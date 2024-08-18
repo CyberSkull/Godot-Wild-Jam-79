@@ -1,5 +1,5 @@
-@icon("res://graphics/slime/Green Slime icon.png")
-class_name green_slime
+@icon("res://graphics/slime/Grey Slime icon.png")
+class_name Slime
 extends Enemy
 
 ## Cached [AnimationPlayer] reference.

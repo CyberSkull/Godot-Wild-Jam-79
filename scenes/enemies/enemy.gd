@@ -15,10 +15,10 @@ signal slain(enemy_name: StringName, points: int)
 		print_debug(name, " health: ", health, "/", max_health)
 
 ## Attack damage.
-@export var attack: int
+@export var attack: int = 1
 
 ## Movement speed in pixel/second.
-@export var speed: float
+@export var speed: float = 20
 
 ## Knockback velocity in pixels per second.
 @export var knockback_speed: float = 128

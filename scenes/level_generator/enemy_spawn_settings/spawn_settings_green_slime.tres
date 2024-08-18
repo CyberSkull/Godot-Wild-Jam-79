@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://cad0yxtixdrah"]
 
-[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/green_slime_old.tscn" id="1_dmvus"]
+[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/slime.tscn" id="1_dmvus"]
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="2_1wmp7"]
 
 [resource]

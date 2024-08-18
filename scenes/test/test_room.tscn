@@ -2,7 +2,7 @@
 
 [ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://graphics/dungeon/LogicalTiles.tres" id="1_uc42n"]
 [ext_resource type="PackedScene" uid="uid://b8lqvc0s4q0lx" path="res://scenes/player/player.tscn" id="2_w17tv"]
-[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/green_slime.tscn" id="3_umefm"]
+[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/slime.tscn" id="3_umefm"]
 [ext_resource type="PackedScene" uid="uid://b7nyf72dip0wc" path="res://scenes/environment/torch.tscn" id="4_lx2bi"]
 
 [node name="Node2D" type="Node2D"]

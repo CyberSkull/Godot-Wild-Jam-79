@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://cd85ffel11kkk"]
+
+[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/slime.tscn" id="1_y2qrh"]
+[ext_resource type="Texture2D" uid="uid://brsb7ojj2mkj4" path="res://graphics/slime/red slime spritesheet calciumtrice_0.png" id="2_0yuml"]
+
+[node name="RedSlime" instance=ExtResource("1_y2qrh")]
+max_health = 10
+health = 10
+attack = 5
+
+[node name="Sprite2D" parent="." index="1"]
+texture = ExtResource("2_0yuml")
