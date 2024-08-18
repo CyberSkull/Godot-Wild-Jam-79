@@ -5,3 +5,5 @@ Repository for [Godot Wild Jam 72](https://itch.io/jam/godot-wild-jam-72).
 ![Wildcards: Dynamic Perspective, Curses & What the Duck](GWJ/72-All-Cards.png)
 
 [Design doc](https://docs.google.com/document/d/10iIuY10_H25JpPuGTPwvYvNa8YPdun2npG8JguPPquc)
+
+[itch.io page](https://dreadlordcyberskull.itch.io/dakota-duck-in-the-dark-slime-dungeon)
