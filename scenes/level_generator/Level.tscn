@@ -1,18 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://elmyj5t8pim8"]
+[gd_scene load_steps=3 format=3 uid="uid://elmyj5t8pim8"]
 
 [ext_resource type="Script" path="res://scenes/level_generator/Level.gd" id="1_0f1qi"]
 [ext_resource type="PackedScene" uid="uid://rjx6cymyrjs0" path="res://scenes/level_generator/LevelGenerator.tscn" id="2_otm1h"]
-[ext_resource type="PackedScene" uid="uid://carljqywqdma2" path="res://scenes/user interface/in game/InGameUI.tscn" id="3_017y1"]
-[ext_resource type="PackedScene" uid="uid://b8lqvc0s4q0lx" path="res://scenes/player/player.tscn" id="4_ep48n"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_0f1qi")
 generator_scene = ExtResource("2_otm1h")
-
-[node name="InGameUI" parent="." instance=ExtResource("3_017y1")]
-
-[node name="Player" parent="." instance=ExtResource("4_ep48n")]
-position = Vector2(128, 128)
-
-[connection signal="health_changed" from="Player" to="InGameUI" method="_on_player_health_changed"]
-[connection signal="max_health_changed" from="Player" to="InGameUI" method="_on_player_max_health_changed"]
