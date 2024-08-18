@@ -620,9 +620,26 @@ func compute_spawn_chances():
 		#ensure non-negative chance
 		if enemy_chance > 0:
 			total_enemy_spawn_chance+=enemy_chance
-			if enemy_spawn_chances_for_current_level.find_key(total_enemy_spawn_chance):
-				print("how the fucking shit? That makes no sense! Sanity broken!!!!")
 			enemy_spawn_chances_for_current_level[total_enemy_spawn_chance] = enemy_setting
+
+func handle_spawn_room_items(room:RoomStruct):
+	var tm :TileMap = $LogicalTiles
+	
+	var ignore_list:Array[Vector2i]=[];
+	for idx in range(0, mini(generator_resource.objects.size(), generator_resource.objects_per_room.size())):
+		var spawn_range:Vector2i = generator_resource.objects_per_room[idx]
+		var num_to_spawn = random.randi_range(spawn_range.x, spawn_range.y)
+		for to_spawn_idx in range(0, num_to_spawn):
+			var loc = find_floor_spaces(room, ignore_list)
+			if (loc[0] == false):
+				#no more locations in room!
+				return;
+			ignore_list.push_back(loc[1])
+			
+			var new_object = generator_resource.objects[idx].instantiate()
+			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
+			add_child(new_object)
+		
 
 func end_level():
 	var level = get_parent() as Level
@@ -688,6 +705,9 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	#add additional passages between rooms
 	for room:RoomStruct in all_rooms:
 		handle_room_additional_connection(room)
+	
+	for room:RoomStruct in all_rooms:
+		handle_spawn_room_items(room)
 	
 	#precompute enemy spawn chances
 	compute_spawn_chances()

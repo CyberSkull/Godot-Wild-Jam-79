@@ -17,12 +17,12 @@ class_name LevelGenerationSettings
 @export var chance_of_weird_room_no4:int=10
 @export var chance_of_weird_room_no5:int=10
 @export var chance_of_weird_room_no6:int=10
-
-@export_group("Items per room")
 @export var base_number_of_rooms_min:int= 2
 @export var base_number_of_rooms_max:int= 5
-@export var number_items_per_room_min:int= 2
-@export var number_items_per_room_max:int= 5
+
+@export_group("Items")
+@export var objects:Array[PackedScene]
+@export var objects_per_room:Array[Vector2i]
 
 @export_group("enemies")
 
@@ -35,3 +35,4 @@ class_name LevelGenerationSettings
 @export_group("Tile Set")
 @export var tile_set : TileSet;
 @export var exit_object : PackedScene
+
