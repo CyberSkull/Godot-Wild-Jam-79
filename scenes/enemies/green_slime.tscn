@@ -478,7 +478,7 @@ states/Idle/position = Vector2(389, 100)
 states/Moving/node = SubResource("AnimationNodeBlendTree_d4fkr")
 states/Moving/position = Vector2(558.805, 12.485)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_13xtg"), "Idle", "Moving", SubResource("AnimationNodeStateMachineTransition_sr83d"), "Moving", "Idle", SubResource("AnimationNodeStateMachineTransition_xxyrt"), "Attack", "Moving", SubResource("AnimationNodeStateMachineTransition_2xamd"), "Moving", "Attack", SubResource("AnimationNodeStateMachineTransition_bgy37"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_2s2ng"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_34uhm"), "Hurt", "Death", SubResource("AnimationNodeStateMachineTransition_u5pnr"), "Moving", "Hurt", SubResource("AnimationNodeStateMachineTransition_rf3lj"), "Hurt", "Moving", SubResource("AnimationNodeStateMachineTransition_6oxci"), "Hurt", "Attack", SubResource("AnimationNodeStateMachineTransition_2mbk5"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_7i1lb"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_quag6"), "Attack", "Hurt", SubResource("AnimationNodeStateMachineTransition_ageje")]
-graph_offset = Vector2(85.5352, -8.11501)
+graph_offset = Vector2(103.535, -54.115)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bw5ub"]
 radius = 6.0

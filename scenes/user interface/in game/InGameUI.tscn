@@ -7,6 +7,7 @@
 script = ExtResource("1_8xasy")
 
 [node name="LoadingScreen" type="TextureRect" parent="."]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -17,7 +18,6 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="PlayerUserInterface" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
