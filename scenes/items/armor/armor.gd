@@ -1,14 +1,14 @@
 extends Area2D
 
 @export var speed_multiply:float=0.95
-@export var armor_multiply:float=1.2
+@export var armor_add:int=1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
 
 func picked_up(player:Player):
-	#player.speed *= speed
+	player.defence += armor_add
 	queue_free()
 
 func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:

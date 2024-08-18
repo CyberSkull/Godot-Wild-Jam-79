@@ -115,7 +115,6 @@ func _physics_process(delta: float) -> void:
 	# Skip actions if player is attacking
 	if is_attacking:
 		return
-	
 	# Attack when standing still.
 	elif Input.is_action_just_pressed(&"attack") and direction.is_zero_approx():
 		playback_state.travel(&"Attack")
@@ -150,7 +149,9 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	if area.get_parent() is Enemy:
 		var enemy: Enemy = area.get_parent()
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
-		health -= enemy.attack
+		print("dam ",health)
+		health -= maxi(enemy.attack - defence, 1)#does minimum 1 damage - no armor can prevent this.
+		print(health)
 		playback_state.travel(&"Hurt")
 		Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
 
