@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=3 uid="uid://b8lqvc0s4q0lx"]
+[gd_scene load_steps=60 format=3 uid="uid://b8lqvc0s4q0lx"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
@@ -6,8 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="4_oheqb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_bn7fm"]
-radius = 6.0
-height = 12.0
+radius = 3.0
+height = 8.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_lrjq2"]
 diffuse_texture = ExtResource("2_cgsfr")
@@ -15,8 +15,8 @@ diffuse_texture = ExtResource("2_cgsfr")
 [sub_resource type="CanvasTexture" id="CanvasTexture_bmmqn"]
 diffuse_texture = ExtResource("2_cgsfr")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sosmw"]
-size = Vector2(8, 11)
+[sub_resource type="CircleShape2D" id="CircleShape2D_leew2"]
+radius = 6.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_n5wsu"]
 diffuse_texture = ExtResource("2_cgsfr")
@@ -167,18 +167,6 @@ tracks/11/keys = {
 "update": 0,
 "values": [0.0]
 }
-tracks/12/type = "value"
-tracks/12/imported = false
-tracks/12/enabled = true
-tracks/12/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/12/interp = 1
-tracks/12/loop_wrap = true
-tracks/12/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="Animation" id="Animation_dhw74"]
 resource_name = "attack_down"
@@ -291,18 +279,6 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 4]
 }
 
 [sub_resource type="Animation" id="Animation_r78x8"]
@@ -417,18 +393,6 @@ tracks/8/keys = {
 "update": 1,
 "values": [11]
 }
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 4]
-}
 
 [sub_resource type="Animation" id="Animation_nrpb8"]
 resource_name = "attack_right"
@@ -541,18 +505,6 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 4]
 }
 
 [sub_resource type="Animation" id="Animation_lgqnf"]
@@ -667,18 +619,6 @@ tracks/8/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/9/type = "value"
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/keys = {
-"times": PackedFloat32Array(0, 0.3),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [0, 4]
-}
 
 [sub_resource type="Animation" id="Animation_pkv3d"]
 resource_name = "hurt"
@@ -706,18 +646,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [0.0, 1.0, 0.0]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_le1cm"]
@@ -783,18 +711,6 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="Animation" id="Animation_x1ggf"]
 resource_name = "idle_left"
@@ -859,18 +775,6 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="Animation" id="Animation_1okrm"]
 resource_name = "idle_right"
@@ -934,18 +838,6 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_aedc7"]
@@ -1012,18 +904,6 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="Animation" id="Animation_j6xxd"]
 resource_name = "walk_down"
@@ -1088,18 +968,6 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_7npy5"]
@@ -1166,18 +1034,6 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="Animation" id="Animation_3kr67"]
 resource_name = "walk_right"
@@ -1242,18 +1098,6 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [false]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
 }
 
 [sub_resource type="Animation" id="Animation_bkrd6"]
@@ -1320,18 +1164,6 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("SwordPivot/SwordArea:process_mode")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [4]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uwqgj"]
 _data = {
@@ -1367,7 +1199,7 @@ animation = &"attack_right"
 blend_point_0/node = SubResource("AnimationNodeAnimation_26qsg")
 blend_point_0/pos = Vector2(2.08167e-14, 0.9)
 blend_point_1/node = SubResource("AnimationNodeAnimation_fjogu")
-blend_point_1/pos = Vector2(0, -0.9)
+blend_point_1/pos = Vector2(2.08167e-14, -0.9)
 blend_point_2/node = SubResource("AnimationNodeAnimation_tbghu")
 blend_point_2/pos = Vector2(-1, 0)
 blend_point_3/node = SubResource("AnimationNodeAnimation_ekl25")
@@ -1375,7 +1207,7 @@ blend_point_3/pos = Vector2(1, 0)
 blend_mode = 1
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_4vaqt"]
-graph_offset = Vector2(-199, 54)
+graph_offset = Vector2(-145.92, 117.12)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_cjm73")
 nodes/BlendSpace2D/position = Vector2(-79.76, 130.1)
 node_connections = [&"output", 0, &"BlendSpace2D"]
@@ -1412,12 +1244,16 @@ blend_point_3/node = SubResource("AnimationNodeAnimation_k3nra")
 blend_point_3/pos = Vector2(0, -0.9)
 blend_mode = 1
 
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_32oj3"]
+
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_j1ulr"]
-graph_offset = Vector2(13.28, 76.8)
+graph_offset = Vector2(41.28, 148.8)
 nodes/BlendSpace2D/node = SubResource("AnimationNodeBlendSpace2D_7atul")
-nodes/BlendSpace2D/position = Vector2(320, 120)
+nodes/BlendSpace2D/position = Vector2(126.92, 146.34)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_32oj3")
+nodes/TimeScale/position = Vector2(370, 140)
 nodes/output/position = Vector2(600, 170)
-node_connections = [&"output", 0, &"BlendSpace2D"]
+node_connections = [&"TimeScale", 0, &"BlendSpace2D", &"output", 0, &"TimeScale"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_o0ew2"]
 animation = &"walk_left"
@@ -1490,11 +1326,11 @@ states/Idle/position = Vector2(338.31, 99.9459)
 states/Walk/node = SubResource("AnimationNodeBlendTree_s2t2l")
 states/Walk/position = Vector2(475.81, 245.568)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_bqoto"), "Idle", "Walk", SubResource("AnimationNodeStateMachineTransition_xu8p2"), "Walk", "Idle", SubResource("AnimationNodeStateMachineTransition_bpl5n"), "Idle", "Attack", SubResource("AnimationNodeStateMachineTransition_3wiv5"), "Attack", "Idle", SubResource("AnimationNodeStateMachineTransition_yr50h"), "Attack", "Walk", SubResource("AnimationNodeStateMachineTransition_ku25x"), "Walk", "Attack", SubResource("AnimationNodeStateMachineTransition_5pj45"), "Idle", "Hurt", SubResource("AnimationNodeStateMachineTransition_4w4ma"), "Hurt", "Idle", SubResource("AnimationNodeStateMachineTransition_15ae5"), "Walk", "Hurt", SubResource("AnimationNodeStateMachineTransition_n3lkn"), "Hurt", "Walk", SubResource("AnimationNodeStateMachineTransition_5ajh7"), "Hurt", "Attack", SubResource("AnimationNodeStateMachineTransition_1kpd1"), "Attack", "Hurt", SubResource("AnimationNodeStateMachineTransition_kntk7")]
-graph_offset = Vector2(27.865, -90.2706)
+graph_offset = Vector2(5.865, -145.271)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
 position = Vector2(8, 8)
-collision_mask = 321
+collision_mask = 325
 script = ExtResource("1_km6pe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -1530,8 +1366,8 @@ collision_mask = 140
 input_pickable = false
 
 [node name="HurtCollider" type="CollisionShape2D" parent="HurtBox"]
-position = Vector2(0, 0.5)
-shape = SubResource("RectangleShape2D_sosmw")
+position = Vector2(0, 3)
+shape = SubResource("CircleShape2D_leew2")
 debug_color = Color(0.88613, 0.208916, 0.641106, 0.42)
 
 [node name="SwordPivot" type="Marker2D" parent="."]
@@ -1550,7 +1386,6 @@ frame = 36
 region_rect = Rect2(0, 0, 192, 64)
 
 [node name="SwordArea" type="Area2D" parent="SwordPivot"]
-process_mode = 4
 collision_layer = 2
 collision_mask = 4
 input_pickable = false
@@ -1570,6 +1405,7 @@ tree_root = SubResource("AnimationNodeStateMachine_n7iaj")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Attack/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
 parameters/Idle/BlendSpace2D/blend_position = Vector2(2.08165e-12, 2.08165e-12)
+parameters/Idle/TimeScale/scale = 1.0
 parameters/Walk/BlendSpace2D/blend_position = Vector2(0, 0)
 
 [node name="Camera2D" type="Camera2D" parent="."]
