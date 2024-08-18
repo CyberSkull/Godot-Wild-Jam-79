@@ -140,7 +140,7 @@ func _physics_process(delta: float) -> void:
 	#just is a hack for now (obvi would rather have a timer set for next tick to do this functionality..)
 	if first_physic == true:
 		#pre zero the velocity to ensure no weirdness happens.
-		velocity = Vector2(0,0)
+		velocity = Vector2.ZERO
 		target_last_known_pos = self.position
 		#artificially low amount of time before searching here, just to get the enemies into different positions
 		time_to_next_search = randf_range(1, time_between_searches_min)
@@ -166,8 +166,9 @@ func _physics_process(delta: float) -> void:
 	# Get vector to next path point and set to character velocity * speed.
 	var next_path_position: Vector2 = navigator.get_next_path_position()
 	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
-	knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 	move_and_slide()
+	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
+	print_debug(self, " knockback velocity: ", knockback_velocity)
 
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
@@ -177,7 +178,8 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 	if area.get_parent().get_parent() is Player:
 		var player: Player = area.get_parent().get_parent() as Player
 		print_debug(player.name, " is striking ", self.name)
-		knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
+		#knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
+		knockback_velocity = -global_position.direction_to(player.global_position) * knockback_speed
 		health -= player.attack_damage
 		if health <= 0:
 			slain.emit()
