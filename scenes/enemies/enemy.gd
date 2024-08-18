@@ -168,7 +168,6 @@ func _physics_process(delta: float) -> void:
 	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
 	move_and_slide()
 	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
-	print_debug(self, " knockback velocity: ", knockback_velocity)
 
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:

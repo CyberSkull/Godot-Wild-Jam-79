@@ -490,7 +490,7 @@ radius = 7.0
 script = ExtResource("1_kmye7")
 max_health = 5
 health = 5
-attack = 1
+attack = 5
 speed = 25.0
 
 [node name="Navigator" parent="." index="0"]

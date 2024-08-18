@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1tc11td06jq"]
+
+[ext_resource type="Script" path="res://scenes/items/Boots/boots.gd" id="1_8xdhm"]
+[ext_resource type="Texture2D" uid="uid://d3olrfcjd5dym" path="res://scenes/items/Boots/Boots.png" id="2_iriqv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
+
+[node name="Boots" type="Area2D"]
+script = ExtResource("1_8xdhm")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_iriqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_kuwir")
+
+[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
