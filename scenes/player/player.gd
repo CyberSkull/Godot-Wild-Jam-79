@@ -28,6 +28,7 @@ signal died()
 		health_changed.emit(health)
 		if health <= 0:
 			died.emit()
+			queue_free()
 
 
 ## Raw attack power.
