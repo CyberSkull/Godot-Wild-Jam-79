@@ -1494,7 +1494,7 @@ graph_offset = Vector2(27.865, -90.2706)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
 position = Vector2(8, 8)
-collision_mask = 325
+collision_mask = 321
 script = ExtResource("1_km6pe")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

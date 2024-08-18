@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://knb1i6ls5syh"]
+[gd_scene load_steps=8 format=3 uid="uid://knb1i6ls5syh"]
 
 [ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://graphics/dungeon/LogicalTiles.tres" id="1_uc42n"]
 [ext_resource type="PackedScene" uid="uid://b8lqvc0s4q0lx" path="res://scenes/player/player.tscn" id="2_w17tv"]
-[ext_resource type="PackedScene" uid="uid://dv03tlr12jaeg" path="res://scenes/enemies/slime.tscn" id="3_umefm"]
+[ext_resource type="PackedScene" uid="uid://o6wv3mv6cjao" path="res://scenes/enemies/green_slime.tscn" id="3_qba62"]
 [ext_resource type="PackedScene" uid="uid://b7nyf72dip0wc" path="res://scenes/environment/torch.tscn" id="4_lx2bi"]
+[ext_resource type="PackedScene" uid="uid://cd85ffel11kkk" path="res://scenes/enemies/red_slime.tscn" id="5_f2r21"]
+[ext_resource type="PackedScene" uid="uid://cuxr43oln6ych" path="res://scenes/enemies/yellow_slime.tscn" id="6_j2uct"]
+[ext_resource type="PackedScene" uid="uid://cr6fgnraeffa2" path="res://scenes/enemies/blue_slime.tscn" id="7_obv71"]
 
 [node name="Node2D" type="Node2D"]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
 color = Color(0.0705882, 0.0705882, 0.0705882, 1)
 
 [node name="TestRoom" type="TileMap" parent="."]
@@ -19,9 +23,8 @@ layer_0/tile_data = PackedInt32Array(-65543, 65536, 0, -7, 65536, 0, 65529, 6553
 [node name="Player" parent="." instance=ExtResource("2_w17tv")]
 position = Vector2(-56, 74)
 
-[node name="GreenSlime" parent="." node_paths=PackedStringArray("target") instance=ExtResource("3_umefm")]
-position = Vector2(341, -135)
-target = NodePath("../Player")
+[node name="GreenSlime" parent="." instance=ExtResource("3_qba62")]
+position = Vector2(341.046, -106.833)
 
 [node name="Torch" parent="." instance=ExtResource("4_lx2bi")]
 position = Vector2(-137, -158)
@@ -33,3 +36,12 @@ frame_progress = 0.183173
 [node name="Torch3" parent="." instance=ExtResource("4_lx2bi")]
 position = Vector2(191, -150)
 frame_progress = 0.183173
+
+[node name="RedSlime" parent="." instance=ExtResource("5_f2r21")]
+position = Vector2(-362.75, 280.013)
+
+[node name="YellowSlime" parent="." instance=ExtResource("6_j2uct")]
+position = Vector2(339.723, 278.232)
+
+[node name="BlueSlime" parent="." instance=ExtResource("7_obv71")]
+position = Vector2(339.264, 117.674)
