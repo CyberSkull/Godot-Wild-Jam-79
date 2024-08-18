@@ -8,5 +8,5 @@ script = ExtResource("2_quroj")
 enemy_name = "Yellow Slime"
 enemy_type = ExtResource("1_lbwu5")
 spawn_chance_per_level = 15
-spawn_chance_base = -60
+spawn_chance_base = -30
 developer_notes = "shows up first after 5 levels"

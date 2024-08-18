@@ -8,6 +8,6 @@ script = ExtResource("2_030cl")
 enemy_name = "Red Slime"
 enemy_type = ExtResource("1_hegko")
 spawn_chance_per_level = 10
-spawn_chance_base = 5
+spawn_chance_base = 10
 developer_notes = "Should be the primary enemy by mid to late game
 "
