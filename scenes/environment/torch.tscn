@@ -55,3 +55,4 @@ frame_progress = 0.719851
 color = Color(0.906214, 0.592347, 0.281373, 1)
 shadow_enabled = true
 texture = ExtResource("2_4vxi1")
+texture_scale = 0.8
