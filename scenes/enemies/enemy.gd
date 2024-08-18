@@ -87,7 +87,7 @@ func determine_aggro_state(delta :float):
 	#query.exclude.push_back(self)
 	var result = space_state.intersect_ray(query)
 	#if the target is seen...
-	if result.size() == 0:
+	if result.size() && result["collider"] == target || result.size() == 0:
 		#target is within aggro range! Get him!
 		if target.position.distance_to(self.position) < aggro_dist:
 			lose_agro_time_current = 0
