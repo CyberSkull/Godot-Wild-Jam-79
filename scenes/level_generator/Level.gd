@@ -16,11 +16,12 @@ var current_score: int
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	pass
 	# TODO: add option to specify the seed in the begining of the game, or settings perhaps.
-	random = RandomNumberGenerator.new()
+	#random = RandomNumberGenerator.new()
 	# Make initial level.
 	#$InGameUI.player = $Player
-	create_level(0)
+	#create_level(0)
 
 
 ## Creates the level.

@@ -620,9 +620,26 @@ func compute_spawn_chances():
 		#ensure non-negative chance
 		if enemy_chance > 0:
 			total_enemy_spawn_chance+=enemy_chance
-			if enemy_spawn_chances_for_current_level.find_key(total_enemy_spawn_chance):
-				print("how the fucking shit? That makes no sense! Sanity broken!!!!")
 			enemy_spawn_chances_for_current_level[total_enemy_spawn_chance] = enemy_setting
+
+func handle_spawn_room_items(room:RoomStruct):
+	var tm :TileMap = $LogicalTiles
+	
+	var ignore_list:Array[Vector2i]=[];
+	for idx in range(0, mini(generator_resource.objects.size(), generator_resource.objects_per_room.size())):
+		var spawn_range:Vector2i = generator_resource.objects_per_room[idx]
+		var num_to_spawn = maxi(random.randi_range(spawn_range.x, spawn_range.y),0)
+		for to_spawn_idx in range(0, num_to_spawn):
+			var loc = find_floor_spaces(room, ignore_list)
+			if (loc[0] == false):
+				#no more locations in room!
+				return;
+			ignore_list.push_back(loc[1])
+			
+			var new_object = generator_resource.objects[idx].instantiate()
+			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
+			add_child(new_object)
+		
 
 func end_level():
 	var level = get_parent() as Level
@@ -689,6 +706,9 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	for room:RoomStruct in all_rooms:
 		handle_room_additional_connection(room)
 	
+	for room:RoomStruct in all_rooms:
+		handle_spawn_room_items(room)
+	
 	#precompute enemy spawn chances
 	compute_spawn_chances()
 	#spawn enemies
@@ -742,7 +762,7 @@ func setup_cell_visual(logical_cell:Vector2i):
 		var c:bool=tm.get_cell_atlas_coords(0, cv)==compare #bot left
 		var d:bool=tm.get_cell_atlas_coords(0, dv)==compare #bot right
 		
-		var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1) 
+		var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1)
 		
 		vm.set_cell(LAYER_IDX, logical_cell, 0, combine);
 	
@@ -750,23 +770,24 @@ func setup_cell_visual(logical_cell:Vector2i):
 func create_visible(real_extent_top_left:Vector2i, real_extent_bot_right:Vector2i):
 	#todo: loop all grid cells and then
 	for x in range(real_extent_top_left.x, real_extent_bot_right.x):
-		print(x-real_extent_top_left.x, " of ", real_extent_bot_right.x-real_extent_top_left.x)
 		for y in range(real_extent_top_left.y, real_extent_bot_right.y):
 			setup_cell_visual(Vector2i(x,y))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta: float) -> void:
-	return
-	#REALLY BAD DOES NOT WORK WELL.
-	if enemy_spawn_list.size() > 0:
-		var tm :TileMap = $LogicalTiles
-		var enemyloc = enemy_spawn_list.keys()[0]
-		
-		var new_enemy:Enemy= enemy_spawn_list[enemyloc].instantiate()
-		new_enemy.target = player_instance
-		var location :Vector2i = tile_space_to_pixel_space(enemyloc)
-		add_child(new_enemy)
-		new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
-		print("added enemy")
-		enemy_spawn_list.erase(enemyloc)
+func spawn_waiting_enemies()->void:
+	var tm :TileMap = $LogicalTiles
+	var enemyloc = enemy_spawn_list.keys()[0]
+	
+	var new_enemy:Enemy= enemy_spawn_list[enemyloc].instantiate()
+	new_enemy.target = player_instance
+	var location :Vector2i = tile_space_to_pixel_space(enemyloc)
+	add_child(new_enemy)
+	new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
+	print("added enemy")
+	enemy_spawn_list.erase(enemyloc)
 	pass
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	#REALLY BAD DOES NOT WORK WELL.
+	while enemy_spawn_list.size() > 0:
+		spawn_waiting_enemies()
