@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var give_score:int=20
+@export var give_score:int=1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -11,6 +11,7 @@ func picked_up(player:Player):
 	#if player.score == player.max_health:
 	#	return
 	#player.healthd += give_health
+	player.gold += give_score
 	queue_free()
 
 func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:

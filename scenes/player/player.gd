@@ -12,6 +12,7 @@ signal buff_changed()
 ## Emitted when the [Player] dies. Triggers game over.
 signal died()
 
+var gold:int = 0
 
 ## Maximum [Player] health. Emits [signal health_changed] when changed.
 @export var max_health: int = 100:

@@ -11,6 +11,8 @@ extends CanvasLayer
 var health_style: StyleBoxFlat
 var health_gradient: Gradient = preload("res://scenes/user interface/in game/health_gradient.tres")
 
+var character:Player
+
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	health_style = %HealthBar.get_theme_stylebox("fill").duplicate()
@@ -29,8 +31,12 @@ func show_loading_screen(show: bool) -> void:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	#if player:
-		#%HealthBar.set_value_no_signal(player.health)
+	if character != null:
+		$PlayerUserInterface/Score.text = "gold: " + str(character.gold)
+		$PlayerUserInterface/Attack.text = "atk: " + str(character.attack_damage)
+		$PlayerUserInterface/Defense.text = "def: " + str(character.defence)
+		$PlayerUserInterface/Speed.text = "spd: " + str(character.speed)
+		
 	pass
 
 
