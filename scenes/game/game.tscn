@@ -16,5 +16,6 @@ PlayerUI = NodePath("../InGameUI")
 
 [node name="Player" parent="." instance=ExtResource("3_gugvb")]
 
+[connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="health_changed" from="Player" to="InGameUI" method="_on_player_health_changed"]
 [connection signal="max_health_changed" from="Player" to="InGameUI" method="_on_player_max_health_changed"]

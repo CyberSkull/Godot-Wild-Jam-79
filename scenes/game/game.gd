@@ -14,3 +14,7 @@ func start_game(new_seed:int):
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+
+func _on_player_died() -> void:
+	get_tree().change_scene_to_file("res://scenes/user interface/title_screen.tscn")
