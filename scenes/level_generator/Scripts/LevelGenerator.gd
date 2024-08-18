@@ -628,7 +628,7 @@ func handle_spawn_room_items(room:RoomStruct):
 	var ignore_list:Array[Vector2i]=[];
 	for idx in range(0, mini(generator_resource.objects.size(), generator_resource.objects_per_room.size())):
 		var spawn_range:Vector2i = generator_resource.objects_per_room[idx]
-		var num_to_spawn = random.randi_range(spawn_range.x, spawn_range.y)
+		var num_to_spawn = maxi(random.randi_range(spawn_range.x, spawn_range.y),0)
 		for to_spawn_idx in range(0, num_to_spawn):
 			var loc = find_floor_spaces(room, ignore_list)
 			if (loc[0] == false):
