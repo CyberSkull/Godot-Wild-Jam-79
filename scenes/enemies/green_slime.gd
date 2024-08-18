@@ -30,7 +30,11 @@ func _physics_process(delta: float) -> void:
 		print_debug("Setting travel to Death.")
 		playback_state.travel(&"Death")
 		animation_tree["parameters/Death/BlendSpace1D/blend_position"] = velocity.x
-	elif velocity.is_equal_approx(Vector2.ZERO):
+	elif not knockback_velocity.is_zero_approx():
+		print_debug("Traveling to HURT")
+		playback_state.travel(&"Hurt")
+		animation_tree["parameters/Hurt/BlendSpace1D/blend_position"] = knockback_velocity.x
+	elif velocity.is_zero_approx():
 		playback_state.travel(&"Idle")
 		animation_tree["parameters/Idle/BlendSpace1D/blend_position"] = velocity.x
 	else:
