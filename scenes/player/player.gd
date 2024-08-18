@@ -86,6 +86,9 @@ var last_direction: Vector2 = Vector2.DOWN
 ## Flag to determing if the carry item animation is playing. WARNING: not used.
 var is_using_item: bool = false
 
+## Flag used by damage animation.
+@export var is_damaged: bool = false
+
 
 
 ## Called when all children are ready. Makes sure the [AnimationTree] is active and starts [member playback_state].
@@ -157,6 +160,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		var enemy: Enemy = area.get_parent()
 		knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
 		health -= enemy.attack
+		playback_state.travel(&"Hurt")
 		Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
 
 

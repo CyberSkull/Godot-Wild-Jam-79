@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b4d1wercdvlgt"]
+
+[ext_resource type="Shader" path="res://scenes/player/blink.gdshader" id="1_hcfh5"]
+
+[resource]
+shader = ExtResource("1_hcfh5")
+shader_parameter/blink_color = Color(1, 1, 1, 1)
+shader_parameter/blink_intensity = 0.0
