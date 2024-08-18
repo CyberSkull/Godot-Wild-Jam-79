@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://d2g0kqj7asb1k"]
 
-[ext_resource type="PackedScene" path="res://scenes/level_generator/Test_Enemies/test_yellow_slime.tscn" id="1_lbwu5"]
+[ext_resource type="PackedScene" uid="uid://cuxr43oln6ych" path="res://scenes/enemies/yellow_slime.tscn" id="1_lbwu5"]
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="2_quroj"]
 
 [resource]
