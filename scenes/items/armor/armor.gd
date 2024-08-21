@@ -1,3 +1,4 @@
+@icon("res://graphics/items/armor.png")
 extends Area2D
 
 @export var speed_multiply:float=0.95

@@ -1,3 +1,4 @@
+@icon("res://graphics/items/SWORD.png")
 extends Area2D
 
 @export var damage_buff:int=1

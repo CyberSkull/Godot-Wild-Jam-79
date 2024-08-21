@@ -1,3 +1,4 @@
+@icon("res://graphics/items/Boots.png")
 extends Area2D
 
 @export var multiply_speed:float=1.1

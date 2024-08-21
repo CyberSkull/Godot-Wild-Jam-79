@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://def7sww403ykn"
-path="res://.godot/imported/SWORD.png-39de2a25124b89936e69e922cd40db3d.ctex"
+uid="uid://cmfecrwfbttll"
+path="res://.godot/imported/healthpotion.png-41d925da371b6abf6ec54970becb7acb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/items/sword/SWORD.png"
-dest_files=["res://.godot/imported/SWORD.png-39de2a25124b89936e69e922cd40db3d.ctex"]
+source_file="res://graphics/items/healthpotion.png"
+dest_files=["res://.godot/imported/healthpotion.png-41d925da371b6abf6ec54970becb7acb.ctex"]
 
 [params]
 

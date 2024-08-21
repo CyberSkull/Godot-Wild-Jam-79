@@ -1,3 +1,4 @@
+@icon("res://graphics/items/COINS.png")
 extends Area2D
 
 @export var give_score:int=1

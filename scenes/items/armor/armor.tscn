@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cmg16kp0tesqn"]
 
 [ext_resource type="Script" path="res://scenes/items/armor/armor.gd" id="1_1susa"]
-[ext_resource type="Texture2D" uid="uid://d35s2fg2eumhh" path="res://scenes/items/armor/armor.png" id="2_a2qf8"]
+[ext_resource type="Texture2D" uid="uid://d35s2fg2eumhh" path="res://graphics/items/armor.png" id="2_br4jl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
 
@@ -9,7 +9,7 @@
 script = ExtResource("1_1susa")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_a2qf8")
+texture = ExtResource("2_br4jl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_kuwir")

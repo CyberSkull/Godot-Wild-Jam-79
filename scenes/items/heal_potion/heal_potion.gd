@@ -1,3 +1,4 @@
+@icon("res://graphics/items/healthpotion.png")
 extends Area2D
 
 @export var give_health:int=20
