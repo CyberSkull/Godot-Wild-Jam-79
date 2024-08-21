@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+@onready var simultaneous_scene = preload("res://scenes/game/game.tscn").instantiate()
+
 func new_random_seed()->void:
 	%Seed.text = str(randi())
 ## Called when the node enters the scene tree for the first time.
@@ -13,7 +15,6 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-var simultaneous_scene = preload("res://scenes/game/game.tscn").instantiate()
 
 ## Starts the game. TODO: implement.
 func _on_start_game_button_pressed() -> void:
