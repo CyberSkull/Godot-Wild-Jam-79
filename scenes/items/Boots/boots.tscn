@@ -6,6 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
 
 [node name="Boots" type="Area2D"]
+collision_layer = 512
 script = ExtResource("1_8xdhm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

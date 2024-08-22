@@ -1,8 +1,8 @@
 @icon("res://graphics/items/armor.png")
 extends Area2D
 
-@export var speed_multiply:float=0.95
-@export var armor_add:int=1
+@export var speed_multiply: float = 0.95
+@export var armor_add: int = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
