@@ -200,6 +200,7 @@ func hit_by_enemy(enemy: Enemy) -> void:
 	health -= maxi(enemy.attack - defence, 1) #does minimum 1 damage - no armor can prevent this.
 	#print(health)
 	#playback_state.travel(&"Hurt")
+	# Using tween instead of AnimationTree state.
 	damage_tween = get_tree().create_tween()
 	damage_tween.tween_method(set_blink_shader, 1.0, 0, blink_duration)
 	
