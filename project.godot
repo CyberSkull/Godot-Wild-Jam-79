@@ -92,6 +92,7 @@ attack={
 2d_physics/layer_7="world"
 2d_physics/layer_8="trap"
 2d_physics/layer_9="stairs"
+2d_physics/layer_10="items"
 
 [navigation]
 
