@@ -157,7 +157,7 @@ class RoomList:
 
 	func add_node(loc : Vector2i)->RoomStruct:
 		if all[loc.x][loc.y] != null:
-			print("what the fuck")
+			printerr("error: all[", loc.x, "][", loc.y, "] != null")
 			return;
 		var new_room = RoomStruct.new();
 		for v in range(4):
@@ -165,7 +165,7 @@ class RoomList:
 		new_room.room_list = self
 		new_room.random = random
 		new_room.node_loc = loc
-		print("made room: ", loc)
+		print_debug("made room: ", loc)
 		all[loc.x][loc.y] = new_room
 		return all[loc.x][loc.y];
 
@@ -229,7 +229,7 @@ func room_cutter(
 	) -> void:
 	var tm: TileMap = $LogicalTiles
 	
-	#print("making room: ",room_top_left, room_bot_right)
+	#print_debug("making room: ",room_top_left, room_bot_right)
 	
 	for pos_x: int in range(room_top_left.x, room_bot_right.x + 1):
 		for pos_y: int in range(room_top_left.y, room_bot_right.y + 1):
@@ -314,7 +314,7 @@ func loop_make_room_walls(room: RoomStruct) -> void:
 				break
 		
 		if found == -1:
-			print("FAIL BAD ROOM INDEX")
+			printerr("FAIL BAD ROOM INDEX")
 	match found:
 		0:
 			#normal room
@@ -396,7 +396,7 @@ func passage_cutter(
 	var points : Array = Array()
 	points.push_back(start)
 	
-	#print("try make passage ", start, " to ", finish)
+	#print_debug("try make passage ", start, " to ", finish)
 	
 	var debugsz = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
 	if debug_mode:
@@ -469,7 +469,7 @@ func generate_room_passge(room_a : RoomStruct, room_b : RoomStruct)->bool:
 		return false;
 	room_list.add_completed_passage(room_a.node_loc, room_b.node_loc)
 	
-	#print("passage:", room_a.node_loc, " to ", room_b.node_loc)
+	#print_debug("passage:", room_a.node_loc, " to ", room_b.node_loc)
 	
 	#find closest wall between rooms, then delete walls and add passageway walls
 	var a_to_b_direction:int=-1
@@ -531,7 +531,7 @@ func get_two_nearest_directions(from:Vector2i, to:Vector2i)->Vector2i:
 		if sng == -1:
 			return Vector2i(2,-1)
 	else:#different size xy, return two directions.
-		var out:Vector2i
+		var out: Vector2i = Vector2i.ZERO
 		var sngx = signi(diff.x)
 		if sngx == 1:
 			out.x = 1 
@@ -615,7 +615,7 @@ func get_random_enemy_type()->EnemySetting:
 		if (value < chance):
 			return enemy_spawn_chances_for_current_level[chance]
 	
-	print("error, random enemy type was bad!")
+	printerr("error, random enemy type was bad!")
 	return null;
 
 func compute_spawn_chances():
@@ -657,9 +657,9 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	if (generator_resource == null):
 		return;
 	
-	var tm :TileMap = $LogicalTiles
-	var vm :TileMap = $VisibleTiles
-	var fm :TileMap = $FeatureTiles
+	var _tm :TileMap = $LogicalTiles
+	var _vm :TileMap = $VisibleTiles
+	var _fm :TileMap = $FeatureTiles
 	#tm.tile_set = generator_resource.tile_set
 	
 	random = in_random
@@ -732,7 +732,7 @@ func generate(in_random: RandomNumberGenerator, level : int):
 
 	var exit_loc = find_floor_spaces(exit_room, [])
 	if exit_loc[0] == false:
-		print("CRITICAL ERROR: NO EXIT!")
+		printerr("CRITICAL ERROR: NO EXIT!")
 		return
 	
 	var exit_obj = generator_resource.exit_object.instantiate()
@@ -746,7 +746,7 @@ func generate(in_random: RandomNumberGenerator, level : int):
 		real_world_extent_top_left = Vector2i(mini(room.cell_top_left.x, real_world_extent_top_left.x), mini(room.cell_top_left.y, real_world_extent_top_left.x))
 		real_world_extent_bot_right = Vector2i(maxi(room.cell_bot_right.x, real_world_extent_bot_right.x), maxi(room.cell_bot_right.y, real_world_extent_bot_right.x))
 	print_debug("creating visible level…")
-	#print(real_world_extent_top_left, real_world_extent_bot_right)
+	#print_debug(real_world_extent_top_left, real_world_extent_bot_right)
 	create_visible(Vector2i(0,0), world_extent)
 	print_debug("done!")
 
@@ -796,7 +796,7 @@ func spawn_waiting_enemies()->void:
 
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#REALLY BAD DOES NOT WORK WELL.
 	while enemy_spawn_list.size() > 0:
 		spawn_waiting_enemies()
