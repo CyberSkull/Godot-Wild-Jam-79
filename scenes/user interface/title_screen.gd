@@ -16,7 +16,7 @@ func _process(_delta: float) -> void:
 	pass
 
 
-## Starts the game. TODO: implement.
+## Starts the game.
 func _on_start_game_button_pressed() -> void:
 	var world_seed = int(%Seed.text)
 
