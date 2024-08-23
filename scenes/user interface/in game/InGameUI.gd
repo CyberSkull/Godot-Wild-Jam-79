@@ -11,13 +11,13 @@ extends CanvasLayer
 @onready var health_bar: ProgressBar = $PlayerUserInterface/HealthBar
 
 ## Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
+#func _ready() -> void:
+	#pass
 
 
-## Shows the loading screen if [param show] is [code]true[/code].
-func show_loading_screen(show: bool) -> void:
-	if show == true:
+## Shows the loading screen if [param visibility] is [code]true[/code].
+func show_loading_screen(visibility: bool) -> void:
+	if visibility == true:
 		$PlayerUserInterface.visible = false;
 		$LoadingScreen.visible = true;
 	else:
@@ -25,8 +25,8 @@ func show_loading_screen(show: bool) -> void:
 		$PlayerUserInterface.visible = true;
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+#func _process(delta: float) -> void:
+	#pass
 
 
 ## Updates the on-screen buffs when they have changed.

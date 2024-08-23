@@ -188,7 +188,7 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 ## Handles hitting an [Enemy] with the sword.
 func _on_sword_area_body_entered(body: Node2D) -> void:
 	if body is Enemy:
-		var enemy: Enemy = body as Enemy
+		#var enemy: Enemy = body as Enemy
 		# TODO: play sword hit sound here.
 		Input.start_joy_vibration(0, strike_enemy_low_vibration, strike_enemy_strong_vibration, strike_enemy_vibration_duration)
 
