@@ -13,7 +13,7 @@ func start_game(new_seed:int):
 	$Level.create_level(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 
