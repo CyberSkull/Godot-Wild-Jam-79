@@ -1,16 +1,17 @@
 extends Area2D
 
-var random : RandomNumberGenerator
-# Called when the node enters the scene tree for the first time.
+## List of possible textures for the end of the level ladder.
+@export var textures: Array[Texture]
+
+## A random number referenced outside this object.
+var random: RandomNumberGenerator
+
+## Called when the node enters the scene tree for the first time.
 func _ready():
-	
-	if random.randi_range(0,1):
-		$LevelEnd.texture = preload("res://graphics/ladder/Ladder2.png")
-	monitoring = true
+	$LevelEnd.texture = textures.pick_random()
 
-func _on_area_shape_entered(area_rid: RID, area: Area2D, area_shape_index: int, local_shape_index: int) -> void:
-	var area_as_player := area.owner as Player
-	if area_as_player != null:
-		var level_gen :LevelGenerator= get_parent().get_parent()
+## Goes to the next level when the player enters.
+func _on_body_entered(body: Node2D) -> void:
+	if body is Player:
+		var level_gen: LevelGenerator = get_parent().get_parent()
 		level_gen.end_level()
-
