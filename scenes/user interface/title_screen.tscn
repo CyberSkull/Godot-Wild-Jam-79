@@ -51,7 +51,7 @@ layout_mode = 2
 
 [node name="GenerateSeed" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "Random
+text = "↻ New Random Seed
 "
 
 [node name="Seed" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
