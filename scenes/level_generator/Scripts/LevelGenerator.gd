@@ -383,7 +383,13 @@ func _draw():
 			draw_string(ThemeDB.fallback_font, debug_bricks[idx], str(vreal))
 
 #generic passage cutter function, allows cutting passages between two points 
-func passage_cutter(start:Vector2i, finish:Vector2i, passage_width:int, is_start_direction_horizontal:bool, is_end_direction_horizontal:bool):
+func passage_cutter(
+		start: Vector2i,
+		finish: Vector2i,
+		passage_width: int,
+		is_start_direction_horizontal: bool,
+		is_end_direction_horizontal: bool
+	):
 	var tm :TileMap = $LogicalTiles
 	#var distance:Vector2i=start-finish 
 	
@@ -482,7 +488,7 @@ func generate_room_passge(room_a : RoomStruct, room_b : RoomStruct)->bool:
 	
 	var start:Vector2i=_gen_room_passage_sort_helper(room_a, a_to_b_direction)
 	var finish:Vector2i=_gen_room_passage_sort_helper(room_b, b_to_a_direction)
-	#todo: make passage width a different value. this is prob gonna cause issues rn
+	#TODO: make passage width a different value. this is prob gonna cause issues rn
 	passage_cutter(start, finish, 3, is_horizontal_dir(a_to_b_direction), is_horizontal_dir(b_to_a_direction))
 	return true;
 
@@ -689,14 +695,14 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	var cur_num_rooms = 1
 	var all_rooms = Array()
 	
-	#todo: add exit room (can just use last room generated as exit.
+	#TODO: add exit room (can just use last room generated as exit.
 	#It has the potential to be right beside the enterance, but whatever.
 	all_rooms.push_back(room_list.get_root())
 	while cur_num_rooms < numRooms:
 		all_rooms.push_back(room_list.get_root().recurse_make_new_room())
 		cur_num_rooms += 1;
 	
-	#todo: make exit and enterance nodes a certain dist from each other.
+	#TODO: make exit and enterance nodes a certain dist from each other.
 	
 	#make basic room layouts/positions, set up walls and floors
 	for room:RoomStruct in all_rooms:
@@ -714,7 +720,7 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	#spawn enemies
 	for room:RoomStruct in all_rooms:
 		handle_room_enemy_spawns(room)
-	print("finished spawning enemies")
+	print_debug("finished spawning enemies")
 	
 	var root_room:RoomStruct = room_list.get_root()
 	recurse_make_room_passages(root_room, root_room.node_loc)
@@ -739,39 +745,42 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	for room:RoomStruct in all_rooms:
 		real_world_extent_top_left = Vector2i(mini(room.cell_top_left.x, real_world_extent_top_left.x), mini(room.cell_top_left.y, real_world_extent_top_left.x))
 		real_world_extent_bot_right = Vector2i(maxi(room.cell_bot_right.x, real_world_extent_bot_right.x), maxi(room.cell_bot_right.y, real_world_extent_bot_right.x))
-	print("creating visible level...")
+	print_debug("creating visible level…")
 	#print(real_world_extent_top_left, real_world_extent_bot_right)
 	create_visible(Vector2i(0,0), world_extent)
-	print("done!")
+	print_debug("done!")
+
 
 func setup_cell_visual(logical_cell:Vector2i):
-	var tm :TileMap = $LogicalTiles
-	var vm :TileMap = $VisibleTiles
+	var tm: TileMap = $LogicalTiles
+	var vm: TileMap = $VisibleTiles
 	
 	var compare = logical_wall
 	
-	var av = Vector2i(logical_cell.x  ,logical_cell.y  )
-	var bv = Vector2i(logical_cell.x+1,logical_cell.y  )
-	var cv = Vector2i(logical_cell.x  ,logical_cell.y+1)
-	var dv = Vector2i(logical_cell.x+1,logical_cell.y+1)
-	
+	var av = Vector2i(logical_cell.x, logical_cell.y)
+	var bv = Vector2i(logical_cell.x + 1, logical_cell.y )
+	var cv = Vector2i(logical_cell.x, logical_cell.y + 1)
+	var dv = Vector2i(logical_cell.x + 1, logical_cell.y + 1)
+
+
 	#attempted optimization for level gen, doesn't work very much faster though ngl. Only like 1 second faster on a normally 5 second generation..
 	if tilemap_helper.has(av/tilemap_helper_sz) || tilemap_helper.has(bv/tilemap_helper_sz) || tilemap_helper.has(cv/tilemap_helper_sz) || tilemap_helper.has(dv/tilemap_helper_sz):
-		var a:bool=tm.get_cell_atlas_coords(0, av)==compare #top left
-		var b:bool=tm.get_cell_atlas_coords(0, bv)==compare #top right
-		var c:bool=tm.get_cell_atlas_coords(0, cv)==compare #bot left
-		var d:bool=tm.get_cell_atlas_coords(0, dv)==compare #bot right
+		var a: bool = tm.get_cell_atlas_coords(0, av) == compare #top left
+		var b: bool = tm.get_cell_atlas_coords(0, bv) == compare #top right
+		var c: bool = tm.get_cell_atlas_coords(0, cv) == compare #bot left
+		var d: bool = tm.get_cell_atlas_coords(0, dv) == compare #bot right
 		
-		var combine=Vector2i(int(a) | int(b)<<1, int(c) | int(d)<<1)
+		var combine= Vector2i(int(a) | int(b) << 1, int(c) | int(d) << 1)
 		
 		vm.set_cell(LAYER_IDX, logical_cell, 0, combine);
 	
 
 func create_visible(real_extent_top_left:Vector2i, real_extent_bot_right:Vector2i):
-	#todo: loop all grid cells and then
+	#TODO: loop all grid cells and then
 	for x in range(real_extent_top_left.x, real_extent_bot_right.x):
 		for y in range(real_extent_top_left.y, real_extent_bot_right.y):
 			setup_cell_visual(Vector2i(x,y))
+
 
 func spawn_waiting_enemies()->void:
 	var tm :TileMap = $LogicalTiles
@@ -781,12 +790,12 @@ func spawn_waiting_enemies()->void:
 	new_enemy.target = player_instance
 	var location :Vector2i = tile_space_to_pixel_space(enemyloc)
 	add_child(new_enemy)
-	new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
-	print("added enemy")
+	new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x / 2, tm.tile_set.tile_size.y / 2) #not sure why we need this offset?
+	print_debug("added enemy ", new_enemy.name)
 	enemy_spawn_list.erase(enemyloc)
-	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	#REALLY BAD DOES NOT WORK WELL.
 	while enemy_spawn_list.size() > 0:
