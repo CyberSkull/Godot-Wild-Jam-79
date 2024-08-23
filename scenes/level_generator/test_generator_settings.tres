@@ -6,13 +6,13 @@
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="3_60sdi"]
 [ext_resource type="PackedScene" uid="uid://b7nyf72dip0wc" path="res://scenes/environment/torch.tscn" id="3_s6rpp"]
 [ext_resource type="Resource" uid="uid://cxjifu1bottbf" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_red_slime.tres" id="3_xsoy3"]
-[ext_resource type="PackedScene" uid="uid://72371c61whqb" path="res://scenes/items/heal_potion/heal_potion.tscn" id="4_5py7x"]
+[ext_resource type="PackedScene" uid="uid://72371c61whqb" path="res://scenes/items/heal_potion/heal_potion_old.tscn" id="4_5py7x"]
 [ext_resource type="Resource" uid="uid://d2g0kqj7asb1k" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_yellow_slime.tres" id="4_es4ub"]
 [ext_resource type="PackedScene" uid="uid://desdh37127vce" path="res://scenes/level_generator/level_end/LevelEnd.tscn" id="5_mfvfb"]
-[ext_resource type="PackedScene" uid="uid://cmg16kp0tesqn" path="res://scenes/items/armor/armor.tscn" id="5_ql5xp"]
-[ext_resource type="PackedScene" uid="uid://cvd113fdadytp" path="res://scenes/items/gold/gold.tscn" id="6_3nthy"]
-[ext_resource type="PackedScene" uid="uid://bj4e6bbm1411q" path="res://scenes/items/sword/sword.tscn" id="7_hpj2n"]
-[ext_resource type="PackedScene" uid="uid://c1tc11td06jq" path="res://scenes/items/Boots/boots.tscn" id="8_jcqax"]
+[ext_resource type="PackedScene" uid="uid://cmg16kp0tesqn" path="res://scenes/items/armor/armor_old.tscn" id="5_ql5xp"]
+[ext_resource type="PackedScene" uid="uid://cvd113fdadytp" path="res://scenes/items/gold/gold_old.tscn" id="6_3nthy"]
+[ext_resource type="PackedScene" uid="uid://bj4e6bbm1411q" path="res://scenes/items/sword/sword_old.tscn" id="7_hpj2n"]
+[ext_resource type="PackedScene" uid="uid://c1tc11td06jq" path="res://scenes/items/Boots/boots_old.tscn" id="8_jcqax"]
 
 [resource]
 script = ExtResource("1_w0ubp")
