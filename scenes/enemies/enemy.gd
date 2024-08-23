@@ -12,7 +12,7 @@ signal slain(enemy_name: StringName, points: int)
 @export var health: int = 1:
 	set(value):
 		health = clampi(value, 0, max_health)
-		print_debug(name, " health: ", health, "/", max_health)
+		#print_debug(name, " health: ", health, "/", max_health)
 
 ## Attack damage.
 @export var attack: int = 1
@@ -61,11 +61,24 @@ var search_target: Vector2
 ## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
 @onready var navigator: NavigationAgent2D = %Navigator
 
-var first_physic:bool=true
+var first_physic: bool = true
+var is_navigating: bool = false
+
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	# pause physics
+	set_physics_process(false)
+	# deferred call to setup_navigation. Used because await in _ready() may not allways work.
+	call_deferred(&"setup_navigaiton")
+
+
+## Provides a small delay to alow the navigation server to sync.
+func setup_navigaiton() -> void:
+	# wait one physics tic
+	await get_tree().physics_frame
+	# resume physics
+	set_physics_process(true)
 
 
 func set_no_aggro() -> void:
@@ -138,7 +151,6 @@ func search_logic(delta: float) -> Vector2:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	
 	#annoyingly, ready is called IMMEDIATELY upon instantiation,
 	#which leaves no time to set stuff up before moving the enemy to position
 	#due to this, I have this silly functionality here, which is definitely not the best way to do it.
@@ -169,9 +181,12 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 	# Get vector to next path point and set to character velocity * speed.
-	var next_path_position: Vector2 = navigator.get_next_path_position()
+	var next_path_position: Vector2
+	next_path_position = navigator.get_next_path_position()
 	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
+	
 	move_and_slide()
+	
 	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 
 
@@ -187,3 +202,4 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		health -= player.attack_damage
 		if health <= 0:
 			slain.emit()
+
