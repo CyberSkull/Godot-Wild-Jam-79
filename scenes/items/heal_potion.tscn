@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0kswk1q51uv2"]
+
+[ext_resource type="PackedScene" uid="uid://ca5c3xt6glx5q" path="res://scenes/items/item.tscn" id="1_g2b1o"]
+[ext_resource type="Script" path="res://scenes/items/heal_potion.gd" id="2_doxn3"]
+[ext_resource type="Texture2D" uid="uid://cmfecrwfbttll" path="res://graphics/items/healthpotion.png" id="2_e7qaj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r8sj2"]
+size = Vector2(14, 17)
+
+[node name="HealPotion" instance=ExtResource("1_g2b1o")]
+script = ExtResource("2_doxn3")
+health_restored = 20
+
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("2_e7qaj")
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_r8sj2")
