@@ -511,26 +511,26 @@ func recurse_make_room_passages(room : RoomStruct, from : Vector2i):
 #returns the two nearest facing directions to a given node location.
 #If it is directly in a single direction, the second value in the return will be -1 (none)
 #this is a gross func. dislike it, but idc to make it cleaner yet.
-func get_two_nearest_directions(from:Vector2i, to:Vector2i)->Vector2i:
+func get_two_nearest_directions(from: Vector2i, to: Vector2i) -> Vector2i:
 	if (from == to):
-		return Vector2i(-1,-1)
+		return Vector2i(-1, -1)
 	
 	var diff:Vector2i= from - to
 	var diff_abs:Vector2i= diff.abs()
 	
-	if diff_abs.x == 0:#both are inline on x
+	if diff_abs.x == 0: # Both are inline on x
 		var sng = signi(diff.x)
 		if sng == 1:
-			return Vector2i(1,-1) 
+			return Vector2i(1, -1) 
 		if sng == -1:
-			return Vector2i(3,-1) 
-	elif diff_abs.y == 0:#both are inline on y
+			return Vector2i(3, -1) 
+	elif diff_abs.y == 0: # Both are inline on y
 		var sng = signi(diff.y)
 		if sng == 1:
-			return Vector2i(0,-1)
+			return Vector2i(0, -1)
 		if sng == -1:
-			return Vector2i(2,-1)
-	else:#different size xy, return two directions.
+			return Vector2i(2, -1)
+	else: # Different size XY, return two directions.
 		var out: Vector2i = Vector2i.ZERO
 		var sngx = signi(diff.x)
 		if sngx == 1:
@@ -543,18 +543,18 @@ func get_two_nearest_directions(from:Vector2i, to:Vector2i)->Vector2i:
 		if sngy == -1:
 			out.y = 2
 		return out
-	return Vector2i()#???? why? what a silly lang
+	return Vector2i() #???? why? what a silly lang
 
-func swizzle(to_swizzle:Vector2i)->Vector2i:
+func swizzle(to_swizzle: Vector2i) -> Vector2i:
 	return Vector2i(to_swizzle.y, to_swizzle.x)
 
-func tile_space_to_pixel_space(loc:Vector2i)->Vector2i:
+func tile_space_to_pixel_space(loc: Vector2i) -> Vector2i:
 	var tm :TileMap = $LogicalTiles
 	return tm.tile_set.tile_size * loc
 
-func handle_room_additional_connection(room:RoomStruct):
+func handle_room_additional_connection(room: RoomStruct):
 	for idx in range(room.direction_arr.size()):
-		if generator_resource.chance_add_passageway_between_neighbour_rooms_per_room > random.randf_range(0,1):
+		if generator_resource.chance_add_passageway_between_neighbour_rooms_per_room > random.randf_range(0, 1):
 			var other_room :RoomStruct= room.direction_arr[idx]
 			if (other_room != null):
 				continue
@@ -567,7 +567,7 @@ func handle_room_additional_connection(room:RoomStruct):
 
 #takes in the room and the list of already used tiles in the room, and outputs a new tile for the enemy to be spawned in.
 func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
-	var tm :TileMap = $LogicalTiles
+	var tm: TileMap = $LogicalTiles
 	var locations:Array[Vector2i] = []
 	#cannot remember if should be +1 or not.
 	for x in range(room.cell_top_left.x, room.cell_bot_right.x+1):
@@ -583,8 +583,8 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 		return [true, rand_arr_itm_det(locations)]
 	return [false]
 
-func handle_room_enemy_spawns(room:RoomStruct):
-	var tm :TileMap = $LogicalTiles
+func handle_room_enemy_spawns(room: RoomStruct):
+	var tm: TileMap = $LogicalTiles
 	if room.is_enterance:
 		return
 	if generator_resource.chance_empty_room > random.randf_range(0,1):
