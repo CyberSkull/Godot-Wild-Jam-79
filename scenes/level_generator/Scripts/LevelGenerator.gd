@@ -386,7 +386,7 @@ func _draw():
 func passage_cutter(
 		start: Vector2i,
 		finish: Vector2i,
-		passage_width: int,
+		_passage_width: int,
 		is_start_direction_horizontal: bool,
 		is_end_direction_horizontal: bool
 	):
