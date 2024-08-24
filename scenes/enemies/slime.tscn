@@ -1,7 +1,8 @@
-[gd_scene load_steps=53 format=3 uid="uid://dv03tlr12jaeg"]
+[gd_scene load_steps=54 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="PackedScene" uid="uid://bx3d0lgmpfh8b" path="res://scenes/enemies/enemy.tscn" id="1_niki8"]
 [ext_resource type="Script" path="res://scenes/enemies/slime.gd" id="2_55b4r"]
+[ext_resource type="Texture2D" uid="uid://bw0omo13cfw7c" path="res://graphics/slime/grey slime spritesheet calciumtrice_0.png" id="3_gq0by"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a2xgg"]
 radius = 5.0
@@ -483,7 +484,7 @@ graph_offset = Vector2(103.535, -54.115)
 radius = 6.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nxfl3"]
-radius = 7.0
+radius = 6.0
 
 [node name="Slime" groups=["green slimes", "slimes"] instance=ExtResource("1_niki8")]
 script = ExtResource("2_55b4r")
@@ -497,6 +498,7 @@ time_horizon_obstacles = 0.2
 z_index = 10
 y_sort_enabled = true
 position = Vector2(0, -11)
+texture = ExtResource("3_gq0by")
 flip_h = true
 hframes = 10
 vframes = 5
