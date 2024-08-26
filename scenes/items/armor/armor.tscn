@@ -1,17 +1,18 @@
-[gd_scene load_steps=4 format=3 uid="uid://cmg16kp0tesqn"]
+[gd_scene load_steps=5 format=3 uid="uid://dt11fyh7gym7m"]
 
-[ext_resource type="Script" path="res://scenes/items/armor/armor.gd" id="1_1susa"]
-[ext_resource type="Texture2D" uid="uid://d35s2fg2eumhh" path="res://scenes/items/armor/armor.png" id="2_a2qf8"]
+[ext_resource type="PackedScene" uid="uid://ca5c3xt6glx5q" path="res://scenes/items/item.tscn" id="1_dynh7"]
+[ext_resource type="Script" path="res://scenes/items/armor/armor.gd" id="2_wsjto"]
+[ext_resource type="Texture2D" uid="uid://d35s2fg2eumhh" path="res://graphics/items/armor.png" id="3_w70yq"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_urh7g"]
 
-[node name="Armor" type="Area2D"]
-script = ExtResource("1_1susa")
+[node name="Armor" instance=ExtResource("1_dynh7")]
+script = ExtResource("2_wsjto")
+speed_multiply = 0.95
+armor_add = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_a2qf8")
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("3_w70yq")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_kuwir")
-
-[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_urh7g")

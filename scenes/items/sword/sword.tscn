@@ -1,17 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://bj4e6bbm1411q"]
+[gd_scene load_steps=5 format=3 uid="uid://q0mkxq8503n2"]
 
+[ext_resource type="PackedScene" uid="uid://ca5c3xt6glx5q" path="res://scenes/items/item.tscn" id="1_dqr6m"]
 [ext_resource type="Script" path="res://scenes/items/sword/sword.gd" id="1_onoj8"]
-[ext_resource type="Texture2D" uid="uid://def7sww403ykn" path="res://scenes/items/sword/SWORD.png" id="2_uhke4"]
+[ext_resource type="Texture2D" uid="uid://def7sww403ykn" path="res://graphics/items/SWORD.png" id="3_fkc3n"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_spueg"]
+radius = 5.65685
+height = 25.4558
 
-[node name="Sword" type="Area2D"]
+[node name="Sword" instance=ExtResource("1_dqr6m")]
 script = ExtResource("1_onoj8")
+damage_buff = 1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_uhke4")
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("3_fkc3n")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_kuwir")
-
-[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(2, -2)
+rotation = 0.785397
+shape = SubResource("CapsuleShape2D_spueg")

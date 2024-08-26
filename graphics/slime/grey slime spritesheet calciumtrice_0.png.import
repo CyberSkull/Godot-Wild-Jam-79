@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cdglnaox2gycu"
-path="res://.godot/imported/COINS.png-3866485719b370d6be7ab196e50cca84.ctex"
+uid="uid://bw0omo13cfw7c"
+path="res://.godot/imported/grey slime spritesheet calciumtrice_0.png-a210f8a7e60238be7f6e2ec55fa3e631.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/items/gold/COINS.png"
-dest_files=["res://.godot/imported/COINS.png-3866485719b370d6be7ab196e50cca84.ctex"]
+source_file="res://graphics/slime/grey slime spritesheet calciumtrice_0.png"
+dest_files=["res://.godot/imported/grey slime spritesheet calciumtrice_0.png-a210f8a7e60238be7f6e2ec55fa3e631.ctex"]
 
 [params]
 

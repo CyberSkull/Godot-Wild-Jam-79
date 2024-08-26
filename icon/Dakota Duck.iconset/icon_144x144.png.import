@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmfecrwfbttll"
-path="res://.godot/imported/healthpotion.png-0e4c50fecec7a52b5699c3361cb72f4c.ctex"
+uid="uid://cww8bpfd8towa"
+path="res://.godot/imported/icon_144x144.png-5ff1fa5a05df9ee7a0fb7e65004ab60f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/items/heal_potion/healthpotion.png"
-dest_files=["res://.godot/imported/healthpotion.png-0e4c50fecec7a52b5699c3361cb72f4c.ctex"]
+source_file="res://icon/Dakota Duck.iconset/icon_144x144.png"
+dest_files=["res://.godot/imported/icon_144x144.png-5ff1fa5a05df9ee7a0fb7e65004ab60f.ctex"]
 
 [params]
 

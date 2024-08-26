@@ -1,17 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://c1tc11td06jq"]
+[gd_scene load_steps=5 format=3 uid="uid://bhk58b6mxf48o"]
 
-[ext_resource type="Script" path="res://scenes/items/Boots/boots.gd" id="1_8xdhm"]
-[ext_resource type="Texture2D" uid="uid://d3olrfcjd5dym" path="res://scenes/items/Boots/Boots.png" id="2_iriqv"]
+[ext_resource type="PackedScene" uid="uid://ca5c3xt6glx5q" path="res://scenes/items/item.tscn" id="1_4xx4h"]
+[ext_resource type="Script" path="res://scenes/items/Boots/boots.gd" id="2_jji1y"]
+[ext_resource type="Texture2D" uid="uid://d3olrfcjd5dym" path="res://graphics/items/Boots.png" id="3_pe7u1"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_kuwir"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hj8dy"]
+size = Vector2(18, 17)
 
-[node name="Boots" type="Area2D"]
-script = ExtResource("1_8xdhm")
+[node name="Boots" instance=ExtResource("1_4xx4h")]
+script = ExtResource("2_jji1y")
+multiply_speed = 1.1
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_iriqv")
+[node name="Sprite2D" parent="." index="0"]
+texture = ExtResource("3_pe7u1")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_kuwir")
-
-[connection signal="area_shape_entered" from="." to="." method="_on_area_shape_entered"]
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(-1, -1.5)
+shape = SubResource("RectangleShape2D_hj8dy")

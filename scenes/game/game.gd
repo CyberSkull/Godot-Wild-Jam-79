@@ -1,3 +1,4 @@
+@icon("res://icon/Dakota Duck.iconset/icon_16x16@2x.png")
 extends Node2D
 
 
@@ -6,14 +7,13 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 func start_game(new_seed:int):
-	$Level.player = $Player
+	#$Level.player = $Player
 	$Level.random = RandomNumberGenerator.new()
 	$Level.random.seed = new_seed
-	$InGameUI.character = $Player
 	$Level.create_level(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 

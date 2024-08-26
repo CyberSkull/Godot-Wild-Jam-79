@@ -12,7 +12,7 @@ signal slain(enemy_name: StringName, points: int)
 @export var health: int = 1:
 	set(value):
 		health = clampi(value, 0, max_health)
-		print_debug(name, " health: ", health, "/", max_health)
+		#print_debug(name, " health: ", health, "/", max_health)
 
 ## Attack damage.
 @export var attack: int = 1
@@ -61,14 +61,29 @@ var search_target: Vector2
 ## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
 @onready var navigator: NavigationAgent2D = %Navigator
 
-var first_physic:bool=true
+var first_physic: bool = true
+var is_navigating: bool = false
+
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	# pause physics
+	set_physics_process(false)
+	# deferred call to setup_navigation. Used because await in _ready() may not allways work.
+	call_deferred(&"setup_navigaiton")
+
+
+## Provides a small delay to alow the navigation server to sync.
+func setup_navigaiton() -> void:
+	# wait one physics tic
+	await get_tree().physics_frame
+	# resume physics
+	set_physics_process(true)
+
 
 func set_no_aggro() -> void:
 	lose_agro_time_current = lose_agro_time + 1
+
 	
 func is_aggroed() -> bool:
 	return lose_agro_time_current < lose_agro_time;
@@ -86,14 +101,14 @@ func determine_aggro_state(delta :float):
 	#query.exclude.push_back(target)
 	#query.exclude.push_back(self)
 	var result = space_state.intersect_ray(query)
-	#if the target is seen...
+	#if the target is seen…
 	if result.size() && result["collider"] == target || result.size() == 0:
 		#target is within aggro range! Get him!
 		if target.position.distance_to(self.position) < aggro_dist:
 			lose_agro_time_current = 0
 			target_last_known_pos = target.global_position
-		#target is a bit far away, but we still have a line of sight...
-		#tick down lose aggro time, but penalize the time a bit... Better to break line of sight!
+		#target is a bit far away, but we still have a line of sight…
+		#tick down lose aggro time, but penalize the time a bit… Better to break line of sight!
 		elif is_aggroed() && target_last_known_pos.distance_to(self.position) > lose_aggro_dist:
 			lose_agro_time_current += delta * lose_aggro_dist_but_still_visible_debuff
 			target_last_known_pos = target.global_position
@@ -102,13 +117,16 @@ func determine_aggro_state(delta :float):
 		target_last_known_pos = target.global_position
 		lose_agro_time_current += delta;
 
+
 func increment_time_since_seen(delta: float) -> void:
 	if time_since_last_target < search_acceleration_after_seen_time:#don't do it if we're over anyway
 		time_since_last_target += delta
 
+
 func reset_search_time() -> void:
 	time_to_next_search = -1
 	time_since_last_target = 0
+
 
 func search_logic(delta: float) -> Vector2:
 	if time_to_next_search < 0:
@@ -133,7 +151,6 @@ func search_logic(delta: float) -> Vector2:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	
 	#annoyingly, ready is called IMMEDIATELY upon instantiation,
 	#which leaves no time to set stuff up before moving the enemy to position
 	#due to this, I have this silly functionality here, which is definitely not the best way to do it.
@@ -164,21 +181,25 @@ func _physics_process(delta: float) -> void:
 		velocity = Vector2.ZERO
 		return
 	# Get vector to next path point and set to character velocity * speed.
-	var next_path_position: Vector2 = navigator.get_next_path_position()
+	var next_path_position: Vector2
+	next_path_position = navigator.get_next_path_position()
 	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
+	
 	move_and_slide()
+	
 	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 
 
 func _on_hurt_box_area_entered(area: Area2D) -> void:
-	print_debug("attacking area: ", area)
-	print_debug("area parent.parent is: ", area.get_parent().get_parent())
-	print_debug("area parent.parent is player? ", area.get_parent().get_parent() is Player)
+	#print_debug("attacking area: ", area)
+	#print_debug("area parent.parent is: ", area.get_parent().get_parent())
+	#print_debug("area parent.parent is player? ", area.get_parent().get_parent() is Player)
 	if area.get_parent().get_parent() is Player:
 		var player: Player = area.get_parent().get_parent() as Player
-		print_debug(player.name, " is striking ", self.name)
+		#print_debug(player.name, " is striking ", self.name)
 		#knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
 		knockback_velocity = -global_position.direction_to(player.global_position) * knockback_speed
 		health -= player.attack_damage
 		if health <= 0:
 			slain.emit()
+
