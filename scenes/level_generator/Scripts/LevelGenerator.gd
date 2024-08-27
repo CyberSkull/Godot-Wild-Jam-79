@@ -600,7 +600,8 @@ func handle_room_enemy_spawns(room: RoomStruct):
 			var new_enemy:Enemy= enemy_type.enemy_type.instantiate()
 			new_enemy.target = player_instance
 			print_debug("made enemy: ",enemy_type.enemy_name)
-			add_child(new_enemy)
+			#add_child(new_enemy)
+			call_deferred(&"add_child", new_enemy)
 			var location :Vector2i = tile_space_to_pixel_space(space[1])
 			#enemy_spawn_list[location] = enemy_type.enemy_type
 			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
@@ -644,7 +645,8 @@ func handle_spawn_room_items(room:RoomStruct):
 			
 			var new_object = generator_resource.objects[idx].instantiate()
 			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
-			add_child(new_object)
+			#add_child(new_object)
+			call_deferred(&"add_child", new_object)
 		
 
 func end_level():
@@ -737,7 +739,8 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	
 	var exit_obj = generator_resource.exit_object.instantiate()
 	exit_obj.random = random
-	$VisibleTiles.add_child(exit_obj)
+	#$VisibleTiles.add_child(exit_obj)
+	$VisibleTiles.call_deferred(&"add_child", exit_obj)
 	exit_obj.position = Vector2(tile_space_to_pixel_space(exit_loc[1]))# + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
 	
 	#gather real world limits to only use create_visible within that range.
