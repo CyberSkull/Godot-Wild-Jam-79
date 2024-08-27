@@ -67,18 +67,15 @@ var is_navigating: bool = false
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# pause physics
-	set_physics_process(false)
-	# deferred call to setup_navigation. Used because await in _ready() may not allways work.
-	call_deferred(&"setup_navigaiton")
+	# Connect velocity computed signal.
+	navigator.velocity_computed.connect(Callable(_on_velocity_computed))
+
 
 
 ## Provides a small delay to alow the navigation server to sync.
-func setup_navigaiton() -> void:
-	# wait one physics tic
-	await get_tree().physics_frame
-	# resume physics
-	set_physics_process(true)
+func _on_velocity_computed(safe_velocity: Vector2) -> void:
+	velocity = safe_velocity
+	move_and_slide()
 
 
 func set_no_aggro() -> void:
@@ -151,6 +148,10 @@ func search_logic(delta: float) -> Vector2:
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	# Return if map is not ready.
+	if NavigationServer2D.map_get_iteration_id(navigator.get_navigation_map()) == 0:
+		return
+	
 	#annoyingly, ready is called IMMEDIATELY upon instantiation,
 	#which leaves no time to set stuff up before moving the enemy to position
 	#due to this, I have this silly functionality here, which is definitely not the best way to do it.
@@ -166,7 +167,6 @@ func _physics_process(delta: float) -> void:
 		time_since_last_target = search_acceleration_after_seen_time+1
 	
 	# Update to the target current position.
-	if navigator == null: return
 	if target:
 		determine_aggro_state(delta)
 		if is_aggroed():
@@ -183,9 +183,11 @@ func _physics_process(delta: float) -> void:
 	# Get vector to next path point and set to character velocity * speed.
 	var next_path_position: Vector2
 	next_path_position = navigator.get_next_path_position()
-	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
-	
-	move_and_slide()
+	var new_velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
+	if navigator.avoidance_enabled:
+		navigator.set_velocity(new_velocity)
+	else:
+		_on_velocity_computed(new_velocity)
 	
 	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 
