@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=14 format=3 uid="uid://cuessunmjga6x"]
+[gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=15 format=3 uid="uid://cuessunmjga6x"]
 
 [ext_resource type="Resource" uid="uid://cad0yxtixdrah" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_green_slime.tres" id="1_koa8j"]
+[ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="1_maeca"]
 [ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
 [ext_resource type="Resource" uid="uid://clfetl802uwvh" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_blue_slime.tres" id="2_8oxig"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="3_60sdi"]
@@ -33,7 +34,7 @@ base_number_of_rooms_min = 8
 base_number_of_rooms_max = 12
 objects = Array[PackedScene]([ExtResource("3_s6rpp"), ExtResource("4_5py7x"), ExtResource("5_ql5xp"), ExtResource("6_3nthy"), ExtResource("7_hpj2n"), ExtResource("8_jcqax")])
 objects_per_room = Array[Vector2i]([Vector2i(0, 2), Vector2i(-2, 1), Vector2i(-8, 1), Vector2i(-8, 2), Vector2i(-8, 1), Vector2i(-8, 1)])
-enemy_types = Array[Resource("res://scenes/level_generator/Scripts/EnemySetting.gd")]([ExtResource("1_koa8j"), ExtResource("2_8oxig"), ExtResource("3_xsoy3"), ExtResource("4_es4ub")])
+enemy_types = Array[ExtResource("1_maeca")]([ExtResource("1_koa8j"), ExtResource("2_8oxig"), ExtResource("3_xsoy3"), ExtResource("4_es4ub")])
 number_enemies_min = 3
 number_enemies_max = 6
 chance_empty_room = 0.025

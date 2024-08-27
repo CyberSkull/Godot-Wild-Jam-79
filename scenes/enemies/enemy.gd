@@ -202,4 +202,3 @@ func _on_hurt_box_area_entered(area: Area2D) -> void:
 		health -= player.attack_damage
 		if health <= 0:
 			slain.emit()
-
