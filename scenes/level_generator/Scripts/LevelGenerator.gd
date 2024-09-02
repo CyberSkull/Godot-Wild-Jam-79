@@ -218,16 +218,16 @@ func rand_arr_itm_det(val: Array):
 func is_horizontal_dir(direction: int) -> int:
 	return direction % 2
 
-func logical_world_fill(start:Vector2i, end:Vector2i):
+func logical_world_fill(start: Vector2i, end: Vector2i):
 	#var tm: TileMapLayer = $LogicalTiles
 	for pos_x in range(start.x, end.x):
 		for pos_y in range(start.y, end.y):
 			#tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_wall)
-			tm.set_cell(Vector2i(pos_x, pos_y))
+			tm.set_cell(Vector2i(pos_x, pos_y), SRC_IDX, logical_wall)
 
-#creates a room from top left to bottom right in size.
-#walls optional.
-#corner walls will be created only when adjacent walls are true.
+## Creates a room from top left to bottom right in size.
+## Walls optional.
+## Corner walls will be created only when adjacent walls are true.
 func room_cutter(
 		logical_tile: Vector2i,
 		room_top_left: Vector2i,
@@ -402,9 +402,9 @@ func passage_cutter(
 	var points : Array = Array()
 	points.push_back(start)
 	
-	#print_debug("try make passage ", start, " to ", finish)
+	print_debug("try make passage ", start, " to ", finish)
 	
-	var debug_size = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
+	var debug_size = Vector2(tm.tile_set.tile_size.x * 0.5, tm.tile_set.tile_size.y * 0.5)
 	if debug_mode:
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(start)) + debug_size)
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(finish)) + debug_size)
@@ -611,7 +611,7 @@ func handle_room_enemy_spawns(room: RoomStruct):
 			call_deferred(&"add_child", new_enemy)
 			var location :Vector2i = tile_space_to_pixel_space(space[1])
 			#enemy_spawn_list[location] = enemy_type.enemy_type
-			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
+			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x / 2, tm.tile_set.tile_size.y / 2)#not sure why we need this offset?
 	
 	pass
 
@@ -651,7 +651,7 @@ func handle_spawn_room_items(room:RoomStruct):
 			ignore_list.push_back(loc[1])
 			
 			var new_object = generator_resource.objects[idx].instantiate()
-			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
+			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x / 2, tm.tile_set.tile_size.y / 2)
 			#add_child(new_object)
 			call_deferred(&"add_child", new_object)
 		
