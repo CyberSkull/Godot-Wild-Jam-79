@@ -367,14 +367,13 @@ func loop_make_room_walls(room: RoomStruct) -> void:
 				return
 			if odd_x:
 				for x in range(room.cell_top_left.x + 1, room.cell_bot_right.x, 2):
-					room_cutter(logical_wall, Vector2i(x,room.cell_top_left.y+1), Vector2i(x, room.cell_bot_right.y - 1))
+					room_cutter(logical_wall, Vector2i(x, room.cell_top_left.y + 1), Vector2i(x, room.cell_bot_right.y - 1))
 				return
 			if odd_y:
 				for y in range(room.cell_top_left.y + 1, room.cell_bot_right.y, 2):
-					room_cutter(logical_wall, Vector2i(room.cell_top_left.x+1, y), Vector2i(room.cell_bot_right.x-1, y))
+					room_cutter(logical_wall, Vector2i(room.cell_top_left.x + 1, y), Vector2i(room.cell_bot_right.x - 1, y))
 				return
-			room_cutter(logical_wall, Vector2i(room.cell_top_left.x+room.area.x/2, room.cell_top_left.y+room.area.y/2), 
-			Vector2i(room.cell_bot_right.x-room.area.x/2, room.cell_bot_right.y-room.area.y/2))
+			room_cutter(logical_wall, Vector2i(room.cell_top_left.x + room.area.x / 2, room.cell_top_left.y + room.area.y / 2), Vector2i(room.cell_bot_right.x - room.area.x / 2, room.cell_bot_right.y - room.area.y / 2))
 			return
 	return
 
