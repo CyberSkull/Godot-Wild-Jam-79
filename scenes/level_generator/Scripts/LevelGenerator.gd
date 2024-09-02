@@ -47,6 +47,11 @@ var tilemap_helper_size: int = 8
 @export var logical_wall := Vector2i.ZERO
 @export var logical_floor := Vector2i.LEFT
 
+@onready var tm = $LogicalTiles
+@onready var vm = $VisibleTiles
+@onready var fm = $FeatureTiles
+
+
 class RoomStruct:
 	#roomspace
 	var node_loc: Vector2i
@@ -214,10 +219,11 @@ func is_horizontal_dir(direction: int) -> int:
 	return direction % 2
 
 func logical_world_fill(start:Vector2i, end:Vector2i):
-	var tm: TileMap = $LogicalTiles
+	#var tm: TileMapLayer = $LogicalTiles
 	for pos_x in range(start.x, end.x):
 		for pos_y in range(start.y, end.y):
-			tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_wall);
+			#tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_wall)
+			tm.set_cell(Vector2i(pos_x, pos_y))
 
 #creates a room from top left to bottom right in size.
 #walls optional.
@@ -227,13 +233,14 @@ func room_cutter(
 		room_top_left: Vector2i,
 		room_bot_right: Vector2i
 	) -> void:
-	var tm: TileMap = $LogicalTiles
+	#var tm: TileMap = $LogicalTiles
 	
 	#print_debug("making room: ",room_top_left, room_bot_right)
 	
 	for pos_x: int in range(room_top_left.x, room_bot_right.x + 1):
 		for pos_y: int in range(room_top_left.y, room_bot_right.y + 1):
-			tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_tile);
+			#tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_tile)
+			tm.set_cell(Vector2i(pos_x, pos_y), SRC_IDX, logical_tile)
 			#3x3 grid to ensure everything all around is valid.
 			tilemap_helper[Vector2i((pos_x / tilemap_helper_size) - 1, (pos_y / tilemap_helper_size) - 1)] = true
 			tilemap_helper[Vector2i((pos_x / tilemap_helper_size) - 1, (pos_y / tilemap_helper_size))] = true
@@ -272,7 +279,7 @@ func loop_make_room_walls(room: RoomStruct) -> void:
 	
 	
 	
-	var tm :TileMap = $LogicalTiles
+	#var tm :TileMap = $LogicalTiles
 	#add wiggle
 	room.cell_top_left += room.wiggled
 	room.cell_bot_right += room.wiggled
@@ -390,7 +397,7 @@ func passage_cutter(
 		is_start_direction_horizontal: bool,
 		is_end_direction_horizontal: bool
 	):
-	var tm :TileMap = $LogicalTiles
+	#var tm :TileMap = $LogicalTiles
 	#var distance:Vector2i=start-finish 
 	
 	var points : Array = Array()
@@ -549,7 +556,7 @@ func swizzle(to_swizzle: Vector2i) -> Vector2i:
 	return Vector2i(to_swizzle.y, to_swizzle.x)
 
 func tile_space_to_pixel_space(loc: Vector2i) -> Vector2i:
-	var tm :TileMap = $LogicalTiles
+	#var tm :TileMap = $LogicalTiles
 	return tm.tile_set.tile_size * loc
 
 func handle_room_additional_connection(room: RoomStruct):
@@ -567,7 +574,7 @@ func handle_room_additional_connection(room: RoomStruct):
 
 #takes in the room and the list of already used tiles in the room, and outputs a new tile for the enemy to be spawned in.
 func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
-	var tm: TileMap = $LogicalTiles
+	#var tm: TileMap = $LogicalTiles
 	var locations:Array[Vector2i] = []
 	#cannot remember if should be +1 or not.
 	for x in range(room.cell_top_left.x, room.cell_bot_right.x+1):
@@ -576,7 +583,8 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 			if ignore_list.find(test_loc) != -1:
 				continue
 			
-			if (tm.get_cell_atlas_coords(0, test_loc)==logical_floor):
+			#if (tm.get_cell_atlas_coords(0, test_loc) == logical_floor):
+			if (tm.get_cell_atlas_coords(test_loc) == logical_floor):
 				locations.push_back(test_loc)
 	
 	if locations.size() > 0:
@@ -584,7 +592,7 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 	return [false]
 
 func handle_room_enemy_spawns(room: RoomStruct):
-	var tm: TileMap = $LogicalTiles
+	#var tm: TileMap = $LogicalTiles
 	if room.is_enterance:
 		return
 	if generator_resource.chance_empty_room > random.randf_range(0,1):
@@ -630,7 +638,7 @@ func compute_spawn_chances():
 			enemy_spawn_chances_for_current_level[total_enemy_spawn_chance] = enemy_setting
 
 func handle_spawn_room_items(room:RoomStruct):
-	var tm :TileMap = $LogicalTiles
+	#var tm :TileMap = $LogicalTiles
 	
 	var ignore_list:Array[Vector2i]=[];
 	for idx in range(0, mini(generator_resource.objects.size(), generator_resource.objects_per_room.size())):
@@ -659,9 +667,9 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	if (generator_resource == null):
 		return;
 	
-	var _tm :TileMap = $LogicalTiles
-	var _vm :TileMap = $VisibleTiles
-	var _fm :TileMap = $FeatureTiles
+	#var _tm: TileMapLayer = $LogicalTiles
+	#var _vm: TileMapLayer = $VisibleTiles
+	#var _fm: TileMapLayer = $FeatureTiles
 	#tm.tile_set = generator_resource.tile_set
 	
 	random = in_random
@@ -755,8 +763,8 @@ func generate(in_random: RandomNumberGenerator, level : int):
 
 
 func setup_cell_visual(logical_cell:Vector2i):
-	var tm: TileMap = $LogicalTiles
-	var vm: TileMap = $VisibleTiles
+	#var tm: TileMap = $LogicalTiles
+	#var vm: TileMap = $VisibleTiles
 	
 	var compare = logical_wall
 	
@@ -768,14 +776,20 @@ func setup_cell_visual(logical_cell:Vector2i):
 
 	#attempted optimization for level gen, doesn't work very much faster though ngl. Only like 1 second faster on a normally 5 second generation.
 	if tilemap_helper.has(av / tilemap_helper_size) or tilemap_helper.has(bv / tilemap_helper_size) or tilemap_helper.has(cv / tilemap_helper_size) or tilemap_helper.has(dv / tilemap_helper_size):
-		var a: bool = tm.get_cell_atlas_coords(0, av) == compare #top left
-		var b: bool = tm.get_cell_atlas_coords(0, bv) == compare #top right
-		var c: bool = tm.get_cell_atlas_coords(0, cv) == compare #bot left
-		var d: bool = tm.get_cell_atlas_coords(0, dv) == compare #bot right
+		#var a: bool = tm.get_cell_atlas_coords(0, av) == compare #top left
+		#var b: bool = tm.get_cell_atlas_coords(0, bv) == compare #top right
+		#var c: bool = tm.get_cell_atlas_coords(0, cv) == compare #bot left
+		#var d: bool = tm.get_cell_atlas_coords(0, dv) == compare #bot right
+		
+		var a: bool = tm.get_cell_atlas_coords(av) == compare #top left
+		var b: bool = tm.get_cell_atlas_coords(bv) == compare #top right
+		var c: bool = tm.get_cell_atlas_coords(cv) == compare #bot left
+		var d: bool = tm.get_cell_atlas_coords(dv) == compare #bot right
 		
 		var combine = Vector2i(int(a) | int(b) << 1, int(c) | int(d) << 1)
 		
-		vm.set_cell(LAYER_IDX, logical_cell, 0, combine);
+		#vm.set_cell(LAYER_IDX, logical_cell, 0, combine)
+		vm.set_cell(logical_cell, 0, combine)
 	
 
 func create_visible(real_extent_top_left: Vector2i, real_extent_bot_right: Vector2i) -> void:
@@ -786,7 +800,7 @@ func create_visible(real_extent_top_left: Vector2i, real_extent_bot_right: Vecto
 
 
 func spawn_waiting_enemies() -> void:
-	var tm: TileMap = $LogicalTiles
+	#var tm: TileMap = $LogicalTiles
 	var enemyloc = enemy_spawn_list.keys()[0]
 	
 	var new_enemy: Enemy = enemy_spawn_list[enemyloc].instantiate()
