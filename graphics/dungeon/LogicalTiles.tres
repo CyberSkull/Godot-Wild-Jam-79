@@ -1,15 +1,11 @@
-[gd_resource type="TileSet" load_steps=4 format=3 uid="uid://clpwruqovs8tt"]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://clpwruqovs8tt"]
 
 [ext_resource type="Texture2D" uid="uid://7wj0omhgbeho" path="res://graphics/dungeon/testgrid.png" id="1_ocvhf"]
-
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_6kf7y"]
-polygon = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_gx0h5"]
 texture = ExtResource("1_ocvhf")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
-0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_6kf7y")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 1:0/0 = 0
 2:0/0 = 0
