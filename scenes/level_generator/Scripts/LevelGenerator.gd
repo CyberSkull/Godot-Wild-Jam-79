@@ -101,14 +101,16 @@ class RoomStruct:
 		return selected_room.recurse_make_new_room()
 
 
-	func get_random_filled_node()->RoomStruct:
-		var rand_arr:Array = Array()
+	func get_random_filled_node() -> RoomStruct:
+		#print_debug("getting random filled node")
+		var rand_arr: Array[RoomStruct] = Array()
 		if north() != null: rand_arr.push_back(north()) 
 		if east() != null: rand_arr.push_back(east()) 
 		if south() != null: rand_arr.push_back(south()) 
 		if west() != null: rand_arr.push_back(west()) 
 		if rand_arr.size() == 0: return null;
-		return rand_arr[random.randi_range(0, rand_arr.size() - 1)]
+		#return rand_arr[random.randi_range(0, rand_arr.size() - 1)]
+		return rand_arr.pick_random()
 
 
 	func is_full()->bool:
@@ -142,8 +144,8 @@ class RoomList:
 	
 	
 	func has_completed_passage(loc_a: Vector2i, loc_b: Vector2i) -> bool:
-		var search_a:Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
-		var search_b:Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
+		var search_a: Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
+		var search_b: Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
 		
 		if completed_passages.find(search_a) != -1:
 			return true
@@ -153,8 +155,8 @@ class RoomList:
 
 
 	func add_completed_passage(loc_a: Vector2i, loc_b: Vector2i) -> void:
-		var search_a:Vector4i= Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
-		var search_b:Vector4i= Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
+		var search_a: Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
+		var search_b: Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
 		
 		completed_passages.push_back(search_a)
 		completed_passages.push_back(search_b)
