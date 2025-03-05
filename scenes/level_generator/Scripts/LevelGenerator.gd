@@ -599,7 +599,7 @@ func handle_room_enemy_spawns(room: RoomStruct):
 	if generator_resource.chance_empty_room > random.randf_range(0,1):
 		return
 	var num_enemies = random.randi_range(generator_resource.number_enemies_min, generator_resource.number_enemies_max)
-	print_debug("num enemies: ",num_enemies)
+	print_debug("num enemies: ", num_enemies)
 	var ignore_list :Array[Vector2i]= []
 	
 	for i in range(num_enemies):
@@ -608,7 +608,7 @@ func handle_room_enemy_spawns(room: RoomStruct):
 		if space[0]:
 			var new_enemy:Enemy= enemy_type.enemy_type.instantiate()
 			new_enemy.target = player_instance
-			print_debug("made enemy: ",enemy_type.enemy_name)
+			print_debug("made enemy: ", enemy_type.enemy_name)
 			#add_child(new_enemy)
 			call_deferred(&"add_child", new_enemy)
 			var location :Vector2i = tile_space_to_pixel_space(space[1])

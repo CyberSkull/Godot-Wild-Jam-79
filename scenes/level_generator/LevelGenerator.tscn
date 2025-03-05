@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://rjx6cymyrjs0"]
 
-[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerator.gd" id="1_fsh6h"]
+[ext_resource type="Script" uid="uid://dfhu38avjjh8v" path="res://scenes/level_generator/Scripts/LevelGenerator.gd" id="1_fsh6h"]
 [ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://scenes/level_generator/test_generator_settings.tres" id="2_nucgu"]
 [ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://graphics/dungeon/LogicalTiles.tres" id="3_6vv75"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="4_j467f"]

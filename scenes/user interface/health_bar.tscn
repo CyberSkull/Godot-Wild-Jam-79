@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://1bpha7t3c2rq"]
 
-[ext_resource type="Script" path="res://scenes/user interface/health_bar.gd" id="1_n8pt8"]
+[ext_resource type="Script" uid="uid://bssjvoaks5f6l" path="res://scenes/user interface/health_bar.gd" id="1_n8pt8"]
 [ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="1_v56l1"]
 
 [node name="HealthBar" type="ProgressBar"]

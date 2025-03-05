@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="LevelGenerationSettings" load_steps=15 format=3 uid="uid://cuessunmjga6x"]
 
 [ext_resource type="Resource" uid="uid://cad0yxtixdrah" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_green_slime.tres" id="1_koa8j"]
-[ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="1_maeca"]
-[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
+[ext_resource type="Script" uid="uid://cyehi6omwo0gi" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="1_maeca"]
+[ext_resource type="Script" uid="uid://c1ql57tr6snao" path="res://scenes/level_generator/Scripts/LevelGenerationSettings.gd" id="1_w0ubp"]
 [ext_resource type="Resource" uid="uid://clfetl802uwvh" path="res://scenes/level_generator/enemy_spawn_settings/spawn_settings_blue_slime.tres" id="2_8oxig"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="3_60sdi"]
 [ext_resource type="PackedScene" uid="uid://b7nyf72dip0wc" path="res://scenes/environment/torch.tscn" id="3_s6rpp"]

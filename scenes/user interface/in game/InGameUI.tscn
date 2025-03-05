@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://carljqywqdma2"]
 
-[ext_resource type="Script" path="res://scenes/user interface/in game/InGameUI.gd" id="1_8xasy"]
+[ext_resource type="Script" uid="uid://b0l5a4mul6kel" path="res://scenes/user interface/in game/InGameUI.gd" id="1_8xasy"]
 [ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://graphics/dungeon/squares_d.png" id="2_0klp6"]
 [ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="3_05rig"]
 [ext_resource type="PackedScene" uid="uid://1bpha7t3c2rq" path="res://scenes/user interface/health_bar.tscn" id="4_5guob"]

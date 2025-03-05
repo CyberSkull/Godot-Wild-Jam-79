@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bhk58b6mxf48o"]
 
 [ext_resource type="PackedScene" uid="uid://ca5c3xt6glx5q" path="res://scenes/items/item.tscn" id="1_4xx4h"]
-[ext_resource type="Script" path="res://scenes/items/Boots/boots.gd" id="2_jji1y"]
+[ext_resource type="Script" uid="uid://djlakj5808hbl" path="res://scenes/items/Boots/boots.gd" id="2_jji1y"]
 [ext_resource type="Texture2D" uid="uid://d3olrfcjd5dym" path="res://graphics/items/Boots.png" id="3_pe7u1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hj8dy"]

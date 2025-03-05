@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://dioqu82psu1lc"]
 
-[ext_resource type="Script" path="res://scenes/user interface/title_screen.gd" id="1_liq0c"]
+[ext_resource type="Script" uid="uid://cosiod7e1xki6" path="res://scenes/user interface/title_screen.gd" id="1_liq0c"]
 [ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="2_qmi7m"]
 
 [node name="TitleScreen" type="CanvasLayer"]

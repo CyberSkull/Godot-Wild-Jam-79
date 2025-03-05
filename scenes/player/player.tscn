@@ -1,6 +1,6 @@
 [gd_scene load_steps=60 format=3 uid="uid://b8lqvc0s4q0lx"]
 
-[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_km6pe"]
+[ext_resource type="Script" uid="uid://ccycnh62v0lq5" path="res://scenes/player/player.gd" id="1_km6pe"]
 [ext_resource type="Texture2D" uid="uid://dtp8ermnte1m3" path="res://graphics/Dakota Duck/Dakota Duck sheet.png" id="2_cgsfr"]
 [ext_resource type="Material" uid="uid://b4d1wercdvlgt" path="res://scenes/player/player_blink.tres" id="2_yto81"]
 [ext_resource type="Texture2D" uid="uid://cleiytveeexyw" path="res://graphics/Dakota Duck/light.png" id="4_oheqb"]
@@ -1287,20 +1287,20 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_uwqgj"]
 _data = {
-"RESET": SubResource("Animation_yfc5b"),
-"attack_down": SubResource("Animation_dhw74"),
-"attack_left": SubResource("Animation_r78x8"),
-"attack_right": SubResource("Animation_nrpb8"),
-"attack_up": SubResource("Animation_lgqnf"),
-"hurt": SubResource("Animation_pkv3d"),
-"idle_down": SubResource("Animation_le1cm"),
-"idle_left": SubResource("Animation_x1ggf"),
-"idle_right": SubResource("Animation_1okrm"),
-"idle_up": SubResource("Animation_aedc7"),
-"walk_down": SubResource("Animation_j6xxd"),
-"walk_left": SubResource("Animation_7npy5"),
-"walk_right": SubResource("Animation_3kr67"),
-"walk_up": SubResource("Animation_bkrd6")
+&"RESET": SubResource("Animation_yfc5b"),
+&"attack_down": SubResource("Animation_dhw74"),
+&"attack_left": SubResource("Animation_r78x8"),
+&"attack_right": SubResource("Animation_nrpb8"),
+&"attack_up": SubResource("Animation_lgqnf"),
+&"hurt": SubResource("Animation_pkv3d"),
+&"idle_down": SubResource("Animation_le1cm"),
+&"idle_left": SubResource("Animation_x1ggf"),
+&"idle_right": SubResource("Animation_1okrm"),
+&"idle_up": SubResource("Animation_aedc7"),
+&"walk_down": SubResource("Animation_j6xxd"),
+&"walk_left": SubResource("Animation_7npy5"),
+&"walk_right": SubResource("Animation_3kr67"),
+&"walk_up": SubResource("Animation_bkrd6")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_26qsg"]
@@ -1516,7 +1516,7 @@ polygon = PackedVector2Array(-1, -16, -3, -14, -3, -4, -4, -4, -4, -3, -2, -1, -
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_uwqgj")
+&"": SubResource("AnimationLibrary_uwqgj")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
