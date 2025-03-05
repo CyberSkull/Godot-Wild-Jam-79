@@ -1,6 +1,8 @@
 @icon("res://icon/Dakota Duck.iconset/icon_16x16@2x.png")
 extends Node2D
 
+@onready var level = $Level
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -8,9 +10,9 @@ func _ready() -> void:
 
 func start_game(new_seed:int):
 	#$Level.player = $Player
-	$Level.random = RandomNumberGenerator.new()
-	$Level.random.seed = new_seed
-	$Level.create_level(0)
+	level.random = RandomNumberGenerator.new()
+	level.random.seed = new_seed
+	level.create_level(0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:

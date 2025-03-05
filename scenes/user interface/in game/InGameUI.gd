@@ -9,6 +9,13 @@ extends CanvasLayer
 		#%HealthBar.set_value_no_signal(player.health)
 
 @onready var health_bar: ProgressBar = $PlayerUserInterface/HealthBar
+@onready var player_user_interface = $PlayerUserInterface
+@onready var loading_screen = $LoadingScreen
+@onready var score = %Score
+@onready var speed = %Speed
+@onready var defense = %Defense
+@onready var attack = %Attack
+
 
 ## Called when the node enters the scene tree for the first time.
 #func _ready() -> void:
@@ -18,11 +25,11 @@ extends CanvasLayer
 ## Shows the loading screen if [param visibility] is [code]true[/code].
 func show_loading_screen(visibility: bool) -> void:
 	if visibility == true:
-		$PlayerUserInterface.visible = false;
-		$LoadingScreen.visible = true;
+		player_user_interface.visible = false;
+		loading_screen.visible = true;
 	else:
-		$LoadingScreen.visible = false;
-		$PlayerUserInterface.visible = true;
+		loading_screen.visible = false;
+		player_user_interface.visible = true;
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
@@ -31,10 +38,10 @@ func show_loading_screen(visibility: bool) -> void:
 
 ## Updates the on-screen buffs when they have changed.
 func update_buff_ui(player: Player) -> void:
-	%Score.text = "GLD: " + str(player.gold)
-	%Attack.text = "ATK: " + str(player.attack_damage)
-	%Defense.text = "DEF: " + str(player.defence)
-	%Speed.text = "SPD: " + str(player.speed)
+	score.text = "GLD: " + str(player.gold)
+	attack.text = "ATK: " + str(player.attack_damage)
+	defense.text = "DEF: " + str(player.defence)
+	speed.text = "SPD: " + str(player.speed)
 
 
 ## Updates health progress bar value when player health changes.
