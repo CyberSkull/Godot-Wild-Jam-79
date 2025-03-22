@@ -3,7 +3,10 @@ class_name Enemy
 extends CharacterBody2D
 
 ## Emitted when enemy slain, gives name and points.
-signal slain(enemy_name: StringName, points: int)
+signal slain(slain_enemy_name: StringName, points: int)
+
+## [Enemy] name.
+@export var enemy_name: StringName = "Enemy"
 
 ## [Enemy] maximum health.
 @export var max_health: int = 1
@@ -12,6 +15,8 @@ signal slain(enemy_name: StringName, points: int)
 @export var health: int = 1:
 	set(value):
 		health = clampi(value, 0, max_health)
+		if health <= 0:
+			slain.emit(enemy_name, experience_points)
 		#print_debug(name, " health: ", health, "/", max_health)
 
 ## Attack damage.
@@ -22,6 +27,9 @@ signal slain(enemy_name: StringName, points: int)
 
 ## Knockback velocity in pixels per second.
 @export var knockback_speed: float = 128
+
+## Experience points when given to player when defeating the enemy.
+@export var experience_points: int = 1
 
 var knockback_velocity: Vector2 = Vector2.ZERO
 
@@ -36,7 +44,7 @@ var target_last_known_pos: Vector2
 @export var lose_aggro_dist: float = 500
 @export var lose_aggro_dist_but_still_visible_debuff: float = 0.4
 @export var lose_agro_time: float = 2.5
-var lose_agro_time_current: float = lose_agro_time+1
+var lose_agro_time_current: float = lose_agro_time + 1
 
 
 #standard search stuff
@@ -46,39 +54,36 @@ var lose_agro_time_current: float = lose_agro_time+1
 @export var time_between_searches_max: float = 20
 var time_to_next_search: float = 0
 
-#the amount of time to do an "intensive search" after seeing an enemy
+## The amount of time to do an "intensive search" after seeing an enemy
 @export var search_acceleration_after_seen_time: float = 30
-#multiplier to the duration between searches during the "intensive search"
+## Multiplier to the duration between searches during the "intensive search"
 @export var search_acceleration_after_seen_multiplier: float = 0.20
-#multiplier to the search distance during the "intensive search"
+## Multiplier to the search distance during the "intensive search"
 @export var search_area_after_seen_multiplier: float = 2.5
-#time since we were aggroed on an enemy.
-#If this falls within the search_acceleration_after_seen_time, it will be an intensive search.
+## Time since we were aggroed on an enemy.
+## If this falls within the search_acceleration_after_seen_time, it will be an intensive search.
 var time_since_last_target: float = 0
 
+## The target to be searched for, ususally the [Player].
 var search_target: Vector2
 
 ## Cached [NavigationAgent2D] reference. Initialized in [method _ready].
 @onready var navigator: NavigationAgent2D = %Navigator
 
+## First physics frame check.
 var first_physic: bool = true
+## Controls if the enemy is navigating. WARNING: unused.
 var is_navigating: bool = false
+
+## [PackedScene] containing the floating text for [Enemy] damage.
+var floating_text_scene: PackedScene = preload("res://scenes/user interface/floating_text.tscn")
 
 
 ## Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# pause physics
-	set_physics_process(false)
-	# deferred call to setup_navigation. Used because await in _ready() may not allways work.
-	call_deferred(&"setup_navigaiton")
-
-
-## Provides a small delay to alow the navigation server to sync.
-func setup_navigaiton() -> void:
-	# wait one physics tic
-	await get_tree().physics_frame
-	# resume physics
-	set_physics_process(true)
+	# Connect velocity computed signal.
+	#navigator.velocity_computed.connect(Callable(_on_navigator_velocity_computed))
+	pass
 
 
 func set_no_aggro() -> void:
@@ -145,16 +150,34 @@ func search_logic(delta: float) -> Vector2:
 		#no update last known position. Just anchor around it.
 		search_target = target_last_known_pos + search_range.rotated(random_dir)
 		
-	time_to_next_search-=delta
+	time_to_next_search -= delta
 	return search_target
+
+
+## Handles taking damage from a [Player] hit.
+func hit_by_player(player: Player) -> void:
+	#knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
+		knockback_velocity = -global_position.direction_to(player.global_position) * knockback_speed
+		if health > 0:
+			health -= player.attack_damage
+			var damage_text: FloatingText= floating_text_scene.instantiate()
+			damage_text.push_color(Color.WHITE)
+			damage_text.append_text(str("-", player.attack_damage))
+			damage_text.pop()
+			add_child(damage_text)
+		elif health <= 0:
+			experience_points = 0 # prevents double exp
+			target = self # mostly stops momentum towards player on death.
 
 
 ## Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	#annoyingly, ready is called IMMEDIATELY upon instantiation,
-	#which leaves no time to set stuff up before moving the enemy to position
-	#due to this, I have this silly functionality here, which is definitely not the best way to do it.
-	#just is a hack for now (obvi would rather have a timer set for next tick to do this functionality..)
+	# Return if map is not ready.
+	if NavigationServer2D.map_get_iteration_id(navigator.get_navigation_map()) == 0:
+		return
+	
+	# Annoyingly, ready is called IMMEDIATELY upon instantiation, which leaves no time to set stuff up before moving the enemy to position due to this, I have this silly functionality here, which is definitely not the best way to do it.
+	# Just is a hack for now (obvi would rather have a timer set for next tick to do this functionality..)
 	if first_physic == true:
 		#pre zero the velocity to ensure no weirdness happens.
 		velocity = Vector2.ZERO
@@ -166,7 +189,6 @@ func _physics_process(delta: float) -> void:
 		time_since_last_target = search_acceleration_after_seen_time+1
 	
 	# Update to the target current position.
-	if navigator == null: return
 	if target:
 		determine_aggro_state(delta)
 		if is_aggroed():
@@ -183,23 +205,22 @@ func _physics_process(delta: float) -> void:
 	# Get vector to next path point and set to character velocity * speed.
 	var next_path_position: Vector2
 	next_path_position = navigator.get_next_path_position()
-	velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
-	
-	move_and_slide()
+	var new_velocity = global_position.direction_to(next_path_position) * speed + knockback_velocity
+	if navigator.avoidance_enabled:
+		navigator.set_velocity(new_velocity)
+	else:
+		_on_navigator_velocity_computed(new_velocity)
 	
 	knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, knockback_attenuation)
 
 
-func _on_hurt_box_area_entered(area: Area2D) -> void:
-	#print_debug("attacking area: ", area)
-	#print_debug("area parent.parent is: ", area.get_parent().get_parent())
-	#print_debug("area parent.parent is player? ", area.get_parent().get_parent() is Player)
-	if area.get_parent().get_parent() is Player:
-		var player: Player = area.get_parent().get_parent() as Player
-		#print_debug(player.name, " is striking ", self.name)
-		#knockback_velocity = (player.velocity - velocity).normalized() * knockback_speed
-		knockback_velocity = -global_position.direction_to(player.global_position) * knockback_speed
-		health -= player.attack_damage
-		if health <= 0:
-			slain.emit()
+## Provides a small delay to alow the navigation server to sync.
+func _on_navigator_velocity_computed(safe_velocity: Vector2) -> void:
+	velocity = safe_velocity
+	move_and_slide()
 
+
+## Handles collision with [Player]'s weapons.
+func _on_hurt_box_area_entered(area: Area2D) -> void:
+	if area.get_parent().get_parent() is Player:
+		hit_by_player(area.get_parent().get_parent() as Player)

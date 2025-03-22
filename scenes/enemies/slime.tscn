@@ -1,7 +1,7 @@
 [gd_scene load_steps=54 format=3 uid="uid://dv03tlr12jaeg"]
 
 [ext_resource type="PackedScene" uid="uid://bx3d0lgmpfh8b" path="res://scenes/enemies/enemy.tscn" id="1_niki8"]
-[ext_resource type="Script" path="res://scenes/enemies/slime.gd" id="2_55b4r"]
+[ext_resource type="Script" uid="uid://dnmvuvagqv1tf" path="res://scenes/enemies/slime.gd" id="2_55b4r"]
 [ext_resource type="Texture2D" uid="uid://bw0omo13cfw7c" path="res://graphics/slime/grey slime spritesheet calciumtrice_0.png" id="3_gq0by"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a2xgg"]
@@ -326,17 +326,17 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_mjpmf"]
 _data = {
-"RESET": SubResource("Animation_42ywt"),
-"death_left": SubResource("Animation_wvs64"),
-"death_right": SubResource("Animation_0afry"),
-"gesture_roll_left": SubResource("Animation_ksfod"),
-"gesture_roll_right": SubResource("Animation_frbar"),
-"idle_left": SubResource("Animation_n44dm"),
-"idle_right": SubResource("Animation_d0qes"),
-"spit_attack_left": SubResource("Animation_hj86c"),
-"spit_attack_right": SubResource("Animation_txq11"),
-"walk_left": SubResource("Animation_2le5w"),
-"walk_right": SubResource("Animation_5bc0s")
+&"RESET": SubResource("Animation_42ywt"),
+&"death_left": SubResource("Animation_wvs64"),
+&"death_right": SubResource("Animation_0afry"),
+&"gesture_roll_left": SubResource("Animation_ksfod"),
+&"gesture_roll_right": SubResource("Animation_frbar"),
+&"idle_left": SubResource("Animation_n44dm"),
+&"idle_right": SubResource("Animation_d0qes"),
+&"spit_attack_left": SubResource("Animation_hj86c"),
+&"spit_attack_right": SubResource("Animation_txq11"),
+&"walk_left": SubResource("Animation_2le5w"),
+&"walk_right": SubResource("Animation_5bc0s")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_c7g3s"]
@@ -509,7 +509,7 @@ shape = SubResource("CircleShape2D_a2xgg")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3"]
 libraries = {
-"": SubResource("AnimationLibrary_mjpmf")
+&"": SubResource("AnimationLibrary_mjpmf")
 }
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="4"]

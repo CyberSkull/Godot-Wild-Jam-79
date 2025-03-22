@@ -7,22 +7,29 @@ extends CharacterBody2D
 signal health_changed(health: int)
 ## Emitted when the [Player] gains or looses [member health] or [member max_health].
 signal max_health_changed(max_health: int)
-## Emitted when a buff changes. WARNING: Not currently used.
-signal buff_changed(player: Player)
+## Emitted when a stat changes.
+signal stats_changed(player: Player)
+## Emitted when the player gains experience points.
+signal gain_experience(experience_points: int, experience_to_next_level: int)
+## Emitted when [member Attack Damage] changes.
+#signal attack_changed(attack: int)
 ## Emitted when the [Player] dies. Triggers game over.
 signal died()
+## Emitted when the player levels up.
+signal leveled_up(level: int)
 
 ## Gold carried by player.
 var gold: int = 0:
 	set(value):
 		gold = value
-		buff_changed.emit(self)
+		stats_changed.emit(self)
 
+@export_category("Stats")
 ## Maximum [Player] health. Emits [signal health_changed] when changed.
 @export var max_health: int = 100:
 	set(value):
 		max_health = value
-		max_health_changed.emit(health)
+		max_health_changed.emit(max_health)
 
 
 ## Current [Player] health. Clamped to [member max_health]. Emits [signal health_changed] when changed. Emits [signal died] when <= 0.
@@ -40,20 +47,48 @@ var gold: int = 0:
 @export var attack_damage: int = 1:
 	set(value):
 		attack_damage = value
-		buff_changed.emit(self)
+		stats_changed.emit(self)
 
 ## Defence power. WARNING: not used.
 @export var defence: int = 1:
 	set(value):
 		defence = value
-		buff_changed.emit(self)
+		stats_changed.emit(self)
 
 ## Movement speed in pixels per second.
 @export var speed: float = 64:
 	set(value):
 		speed = value
-		buff_changed.emit(self)
+		stats_changed.emit(self)
 
+@export_category("Leveling")
+## [Player] level.
+@export var level: int = 1:
+	set(value):
+		level = value
+		stats_changed.emit(self)
+
+## [Player] experience points.
+@export var experience_points = 0:
+	set(value):
+		experience_points = value
+		while experience_points >= experience_to_next_level:
+			experience_points -= experience_to_next_level
+			level_up()
+		gain_experience.emit(experience_points, experience_to_next_level)
+
+## [member max_health] gained on a level up.
+@export var level_up_max_health: int = 10
+## [member health] restored on a level up.
+@export var level_up_healing: int = 20
+## [member attack_damage] stat increase on level up.
+@export var level_up_attack: int = 1
+
+## Experience points needed to level up.
+var experience_to_next_level: int
+
+
+@export_category("Movement")
 ## Velocity the [Player] gets knocked back in pixels/second.
 @export var knockback_speed: float = 256
 
@@ -68,6 +103,7 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 ## Knockback high motor gamepad vibration.
 @export_range(0, 1) var knockback_high_vibration: float = 0.4
 
+@export_category("Haptic")
 ## Duration of the weapon strike gamepad vibration in seconds.
 @export var strike_enemy_low_vibration: float = 0.1
 ## Weapon strike low motor gamepad vibration.
@@ -76,12 +112,14 @@ var knockback_velocity: Vector2 = Vector2.ZERO
 @export_range(0, 1) var strike_enemy_vibration_duration: float = 0.1
 
 
+@export_category("Lantern")
 ## Lantern brightness.
 @export var lantern_luminosity: float
 ## Lantern range in pixels.
 @export var lantern_range: float
 
 
+@export_category("Animation")
 ## [AnimationTree] reference.
 @onready var animation_tree: AnimationTree = $AnimationTree
 ## [$AnimationPlayer] reference.
@@ -117,7 +155,7 @@ var damage_tween: Tween = null
 ## Duration of the blink animation in seconds.
 @export var blink_duration: float = 0.2
 
-
+var floating_text_scene: PackedScene = preload("res://scenes/user interface/floating_text.tscn")
 
 ## Called when all children are ready. Makes sure the [AnimationTree] is active and starts [member playback_state].
 func _ready() -> void:
@@ -127,10 +165,20 @@ func _ready() -> void:
 	# Start animation state machine.
 	playback_state.start(&"Start")
 	
+	# Initialize level.
+	experience_to_next_level = get_exp_to_next_level(level)
+
 	# Initialize UI.
 	health_changed.emit(health)
 	max_health_changed.emit(max_health)
-	buff_changed.emit(self)
+	stats_changed.emit(self)
+	
+	#Quack
+	var floating_text: FloatingText = floating_text_scene.instantiate()
+	floating_text.text = "[rainbow]QUACK![/rainbow]"
+	floating_text.tween_duration = 2.0
+	floating_text.rise_height = -40
+	add_child(floating_text)
 
 
 
@@ -195,6 +243,7 @@ func _on_sword_area_body_entered(body: Node2D) -> void:
 
 ## Sets the [member knockback_velocity] to the opposite vector of the [Enemy]'s [member CharacterBody2D.velocity]. STarts vibration. Plays hurt animation.
 func hit_by_enemy(enemy: Enemy) -> void:
+	var old_health: int = health
 	knockback_velocity = (enemy.velocity - velocity).normalized() * knockback_speed
 	#print("dam ",health)
 	health -= maxi(enemy.attack - defence, 1) #does minimum 1 damage - no armor can prevent this.
@@ -206,6 +255,42 @@ func hit_by_enemy(enemy: Enemy) -> void:
 	
 	Input.start_joy_vibration(0, knockback_low_vibration, knockback_high_vibration, knockback_vibration_duration)
 	
+	var damage_message: FloatingText = floating_text_scene.instantiate()
+	damage_message.push_color(Color.RED)
+	damage_message.append_text(str("-", old_health - health))
+	damage_message.pop()
+	add_child(damage_message)
+	
 
+## Simple function to get the EXP needed for the next level
+func get_exp_to_next_level(current_level: int) -> int:
+	return current_level * 10
+	
+
+## Levels up the player.
+func level_up() -> void:
+	level += 1
+	max_health += level_up_max_health
+	health += level_up_healing
+	attack_damage += level_up_attack
+	experience_to_next_level = get_exp_to_next_level(level)
+	leveled_up.emit(level)
+	
+	var level_up_label: FloatingText = floating_text_scene.instantiate()
+	level_up_label.text = str("[rainbow][wave]Level ", level, "![/wave][/rainbow]")
+	
+	level_up_label.tween_duration = 3.0
+	add_child(level_up_label)
+
+
+
+## Sets the blink intensity for the blink shader when the player is hit.
 func set_blink_shader(intensity: float) -> void:
 	duck_sprite.material["shader_parameter/blink_intensity"] = intensity
+
+
+## Catches slain enemies and applies the EXP.
+func _on_slain_enemy(_slain_enemy_name: StringName, points: int) -> void:
+	experience_points += points
+	#print_debug(points, " EXP gained from slaying ", _slain_enemy_name)
+	

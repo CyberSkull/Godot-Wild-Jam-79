@@ -1,7 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://dioqu82psu1lc"]
+[gd_scene load_steps=9 format=3 uid="uid://dioqu82psu1lc"]
 
-[ext_resource type="Script" path="res://scenes/user interface/title_screen.gd" id="1_liq0c"]
+[ext_resource type="Script" uid="uid://cosiod7e1xki6" path="res://scenes/user interface/title_screen.gd" id="1_liq0c"]
 [ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="2_qmi7m"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_ljrjj"]
+action = &"start"
+
+[sub_resource type="Shortcut" id="Shortcut_7qtmj"]
+events = [SubResource("InputEventAction_ljrjj")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_pp2b3"]
+action = &"random"
+
+[sub_resource type="Shortcut" id="Shortcut_3sqnj"]
+events = [SubResource("InputEventAction_pp2b3")]
+
+[sub_resource type="InputEventAction" id="InputEventAction_7qtmj"]
+action = &"quit"
+
+[sub_resource type="Shortcut" id="Shortcut_pp2b3"]
+events = [SubResource("InputEventAction_7qtmj")]
 
 [node name="TitleScreen" type="CanvasLayer"]
 script = ExtResource("1_liq0c")
@@ -15,11 +33,11 @@ offset_right = 113.0
 offset_bottom = 23.0
 grow_horizontal = 2
 size_flags_vertical = 0
+theme_override_font_sizes/bold_italics_font_size = 8
+theme_override_font_sizes/italics_font_size = 8
+theme_override_font_sizes/mono_font_size = 8
 theme_override_font_sizes/normal_font_size = 8
 theme_override_font_sizes/bold_font_size = 8
-theme_override_font_sizes/italics_font_size = 8
-theme_override_font_sizes/bold_italics_font_size = 8
-theme_override_font_sizes/mono_font_size = 8
 bbcode_enabled = true
 text = "[center][rainbow][wave][b]Dakota Duck[/b] in [i]The Dark Slime Dungeon[/i][/wave][/rainbow][/center]"
 shortcut_keys_enabled = false
@@ -43,7 +61,14 @@ layout_mode = 2
 alignment = 1
 
 [node name="StartGameButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Start the game!"
+focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../HBoxContainer/GenerateSeed")
+focus_next = NodePath("../HBoxContainer/GenerateSeed")
+focus_previous = NodePath("../QuitButton")
+shortcut = SubResource("Shortcut_7qtmj")
 text = "Start"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -51,13 +76,26 @@ layout_mode = 2
 
 [node name="GenerateSeed" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-text = "↻ New Random Seed
+focus_neighbor_left = NodePath("../Seed")
+focus_neighbor_top = NodePath("../../StartGameButton")
+focus_neighbor_right = NodePath("../Seed")
+focus_neighbor_bottom = NodePath("../../QuitButton")
+focus_next = NodePath("../Seed")
+focus_previous = NodePath("../../StartGameButton")
+shortcut = SubResource("Shortcut_3sqnj")
+text = "↻ New R̲andom Seed
 "
 
 [node name="Seed" type="LineEdit" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+focus_neighbor_left = NodePath("../GenerateSeed")
+focus_neighbor_top = NodePath("../../StartGameButton")
+focus_neighbor_right = NodePath("../GenerateSeed")
+focus_neighbor_bottom = NodePath("../../QuitButton")
+focus_next = NodePath("../../QuitButton")
+focus_previous = NodePath("../GenerateSeed")
 
 [node name="OptionsButton" type="Button" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -66,6 +104,11 @@ text = "Options…"
 
 [node name="QuitButton" type="Button" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../HBoxContainer/Seed")
+focus_neighbor_bottom = NodePath("../StartGameButton")
+focus_next = NodePath("../StartGameButton")
+focus_previous = NodePath("../HBoxContainer/Seed")
+shortcut = SubResource("Shortcut_pp2b3")
 text = "Quit"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]

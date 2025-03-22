@@ -1,32 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://rjx6cymyrjs0"]
+[gd_scene load_steps=5 format=4 uid="uid://rjx6cymyrjs0"]
 
-[ext_resource type="Script" path="res://scenes/level_generator/Scripts/LevelGenerator.gd" id="1_fsh6h"]
+[ext_resource type="Script" uid="uid://dfhu38avjjh8v" path="res://scenes/level_generator/Scripts/LevelGenerator.gd" id="1_fsh6h"]
 [ext_resource type="Resource" uid="uid://cuessunmjga6x" path="res://scenes/level_generator/test_generator_settings.tres" id="2_nucgu"]
 [ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://graphics/dungeon/LogicalTiles.tres" id="3_6vv75"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="4_j467f"]
 
-[node name="Node2D" type="Node2D"]
+[node name="LevelGenerator" type="Node2D"]
 script = ExtResource("1_fsh6h")
 generator_resource = ExtResource("2_nucgu")
 
-[node name="LogicalTiles" type="TileMap" parent="."]
-visible = false
-show_behind_parent = true
-tile_set = ExtResource("3_6vv75")
-format = 2
-layer_0/tile_data = PackedInt32Array(131081, 196608, 4, 131080, 196608, 4, 65544, 196608, 4, 65543, 196608, 4, 6, 196608, 4, 5, 196608, 4, -65531, 196608, 4, -65532, 196608, 4, -65533, 196608, 4, -131070, 196608, 4, -131071, 196608, 4, -196608, 196608, 4, -131073, 196608, 4, -196610, 196608, 4, -196611, 196608, 4, -196612, 196608, 4, -196613, 196608, 4, -262150, 196608, 4, -262151, 196608, 4, -262152, 196608, 4, -262153, 196608, 4, -262154, 196608, 4, -262155, 196608, 4, -262156, 196608, 4, -262157, 196608, 4, -196622, 196608, 4, -196623, 196608, 4, -131087, 196608, 4, -65551, 196608, 4, -15, 196608, 4, 65521, 196608, 4, 131057, 196608, 4, 196594, 196608, 4, 262131, 196608, 4, 262132, 196608, 4, 327668, 196608, 4, 327669, 196608, 4, 327670, 196608, 4, 393207, 196608, 4, 393208, 196608, 4, 458744, 196608, 4, 458745, 196608, 4, 458746, 196608, 4, 458747, 196608, 4, 524283, 196608, 4, 524284, 196608, 4, 524285, 196608, 4, 524286, 196608, 4, 524287, 196608, 4, 458752, 196608, 4)
-
-[node name="VisibleTiles" type="TileMap" parent="."]
-editor_description = "DISPLAY ONLY!
-
-Collision and such is handled by the LogicalTiles."
-show_behind_parent = true
-position = Vector2(16, 16)
-tile_set = ExtResource("4_j467f")
-format = 2
-
-[node name="FeatureTiles" type="TileMap" parent="."]
-format = 2
-
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
+
+[node name="LogicalTiles" type="TileMapLayer" parent="."]
+use_parent_material = true
+tile_map_data = PackedByteArray("AAAJAAIAAAADAAQAAAAIAAIAAAADAAQAAAAIAAEAAAADAAQAAAAHAAEAAAADAAQAAAAGAAAAAAADAAQAAAAFAAAAAAADAAQAAAAFAP//AAADAAQAAAAEAP//AAADAAQAAAADAP//AAADAAQAAAACAP7/AAADAAQAAAABAP7/AAADAAQAAAAAAP3/AAADAAQAAAD///3/AAADAAQAAAD+//z/AAADAAQAAAD9//z/AAADAAQAAAD8//z/AAADAAQAAAD7//z/AAADAAQAAAD6//v/AAADAAQAAAD5//v/AAADAAQAAAD4//v/AAADAAQAAAD3//v/AAADAAQAAAD2//v/AAADAAQAAAD1//v/AAADAAQAAAD0//v/AAADAAQAAADz//v/AAADAAQAAADy//z/AAADAAQAAADx//z/AAADAAQAAADx//3/AAADAAQAAADx//7/AAADAAQAAADx////AAADAAQAAADx/wAAAAADAAQAAADx/wEAAAADAAQAAADy/wIAAAADAAQAAADz/wMAAAADAAQAAAD0/wMAAAADAAQAAAD0/wQAAAADAAQAAAD1/wQAAAADAAQAAAD2/wQAAAADAAQAAAD3/wUAAAADAAQAAAD4/wUAAAADAAQAAAD4/wYAAAADAAQAAAD5/wYAAAADAAQAAAD6/wYAAAADAAQAAAD7/wYAAAADAAQAAAD7/wcAAAADAAQAAAD8/wcAAAADAAQAAAD9/wcAAAADAAQAAAD+/wcAAAADAAQAAAD//wcAAAADAAQAAAAAAAcAAAADAAQAAAA=")
+tile_set = ExtResource("3_6vv75")
+navigation_enabled = false
+
+[node name="VisibleTiles" type="TileMapLayer" parent="."]
+y_sort_enabled = true
+use_parent_material = true
+position = Vector2(16, 16)
+tile_set = ExtResource("4_j467f")
+
+[node name="FeatureTiles" type="TileMapLayer" parent="."]

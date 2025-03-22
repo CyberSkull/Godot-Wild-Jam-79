@@ -39,13 +39,18 @@ var debug_bricks
 var debug_lines
 var debug_loc
 
-var player_instance: Player
+var player_instance: Player = null
 
 var tilemap_helper: Dictionary
 var tilemap_helper_size: int = 8
 
 @export var logical_wall := Vector2i.ZERO
 @export var logical_floor := Vector2i.LEFT
+
+@onready var logical_tiles = $LogicalTiles
+@onready var visible_tiles = $VisibleTiles
+@onready var feature_tiles = $FeatureTiles
+
 
 class RoomStruct:
 	#roomspace
@@ -96,14 +101,16 @@ class RoomStruct:
 		return selected_room.recurse_make_new_room()
 
 
-	func get_random_filled_node()->RoomStruct:
-		var rand_arr:Array = Array()
+	func get_random_filled_node() -> RoomStruct:
+		#print_debug("getting random filled node")
+		var rand_arr: Array[RoomStruct] = Array()
 		if north() != null: rand_arr.push_back(north()) 
 		if east() != null: rand_arr.push_back(east()) 
 		if south() != null: rand_arr.push_back(south()) 
 		if west() != null: rand_arr.push_back(west()) 
 		if rand_arr.size() == 0: return null;
-		return rand_arr[random.randi_range(0, rand_arr.size() - 1)]
+		#return rand_arr[random.randi_range(0, rand_arr.size() - 1)]
+		return rand_arr.pick_random()
 
 
 	func is_full()->bool:
@@ -137,8 +144,8 @@ class RoomList:
 	
 	
 	func has_completed_passage(loc_a: Vector2i, loc_b: Vector2i) -> bool:
-		var search_a:Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
-		var search_b:Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
+		var search_a: Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
+		var search_b: Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
 		
 		if completed_passages.find(search_a) != -1:
 			return true
@@ -148,8 +155,8 @@ class RoomList:
 
 
 	func add_completed_passage(loc_a: Vector2i, loc_b: Vector2i) -> void:
-		var search_a:Vector4i= Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
-		var search_b:Vector4i= Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
+		var search_a: Vector4i = Vector4i(loc_a.x, loc_a.y, loc_b.x, loc_b.y)
+		var search_b: Vector4i = Vector4i(loc_b.x, loc_b.y, loc_a.x, loc_a.y)
 		
 		completed_passages.push_back(search_a)
 		completed_passages.push_back(search_b)
@@ -213,27 +220,29 @@ func rand_arr_itm_det(val: Array):
 func is_horizontal_dir(direction: int) -> int:
 	return direction % 2
 
-func logical_world_fill(start:Vector2i, end:Vector2i):
-	var tm: TileMap = $LogicalTiles
+func logical_world_fill(start: Vector2i, end: Vector2i):
+	#var logical_tiles: TileMapLayer = $LogicalTiles
 	for pos_x in range(start.x, end.x):
 		for pos_y in range(start.y, end.y):
-			tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_wall);
+			#logical_tiles.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_wall)
+			logical_tiles.set_cell(Vector2i(pos_x, pos_y), SRC_IDX, logical_wall)
 
-#creates a room from top left to bottom right in size.
-#walls optional.
-#corner walls will be created only when adjacent walls are true.
+## Creates a room from top left to bottom right in size.
+## Walls optional.
+## Corner walls will be created only when adjacent walls are true.
 func room_cutter(
 		logical_tile: Vector2i,
 		room_top_left: Vector2i,
 		room_bot_right: Vector2i
 	) -> void:
-	var tm: TileMap = $LogicalTiles
+	#var logical_tiles: TileMap = $LogicalTiles
 	
 	#print_debug("making room: ",room_top_left, room_bot_right)
 	
 	for pos_x: int in range(room_top_left.x, room_bot_right.x + 1):
 		for pos_y: int in range(room_top_left.y, room_bot_right.y + 1):
-			tm.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_tile);
+			#logical_tiles.set_cell(LAYER_IDX, Vector2i(pos_x, pos_y), SRC_IDX, logical_tile)
+			logical_tiles.set_cell(Vector2i(pos_x, pos_y), SRC_IDX, logical_tile)
 			#3x3 grid to ensure everything all around is valid.
 			tilemap_helper[Vector2i((pos_x / tilemap_helper_size) - 1, (pos_y / tilemap_helper_size) - 1)] = true
 			tilemap_helper[Vector2i((pos_x / tilemap_helper_size) - 1, (pos_y / tilemap_helper_size))] = true
@@ -272,12 +281,12 @@ func loop_make_room_walls(room: RoomStruct) -> void:
 	
 	
 	
-	var tm :TileMap = $LogicalTiles
+	#var logical_tiles :TileMap = $LogicalTiles
 	#add wiggle
 	room.cell_top_left += room.wiggled
 	room.cell_bot_right += room.wiggled
 	
-	var debug_size = Vector2(tm.tile_set.tile_size.x * 0.5, tm.tile_set.tile_size.y * 0.5)
+	var debug_size = Vector2(logical_tiles.tile_set.tile_size.x * 0.5, logical_tiles.tile_set.tile_size.y * 0.5)
 	if debug_mode:
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_top_left)) + debug_size)
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(room.cell_bot_right)) + debug_size)
@@ -360,14 +369,13 @@ func loop_make_room_walls(room: RoomStruct) -> void:
 				return
 			if odd_x:
 				for x in range(room.cell_top_left.x + 1, room.cell_bot_right.x, 2):
-					room_cutter(logical_wall, Vector2i(x,room.cell_top_left.y+1), Vector2i(x, room.cell_bot_right.y - 1))
+					room_cutter(logical_wall, Vector2i(x, room.cell_top_left.y + 1), Vector2i(x, room.cell_bot_right.y - 1))
 				return
 			if odd_y:
 				for y in range(room.cell_top_left.y + 1, room.cell_bot_right.y, 2):
-					room_cutter(logical_wall, Vector2i(room.cell_top_left.x+1, y), Vector2i(room.cell_bot_right.x-1, y))
+					room_cutter(logical_wall, Vector2i(room.cell_top_left.x + 1, y), Vector2i(room.cell_bot_right.x - 1, y))
 				return
-			room_cutter(logical_wall, Vector2i(room.cell_top_left.x+room.area.x/2, room.cell_top_left.y+room.area.y/2), 
-			Vector2i(room.cell_bot_right.x-room.area.x/2, room.cell_bot_right.y-room.area.y/2))
+			room_cutter(logical_wall, Vector2i(room.cell_top_left.x + room.area.x / 2, room.cell_top_left.y + room.area.y / 2), Vector2i(room.cell_bot_right.x - room.area.x / 2, room.cell_bot_right.y - room.area.y / 2))
 			return
 	return
 
@@ -390,15 +398,15 @@ func passage_cutter(
 		is_start_direction_horizontal: bool,
 		is_end_direction_horizontal: bool
 	):
-	var tm :TileMap = $LogicalTiles
+	#var logical_tiles :TileMap = $LogicalTiles
 	#var distance:Vector2i=start-finish 
 	
 	var points : Array = Array()
 	points.push_back(start)
 	
-	#print_debug("try make passage ", start, " to ", finish)
+	print_debug("try make passage ", start, " to ", finish)
 	
-	var debug_size = Vector2(tm.tile_set.tile_size.x*0.5,tm.tile_set.tile_size.y*0.5)
+	var debug_size = Vector2(logical_tiles.tile_set.tile_size.x * 0.5, logical_tiles.tile_set.tile_size.y * 0.5)
 	if debug_mode:
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(start)) + debug_size)
 		debug_bricks.push_back(Vector2(tile_space_to_pixel_space(finish)) + debug_size)
@@ -549,8 +557,8 @@ func swizzle(to_swizzle: Vector2i) -> Vector2i:
 	return Vector2i(to_swizzle.y, to_swizzle.x)
 
 func tile_space_to_pixel_space(loc: Vector2i) -> Vector2i:
-	var tm :TileMap = $LogicalTiles
-	return tm.tile_set.tile_size * loc
+	#var logical_tiles :TileMap = $LogicalTiles
+	return logical_tiles.tile_set.tile_size * loc
 
 func handle_room_additional_connection(room: RoomStruct):
 	for idx in range(room.direction_arr.size()):
@@ -567,7 +575,7 @@ func handle_room_additional_connection(room: RoomStruct):
 
 #takes in the room and the list of already used tiles in the room, and outputs a new tile for the enemy to be spawned in.
 func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
-	var tm: TileMap = $LogicalTiles
+	#var logical_tiles: TileMap = $LogicalTiles
 	var locations:Array[Vector2i] = []
 	#cannot remember if should be +1 or not.
 	for x in range(room.cell_top_left.x, room.cell_bot_right.x+1):
@@ -576,7 +584,8 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 			if ignore_list.find(test_loc) != -1:
 				continue
 			
-			if (tm.get_cell_atlas_coords(0, test_loc)==logical_floor):
+			#if (logical_tiles.get_cell_atlas_coords(0, test_loc) == logical_floor):
+			if (logical_tiles.get_cell_atlas_coords(test_loc) == logical_floor):
 				locations.push_back(test_loc)
 	
 	if locations.size() > 0:
@@ -584,13 +593,13 @@ func find_floor_spaces(room:RoomStruct, ignore_list:Array[Vector2i])->Array:
 	return [false]
 
 func handle_room_enemy_spawns(room: RoomStruct):
-	var tm: TileMap = $LogicalTiles
+	#var logical_tiles: TileMap = $LogicalTiles
 	if room.is_enterance:
 		return
 	if generator_resource.chance_empty_room > random.randf_range(0,1):
 		return
 	var num_enemies = random.randi_range(generator_resource.number_enemies_min, generator_resource.number_enemies_max)
-	print_debug("num enemies: ",num_enemies)
+	print_debug("num enemies: ", num_enemies)
 	var ignore_list :Array[Vector2i]= []
 	
 	for i in range(num_enemies):
@@ -599,11 +608,14 @@ func handle_room_enemy_spawns(room: RoomStruct):
 		if space[0]:
 			var new_enemy:Enemy= enemy_type.enemy_type.instantiate()
 			new_enemy.target = player_instance
-			print_debug("made enemy: ",enemy_type.enemy_name)
-			add_child(new_enemy)
-			var location :Vector2i = tile_space_to_pixel_space(space[1])
+			print_debug("made enemy: ", enemy_type.enemy_name)
+			new_enemy.slain.connect(player_instance._on_slain_enemy)
+			
+			#add_child(new_enemy)
+			call_deferred(&"add_child", new_enemy)
+			var location: Vector2i = tile_space_to_pixel_space(space[1])
 			#enemy_spawn_list[location] = enemy_type.enemy_type
-			new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)#not sure why we need this offset?
+			new_enemy.position = Vector2(location) + Vector2(logical_tiles.tile_set.tile_size.x / 2, logical_tiles.tile_set.tile_size.y / 2)#not sure why we need this offset?
 	
 	pass
 
@@ -629,7 +641,7 @@ func compute_spawn_chances():
 			enemy_spawn_chances_for_current_level[total_enemy_spawn_chance] = enemy_setting
 
 func handle_spawn_room_items(room:RoomStruct):
-	var tm :TileMap = $LogicalTiles
+	#var logical_tiles :TileMap = $LogicalTiles
 	
 	var ignore_list:Array[Vector2i]=[];
 	for idx in range(0, mini(generator_resource.objects.size(), generator_resource.objects_per_room.size())):
@@ -643,8 +655,9 @@ func handle_spawn_room_items(room:RoomStruct):
 			ignore_list.push_back(loc[1])
 			
 			var new_object = generator_resource.objects[idx].instantiate()
-			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
-			add_child(new_object)
+			new_object.position = Vector2(tile_space_to_pixel_space(loc[1])) + Vector2(logical_tiles.tile_set.tile_size.x / 2, logical_tiles.tile_set.tile_size.y / 2)
+			#add_child(new_object)
+			call_deferred(&"add_child", new_object)
 		
 
 func end_level():
@@ -657,10 +670,10 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	if (generator_resource == null):
 		return;
 	
-	var _tm :TileMap = $LogicalTiles
-	var _vm :TileMap = $VisibleTiles
-	var _fm :TileMap = $FeatureTiles
-	#tm.tile_set = generator_resource.tile_set
+	#var logical_tiles: TileMapLayer = $LogicalTiles
+	#var visible_tiles: TileMapLayer = $VisibleTiles
+	#var feature_tiles: TileMapLayer = $FeatureTiles
+	#logical_tiles.tile_set = generator_resource.tile_set
 	
 	random = in_random
 	
@@ -737,8 +750,9 @@ func generate(in_random: RandomNumberGenerator, level : int):
 	
 	var exit_obj = generator_resource.exit_object.instantiate()
 	exit_obj.random = random
-	$VisibleTiles.add_child(exit_obj)
-	exit_obj.position = Vector2(tile_space_to_pixel_space(exit_loc[1]))# + Vector2(tm.tile_set.tile_size.x/2,tm.tile_set.tile_size.y/2)
+	#$VisibleTiles.add_child(exit_obj)
+	$VisibleTiles.call_deferred(&"add_child", exit_obj)
+	exit_obj.position = Vector2(tile_space_to_pixel_space(exit_loc[1]))# + Vector2(logical_tiles.tile_set.tile_size.x/2,logical_tiles.tile_set.tile_size.y/2)
 	
 	#gather real world limits to only use create_visible within that range.
 	#doesn't work right now, idk why, don't really care.
@@ -752,8 +766,8 @@ func generate(in_random: RandomNumberGenerator, level : int):
 
 
 func setup_cell_visual(logical_cell:Vector2i):
-	var tm: TileMap = $LogicalTiles
-	var vm: TileMap = $VisibleTiles
+	#var logical_tiles: TileMap = $LogicalTiles
+	#var visible_tiles: TileMap = $VisibleTiles
 	
 	var compare = logical_wall
 	
@@ -765,14 +779,20 @@ func setup_cell_visual(logical_cell:Vector2i):
 
 	#attempted optimization for level gen, doesn't work very much faster though ngl. Only like 1 second faster on a normally 5 second generation.
 	if tilemap_helper.has(av / tilemap_helper_size) or tilemap_helper.has(bv / tilemap_helper_size) or tilemap_helper.has(cv / tilemap_helper_size) or tilemap_helper.has(dv / tilemap_helper_size):
-		var a: bool = tm.get_cell_atlas_coords(0, av) == compare #top left
-		var b: bool = tm.get_cell_atlas_coords(0, bv) == compare #top right
-		var c: bool = tm.get_cell_atlas_coords(0, cv) == compare #bot left
-		var d: bool = tm.get_cell_atlas_coords(0, dv) == compare #bot right
+		#var a: bool = logical_tiles.get_cell_atlas_coords(0, av) == compare #top left
+		#var b: bool = logical_tiles.get_cell_atlas_coords(0, bv) == compare #top right
+		#var c: bool = logical_tiles.get_cell_atlas_coords(0, cv) == compare #bot left
+		#var d: bool = logical_tiles.get_cell_atlas_coords(0, dv) == compare #bot right
+		
+		var a: bool = logical_tiles.get_cell_atlas_coords(av) == compare #top left
+		var b: bool = logical_tiles.get_cell_atlas_coords(bv) == compare #top right
+		var c: bool = logical_tiles.get_cell_atlas_coords(cv) == compare #bot left
+		var d: bool = logical_tiles.get_cell_atlas_coords(dv) == compare #bot right
 		
 		var combine = Vector2i(int(a) | int(b) << 1, int(c) | int(d) << 1)
 		
-		vm.set_cell(LAYER_IDX, logical_cell, 0, combine);
+		#visible_tiles.set_cell(LAYER_IDX, logical_cell, 0, combine)
+		visible_tiles.set_cell(logical_cell, 0, combine)
 	
 
 func create_visible(real_extent_top_left: Vector2i, real_extent_bot_right: Vector2i) -> void:
@@ -782,15 +802,18 @@ func create_visible(real_extent_top_left: Vector2i, real_extent_bot_right: Vecto
 			setup_cell_visual(Vector2i(x,y))
 
 
+## Spawns the waiting enemies and connects the [Enemy.slain] signal.
 func spawn_waiting_enemies() -> void:
-	var tm: TileMap = $LogicalTiles
+	#var logical_tiles: TileMap = $LogicalTiles
 	var enemyloc = enemy_spawn_list.keys()[0]
 	
 	var new_enemy: Enemy = enemy_spawn_list[enemyloc].instantiate()
 	new_enemy.target = player_instance
+	new_enemy.slain.connect(player_instance._on_slain_enemy)
+	
 	var location: Vector2i = tile_space_to_pixel_space(enemyloc)
 	add_child(new_enemy)
-	new_enemy.position = Vector2(location) + Vector2(tm.tile_set.tile_size.x / 2, tm.tile_set.tile_size.y / 2) #not sure why we need this offset?
+	new_enemy.position = Vector2(location) + Vector2(logical_tiles.tile_set.tile_size.x / 2, logical_tiles.tile_set.tile_size.y / 2) #not sure why we need this offset?
 	print_debug("added enemy ", new_enemy.name)
 	enemy_spawn_list.erase(enemyloc)
 

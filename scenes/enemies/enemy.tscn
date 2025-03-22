@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://bx3d0lgmpfh8b"]
 
-[ext_resource type="Script" path="res://scenes/enemies/enemy.gd" id="1_no42n"]
+[ext_resource type="Script" uid="uid://bqm7gc05aaoir" path="res://scenes/enemies/enemy.gd" id="1_no42n"]
 
 [node name="Enemy" type="CharacterBody2D" groups=["enemies"]]
 z_index = 10
@@ -19,4 +19,5 @@ radius = 15.0
 collision_layer = 4
 collision_mask = 34
 
+[connection signal="velocity_computed" from="Navigator" to="." method="_on_navigator_velocity_computed"]
 [connection signal="area_entered" from="HurtBox" to="." method="_on_hurt_box_area_entered"]

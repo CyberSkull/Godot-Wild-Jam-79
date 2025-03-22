@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EnemySetting" load_steps=3 format=3 uid="uid://clfetl802uwvh"]
 
 [ext_resource type="PackedScene" uid="uid://cr6fgnraeffa2" path="res://scenes/enemies/blue_slime.tscn" id="1_jtumu"]
-[ext_resource type="Script" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="2_pq6ta"]
+[ext_resource type="Script" uid="uid://cyehi6omwo0gi" path="res://scenes/level_generator/Scripts/EnemySetting.gd" id="2_pq6ta"]
 
 [resource]
 script = ExtResource("2_pq6ta")

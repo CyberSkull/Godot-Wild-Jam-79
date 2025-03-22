@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://b4d1wercdvlgt"]
 
-[ext_resource type="Shader" path="res://scenes/player/blink.gdshader" id="1_hcfh5"]
+[ext_resource type="Shader" uid="uid://dsvqqy8f3ccym" path="res://scenes/player/blink.gdshader" id="1_hcfh5"]
 
 [resource]
 shader = ExtResource("1_hcfh5")

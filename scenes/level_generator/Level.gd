@@ -35,5 +35,3 @@ func create_level(level_number: int):
 	generator.player_instance = player
 	generator.generate(random, level_number) # later could make 
 	PlayerUI.show_loading_screen(false)
-
-
