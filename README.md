@@ -1,9 +1,11 @@
 # Dakota Duck in The Dark Slime Dungeon
-Dakota Duck is descending into The Dark Slime Dungeon! Part of the Godot Wild Game Jam 72. How deep in the dungeon can you go?
+Dakota Duck is descending into The Dark Slime Dungeon! Part of the Godot Wild Game Jam 79. How deep in the dungeon can you go?
+
+New for Godot Wild Jam 79: LEVEL UP! Dakota Duck now levels up when defeating enough enemies.
 
 ## Controls:
-* Move Dakota Duck with the WASD, D-Pad or left control stick
-* Attack with spacebar or any gamepad face button.
+* Move Dakota Duck with the WASD, D-Pad or the left/right control sticks.
+* Attack with spacebar, any gamepad face button or the shoulder buttons.
 
 ## Credits:
 * Programming: internetzspacezshipz & CyberSkull
@@ -14,16 +16,12 @@ Dakota Duck is descending into The Dark Slime Dungeon! Part of the Godot Wild Ga
 Acknowlengements in source code.
 
 ## Known bugs:
-* Dakota's sword may not properly disable itself and enemies may collide with it and take damage.
-* Dakota's damage animation usually doesn't play.
 * Return to title screen does not occur due to a reference issue.
 
-## Godot Wild Jam 72
+## Godot Wild Jam 79
 ![GWJ-Full-Logo-tag](GWJ/GWJ-Full-Logo-tag.svg)
-Repository for [Godot Wild Jam 72](https://itch.io/jam/godot-wild-jam-72).
-![Light and Dark theme](GWJ/72-light-n-dark.png)
-![Wildcards: Dynamic Perspective, Curses & What the Duck](GWJ/72-All-Cards.png)
+Repository for [Godot Wild Jam 79](https://itch.io/jam/godot-wild-jam-79).
 
-[Design doc](https://docs.google.com/document/d/10iIuY10_H25JpPuGTPwvYvNa8YPdun2npG8JguPPquc)
+Based on https://github.com/CyberSkull/Godot-Wild-Jam-72
 
-[itch.io page](https://dreadlordcyberskull.itch.io/dakota-duck-in-the-dark-slime-dungeon)
+
