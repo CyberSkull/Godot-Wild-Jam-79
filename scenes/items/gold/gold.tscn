@@ -9,7 +9,8 @@ size = Vector2(27, 17)
 
 [node name="Gold" instance=ExtResource("1_7slgr")]
 script = ExtResource("2_j0uev")
-gold = 1
+max_gold_in_pile = 100
+message_color = Color(1, 1, 0, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_2j5tg")

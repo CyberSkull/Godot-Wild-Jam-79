@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://dyhflssp6cecx" path="res://graphics/slime/yellow slime spritesheet calciumtrice_0.png" id="2_wmqoy"]
 
 [node name="YellowSlime" instance=ExtResource("1_jn1vi")]
+enemy_name = &"Yellow Slime"
 max_health = 20
 health = 20
 attack = 10
+experience_points = 3
 
 [node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_wmqoy")

@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://ga577jgv1ywn"]
+
+[ext_resource type="Script" uid="uid://dh74g03rieqfd" path="res://scenes/user interface/floating_text.gd" id="1_k7rxy"]
+[ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="2_1gjtv"]
+
+[node name="FloatingText" type="RichTextLabel"]
+z_index = 100
+z_as_relative = false
+offset_right = 40.0
+offset_bottom = 40.0
+theme = ExtResource("2_1gjtv")
+bbcode_enabled = true
+script = ExtResource("1_k7rxy")

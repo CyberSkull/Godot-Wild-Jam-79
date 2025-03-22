@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://carljqywqdma2"]
+[gd_scene load_steps=7 format=3 uid="uid://carljqywqdma2"]
 
 [ext_resource type="Script" uid="uid://b0l5a4mul6kel" path="res://scenes/user interface/in game/InGameUI.gd" id="1_8xasy"]
 [ext_resource type="Texture2D" uid="uid://dlsa8gssfh0hq" path="res://graphics/dungeon/squares_d.png" id="2_0klp6"]
 [ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="3_05rig"]
-[ext_resource type="PackedScene" uid="uid://1bpha7t3c2rq" path="res://scenes/user interface/health_bar.tscn" id="4_5guob"]
+[ext_resource type="PackedScene" uid="uid://1bpha7t3c2rq" path="res://scenes/user interface/gradient_bar.tscn" id="4_5guob"]
+[ext_resource type="Gradient" uid="uid://2bn0cmj6bo5f" path="res://scenes/user interface/in game/health_gradient.tres" id="5_ac8ng"]
+
+[sub_resource type="Gradient" id="Gradient_ac8ng"]
+colors = PackedColorArray(0, 1, 1, 1, 0.752941, 0, 1, 1)
 
 [node name="InGameUI" type="CanvasLayer"]
 script = ExtResource("1_8xasy")
@@ -27,7 +31,16 @@ offset_bottom = 40.0
 theme = ExtResource("3_05rig")
 
 [node name="HealthBar" parent="PlayerUserInterface" instance=ExtResource("4_5guob")]
+unique_name_in_owner = true
 layout_mode = 1
+my_gradient = ExtResource("5_ac8ng")
+
+[node name="ExperienceBar" parent="PlayerUserInterface" instance=ExtResource("4_5guob")]
+unique_name_in_owner = true
+layout_mode = 1
+offset_top = 5.0
+offset_bottom = 9.0
+my_gradient = SubResource("Gradient_ac8ng")
 
 [node name="Score" type="RichTextLabel" parent="PlayerUserInterface"]
 unique_name_in_owner = true

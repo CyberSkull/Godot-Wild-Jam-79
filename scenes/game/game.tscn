@@ -16,6 +16,7 @@ PlayerUI = NodePath("../InGameUI")
 
 [node name="Player" parent="." instance=ExtResource("3_gugvb")]
 
-[connection signal="buff_changed" from="Player" to="InGameUI" method="_on_player_buff_changed"]
+[connection signal="gain_experience" from="Player" to="InGameUI" method="_on_player_gain_experience"]
 [connection signal="health_changed" from="Player" to="InGameUI" method="_on_player_health_changed"]
 [connection signal="max_health_changed" from="Player" to="InGameUI" method="_on_player_max_health_changed"]
+[connection signal="stats_changed" from="Player" to="InGameUI" method="_on_player_stats_changed"]

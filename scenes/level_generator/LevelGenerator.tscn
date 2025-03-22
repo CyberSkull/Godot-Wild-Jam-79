@@ -5,9 +5,12 @@
 [ext_resource type="TileSet" uid="uid://clpwruqovs8tt" path="res://graphics/dungeon/LogicalTiles.tres" id="3_6vv75"]
 [ext_resource type="TileSet" uid="uid://dn8fqp4vj5kko" path="res://graphics/dungeon/BaseTileSet.tres" id="4_j467f"]
 
-[node name="Node2D" type="Node2D"]
+[node name="LevelGenerator" type="Node2D"]
 script = ExtResource("1_fsh6h")
 generator_resource = ExtResource("2_nucgu")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(0, 0, 0, 1)
 
 [node name="LogicalTiles" type="TileMapLayer" parent="."]
 use_parent_material = true
@@ -16,11 +19,9 @@ tile_set = ExtResource("3_6vv75")
 navigation_enabled = false
 
 [node name="VisibleTiles" type="TileMapLayer" parent="."]
+y_sort_enabled = true
 use_parent_material = true
 position = Vector2(16, 16)
 tile_set = ExtResource("4_j467f")
 
 [node name="FeatureTiles" type="TileMapLayer" parent="."]
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-color = Color(0, 0, 0, 1)

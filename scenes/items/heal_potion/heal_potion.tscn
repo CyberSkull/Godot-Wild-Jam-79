@@ -10,6 +10,7 @@ size = Vector2(14, 17)
 [node name="HealPotion" instance=ExtResource("1_g2b1o")]
 script = ExtResource("2_doxn3")
 health_restored = 20
+message_color = Color(1, 0, 0, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("2_e7qaj")

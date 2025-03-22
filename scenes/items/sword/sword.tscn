@@ -11,6 +11,7 @@ height = 25.4558
 [node name="Sword" instance=ExtResource("1_dqr6m")]
 script = ExtResource("1_onoj8")
 damage_buff = 1
+message_color = Color(1, 0, 1, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_fkc3n")

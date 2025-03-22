@@ -47,6 +47,7 @@ animations = [{
 }]
 
 [node name="Torch" type="AnimatedSprite2D"]
+y_sort_enabled = true
 sprite_frames = SubResource("SpriteFrames_88lj6")
 autoplay = "default"
 frame_progress = 0.719851

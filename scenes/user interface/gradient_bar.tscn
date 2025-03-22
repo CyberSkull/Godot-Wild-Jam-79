@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://1bpha7t3c2rq"]
+
+[ext_resource type="Theme" uid="uid://c1iq7fcdp5qrl" path="res://scenes/user interface/title_screen_theme.tres" id="1_afm2q"]
+[ext_resource type="Script" uid="uid://bssjvoaks5f6l" path="res://scenes/user interface/gradient_bar.gd" id="2_egkyq"]
+
+[node name="GradientBar" type="ProgressBar"]
+offset_right = 50.0
+offset_bottom = 4.0
+theme = ExtResource("1_afm2q")
+show_percentage = false
+script = ExtResource("2_egkyq")
+
+[connection signal="changed" from="." to="." method="_on_changed"]
+[connection signal="value_changed" from="." to="." method="_on_value_changed"]

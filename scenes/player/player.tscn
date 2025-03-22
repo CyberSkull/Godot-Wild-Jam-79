@@ -1449,6 +1449,7 @@ transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition
 graph_offset = Vector2(5.865, -145.271)
 
 [node name="Player" type="CharacterBody2D" groups=["illuminated", "invaders", "players"]]
+y_sort_enabled = true
 collision_mask = 325
 script = ExtResource("1_km6pe")
 

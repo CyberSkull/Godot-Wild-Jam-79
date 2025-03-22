@@ -10,6 +10,7 @@
 script = ExtResource("2_wsjto")
 speed_multiply = 0.95
 armor_add = 1
+message_color = Color(0, 1, 1, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_w70yq")

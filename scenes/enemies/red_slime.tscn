@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://brsb7ojj2mkj4" path="res://graphics/slime/red slime spritesheet calciumtrice_0.png" id="2_0yuml"]
 
 [node name="RedSlime" instance=ExtResource("1_y2qrh")]
+enemy_name = &"Red Slime"
 max_health = 10
 health = 10
 attack = 5
+experience_points = 2
 
 [node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_0yuml")

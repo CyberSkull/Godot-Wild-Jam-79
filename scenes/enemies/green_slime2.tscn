@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://csw6ydae3bno4" path="res://graphics/slime/green slime spritesheet calciumtrice_0.png" id="2_nb1cs"]
 
 [node name="GreenSlime2" instance=ExtResource("1_a3e3i")]
+enemy_name = &"Green Slime"
 max_health = 5
 health = 5
 speed = 25.0

@@ -10,6 +10,7 @@ size = Vector2(18, 17)
 [node name="Boots" instance=ExtResource("1_4xx4h")]
 script = ExtResource("2_jji1y")
 multiply_speed = 1.1
+message_color = Color(0, 1, 1, 1)
 
 [node name="Sprite2D" parent="." index="0"]
 texture = ExtResource("3_pe7u1")

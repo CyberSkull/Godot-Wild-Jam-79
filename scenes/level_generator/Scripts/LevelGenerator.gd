@@ -39,7 +39,7 @@ var debug_bricks
 var debug_lines
 var debug_loc
 
-var player_instance: Player
+var player_instance: Player = null
 
 var tilemap_helper: Dictionary
 var tilemap_helper_size: int = 8
@@ -609,9 +609,11 @@ func handle_room_enemy_spawns(room: RoomStruct):
 			var new_enemy:Enemy= enemy_type.enemy_type.instantiate()
 			new_enemy.target = player_instance
 			print_debug("made enemy: ", enemy_type.enemy_name)
+			new_enemy.slain.connect(player_instance._on_slain_enemy)
+			
 			#add_child(new_enemy)
 			call_deferred(&"add_child", new_enemy)
-			var location :Vector2i = tile_space_to_pixel_space(space[1])
+			var location: Vector2i = tile_space_to_pixel_space(space[1])
 			#enemy_spawn_list[location] = enemy_type.enemy_type
 			new_enemy.position = Vector2(location) + Vector2(logical_tiles.tile_set.tile_size.x / 2, logical_tiles.tile_set.tile_size.y / 2)#not sure why we need this offset?
 	
@@ -800,12 +802,15 @@ func create_visible(real_extent_top_left: Vector2i, real_extent_bot_right: Vecto
 			setup_cell_visual(Vector2i(x,y))
 
 
+## Spawns the waiting enemies and connects the [Enemy.slain] signal.
 func spawn_waiting_enemies() -> void:
 	#var logical_tiles: TileMap = $LogicalTiles
 	var enemyloc = enemy_spawn_list.keys()[0]
 	
 	var new_enemy: Enemy = enemy_spawn_list[enemyloc].instantiate()
 	new_enemy.target = player_instance
+	new_enemy.slain.connect(player_instance._on_slain_enemy)
+	
 	var location: Vector2i = tile_space_to_pixel_space(enemyloc)
 	add_child(new_enemy)
 	new_enemy.position = Vector2(location) + Vector2(logical_tiles.tile_set.tile_size.x / 2, logical_tiles.tile_set.tile_size.y / 2) #not sure why we need this offset?

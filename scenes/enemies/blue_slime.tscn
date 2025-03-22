@@ -4,9 +4,11 @@
 [ext_resource type="Texture2D" uid="uid://dcqfvo2pxhi08" path="res://graphics/slime/blue slime spritesheet calciumtrice_0.png" id="2_yasdt"]
 
 [node name="BlueSlime" instance=ExtResource("1_6vm0k")]
+enemy_name = &"Blue Slime"
 max_health = 30
 health = 30
 attack = 30
+experience_points = 4
 
 [node name="Sprite2D" parent="." index="1"]
 texture = ExtResource("2_yasdt")

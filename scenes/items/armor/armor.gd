@@ -6,4 +6,5 @@ extends Item
 
 func picked_up(player: Player):
 	player.defence += armor_add
+	message = str("+", armor_add, " DEF")
 	super(player)
